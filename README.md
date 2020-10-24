@@ -6,7 +6,7 @@
 - <b>Status:</b> In Progress
 - <b>Tech Stack:</b> NodeJS / ExpressJS
 - <b>3rd Party :</b> ---
-## Components Map
+## API Endpoints
 | Endpoint      | Method        | Functionality     |
 | ------------- |:-------------:| :---------------- |
 |               |               |                   |
