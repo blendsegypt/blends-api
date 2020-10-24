@@ -7,6 +7,6 @@
 - <b>Tech Stack:</b> NodeJS / ExpressJS
 - <b>3rd Party :</b> ---
 ## Components Map
-| Component     | Method        | Functionality     |
+| Endpoint      | Method        | Functionality     |
 | ------------- |:-------------:| :---------------- |
 |               |               |                   |
