@@ -1,0 +1,14 @@
+import DB from "../models";
+//Now you can use DB.User / DB.Product etc....
+import Express from "express";
+const router = Express.router();
+
+router.get("/", () => {
+  
+});
+
+router.post("/", () => {
+  
+})
+
+export default router;
