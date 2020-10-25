@@ -1,19 +1,20 @@
-var express = require("express");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
-var sequelize = require("./db");
+// var express = require("express");
+import Express from "express";
+import Path from "path";
+import CookieParser from "cookie-parser";
+import Logger from "morgan";
+import sequelize from "./db";
 
-var app = express();
+var App = Express();
 
-app.use(logger("dev"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
+App.use(Logger("dev"));
+App.use(Express.json());
+App.use(Express.urlencoded({ extended: false }));
+App.use(CookieParser());
+App.use(Express.static(Path.join(__dirname, "public")));
 
-app.get("/", (req, res) => {
+App.get("/", (req, res) => {
   res.send("Hello Worldzzz!");
 });
 
-module.exports = app;
+export default App;

@@ -1,8 +1,8 @@
-const { Sequelize } = require("sequelize");
+import Sequelize from "Sequelize";
 
 const sequelize = new Sequelize("blends", "root", "", {
   host: "localhost",
   dialect: "postgres",
 });
 
-module.exports = sequelize;
+export default sequelize;
