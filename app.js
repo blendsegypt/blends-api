@@ -13,8 +13,4 @@ App.use(Express.urlencoded({ extended: false }));
 App.use(CookieParser());
 App.use(Express.static(Path.join(__dirname, "public")));
 
-App.get("/", (req, res) => {
-  res.send("Hello Worldzzz!");
-});
-
 export default App;
