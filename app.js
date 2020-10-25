@@ -3,7 +3,7 @@ import Express from "express";
 import Path from "path";
 import CookieParser from "cookie-parser";
 import Logger from "morgan";
-import sequelize from "./db";
+import db from "./models/index";
 
 var App = Express();
 

@@ -1,8 +1,14 @@
 import Sequelize from "Sequelize";
+import config from "./config.json";
 
-const sequelize = new Sequelize("blends", "root", "", {
-  host: "localhost",
-  dialect: "postgres",
-});
+const sequelize = new Sequelize(
+  config.development.database,
+  config.development.username,
+  config.development.password,
+  {
+    host: config.development.host,
+    dialect: config.development.dialect,
+  }
+);
 
-export default sequelize;
+export { Sequelize, sequelize };
