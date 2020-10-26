@@ -12,10 +12,10 @@ export default User = sequelize.define('User', {
   },
   phone_number: {
     type: DataTypes.INTEGER,
-    email: DataTypes.STRING,
     allowNull: false,
     unique: true,
   },
+  email: DataTypes.STRING,
   email_verified: DataTypes.BOOLEAN,
   gender: DataTypes.ENUM('Male', 'Female', 'Prefer not to tell'),
   dob: DataTypes.DATE,
