@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node -r esm ./bin/www",
-    "mkmigrate": "./node_modules/sequelize-auto-migrations/bin/makemigration.js",
+    "mkmigrate": "node -r esm ./node_modules/sequelize-auto-migrations/bin/makemigration.js",
     "dbmigrate": "sequelize-cli db:migrate"
   },
   "dependencies": {
