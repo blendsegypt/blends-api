@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node -r esm ./bin/www"
+    "start": "node -r esm ./bin/www",
+    "mkmigrate": "./node_modules/sequelize-auto-migrations/bin/makemigration.js",
+    "dbmigrate": "sequelize-cli db:migrate"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -13,7 +15,8 @@
     "morgan": "~1.9.1",
     "pg": "^8.4.1",
     "pg-hstore": "^2.3.3",
-    "sequelize": "^6.3.5"
+    "sequelize": "^6.3.5",
+    "sequelize-auto-migrations": "github:scimonster/sequelize-auto-migrations#a063aa6535a3f580623581bf866cef2d609531ba"
   },
   "devDependencies": {
     "nodemon": "^2.0.6",
