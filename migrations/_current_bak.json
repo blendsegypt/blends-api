@@ -10,14 +10,14 @@
                     "field": "id",
                     "seqType": "Sequelize.INTEGER"
                 },
-                "first_name": {
+                "firstName": {
                     "allowNull": false,
-                    "field": "first_name",
+                    "field": "firstName",
                     "seqType": "Sequelize.STRING"
                 },
-                "last_name": {
+                "lastName": {
                     "allowNull": false,
-                    "field": "last_name",
+                    "field": "lastName",
                     "seqType": "Sequelize.STRING"
                 },
                 "phone_number": {
@@ -72,5 +72,5 @@
             "indexes": []
         }
     },
-    "revision": 2
+    "revision": 1
 }
