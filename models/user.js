@@ -21,7 +21,7 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.BOOLEAN,
     },
     gender: {
-      type: DataTypes.ENUM('Male', 'Female', 'Prefer not to tell'),
+      type: DataTypes.ENUM('male', 'female', 'other'),
     },
     dob: {
       type: DataTypes.DATE
