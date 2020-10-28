@@ -49,4 +49,20 @@ router.get("/:id", async (req, res) => { // read user by: id
     }
 });
 
+router.delete("/:id", async (req, res) => {
+    try {
+        const user = DB.User.destroy({
+            where: {
+                id: req.params.id,
+            }
+        });
+        console.log(user);
+        return res.status(201).json({
+            message: "User has been deleted succesfully",
+        });
+    } catch (error) {
+        return res.status(500).json({ error: error_message });
+    }
+})
+
 export default router;
