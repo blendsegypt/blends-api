@@ -51,7 +51,7 @@ router.get("/:id", async (req, res) => { // read user by: id
 
 router.delete("/:id", async (req, res) => { // delete user by: id
     try {
-        const user = DB.User.destroy({
+        const user = await DB.User.destroy({
             where: {
                 id: req.params.id,
             }
@@ -62,6 +62,25 @@ router.delete("/:id", async (req, res) => { // delete user by: id
         });
     } catch (error) {
         return res.status(500).json({ error: error_message });
+    }
+});
+
+router.put("/:id", async (req, res) => {
+    try {
+        console.log(req.body);
+        const [numberOfAffectedRows, affectedRows] = await DB.User.update(req.body, {
+            where: {
+                id: req.params.id,
+            },
+            returning: true,
+        });
+        console.log("numberOfAffectedRows: " + numberOfAffectedRows + " affectedRows: " + affectedRows);
+        return res.status(201).json({
+            message: "User Data has been updated succesfully",
+        });
+
+    } catch (error) {
+        return res.status(500).json({ error_message: error });
     }
 })
 
