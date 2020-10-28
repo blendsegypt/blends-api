@@ -11,10 +11,12 @@ router.post("/", async (req, res) => { // create new user
         const user = await DB.User.create(req.body);
         return res.status(201).json({
             message: "User has been created succesfully",
-            user_id: user.id,
+            data: {
+                user_id: user.id,
+            }
         });
     } catch (error) {
-        return res.status(500).json({ error: error.message });
+        return res.status(500).json({ error_message: error.message, });
     }
 });
 
@@ -24,11 +26,9 @@ router.get("/", async (req, res) => { // read all users
             attributes: ['id', 'first_name', 'last_name', 'phone_number', 'email', 'email_verified', 'gender', 'dob', 'platform'],
         });
         console.log(users);
-        return res.status(201).json({
-            users,
-        });
+        return res.status(201).json(users);
     } catch (error) {
-        return res.status(500).json({ error: error_message });
+        return res.status(500).json({ error_message: error.message, });
     }
 });
 
@@ -41,11 +41,9 @@ router.get("/:id", async (req, res) => { // read user by: id
             },
         });
         console.log(user);
-        return res.status(201).json({
-            user,
-        });
+        return res.status(201).json(user[0]);
     } catch (error) {
-        return res.status(500).json({ error: error_message });
+        return res.status(500).json({ error_message: error.message, });
     }
 });
 
@@ -61,13 +59,12 @@ router.delete("/:id", async (req, res) => { // delete user by: id
             message: "User has been deleted succesfully",
         });
     } catch (error) {
-        return res.status(500).json({ error: error_message });
+        return res.status(500).json({ error_message: error.message, });
     }
 });
 
 router.put("/:id", async (req, res) => {
     try {
-        console.log(req.body);
         const [numberOfAffectedRows, affectedRows] = await DB.User.update(req.body, {
             where: {
                 id: req.params.id,
@@ -80,8 +77,8 @@ router.put("/:id", async (req, res) => {
         });
 
     } catch (error) {
-        return res.status(500).json({ error_message: error });
+        return res.status(500).json({ error_message: error.message, });
     }
-})
+});
 
 export default router;
