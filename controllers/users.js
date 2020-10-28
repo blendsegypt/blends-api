@@ -3,7 +3,7 @@ import DB from "../models";
 import Express from "express";
 const router = Express.Router();
 
-// TODO: validate get by id, post
+// TODO: validate get by id, post, delete by id
 
 router.post("/", async (req, res) => { // create new user
     try {
