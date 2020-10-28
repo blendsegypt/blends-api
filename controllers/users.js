@@ -49,7 +49,7 @@ router.get("/:id", async (req, res) => { // read user by: id
     }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => { // delete user by: id
     try {
         const user = DB.User.destroy({
             where: {
