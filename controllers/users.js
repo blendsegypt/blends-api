@@ -3,11 +3,22 @@ import DB from "../models";
 import Express from "express";
 const router = Express.Router();
 
+// TODO: validate get by id, post
 
-// attributes: ['id', 'first_name', 'last_name', 'phone_number', 'phone_number_verified', 'email', 'email_verified', 'gender', 'dob', 'platform'],
+router.post("/", async (req, res) => { // create new user
+    try {
+        // console.log(req.body);
+        const user = await DB.User.create(req.body);
+        return res.status(201).json({
+            message: "User has been created succesfully",
+            user_id: user.id,
+        });
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
 
-
-router.get("/", async (req, res) => {
+router.get("/", async (req, res) => { // read all users
     try {
         const users = await DB.User.findAll({
             attributes: ['id', 'first_name', 'last_name', 'phone_number', 'email', 'email_verified', 'gender', 'dob', 'platform'],
@@ -19,20 +30,23 @@ router.get("/", async (req, res) => {
     } catch (error) {
         return res.status(500).json({ error: error_message });
     }
-
 });
 
-router.post("/", async (req, res) => {
+router.get("/:id", async (req, res) => { // read user by: id
     try {
-        // console.log(req.body);
-        const user = await DB.User.create(req.body);
+        const user = await DB.User.findAll({
+            attributes: ['id', 'first_name', 'last_name', 'phone_number', 'email', 'email_verified', 'gender', 'dob', 'platform'],
+            where: {
+                id: req.params.id,
+            },
+        });
+        console.log(user);
         return res.status(201).json({
-            message: "User has been created succesfully",
-            user_id: user.id,
+            user,
         });
     } catch (error) {
-        return res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: error_message });
     }
-})
+});
 
 export default router;
