@@ -1,6 +1,7 @@
 import DB from "../models";
 //Now you can use DB.User / DB.Product etc....
 import Express from "express";
+import { restart } from "nodemon";
 const router = Express.Router();
 
 // TODO: validate get by id, post, delete by id
@@ -72,10 +73,13 @@ router.put("/:id", async (req, res) => {
             returning: true,
         });
         console.log("numberOfAffectedRows: " + numberOfAffectedRows + " affectedRows: " + affectedRows);
-        return res.status(201).json({
-            message: "User Data has been updated succesfully",
-        });
-
+        if (numberOfAffectedRows) {
+            return res.status(201).json({
+                message: "User Data has been updated succesfully",
+            });
+        } else {
+            return res.status(404).json({ message: "404: User not found" });
+        }
     } catch (error) {
         return res.status(500).json({ error_message: error.message, });
     }
