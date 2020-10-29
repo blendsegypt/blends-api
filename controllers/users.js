@@ -42,7 +42,11 @@ router.get("/:id", async (req, res) => { // read user by: id
             },
         });
         console.log(user);
-        return res.status(201).json(user[0]);
+        if (user.length) {
+            return res.status(201).json(user[0]);
+        } else {
+            return res.status(404).json({ message: "User not found" });
+        }
     } catch (error) {
         return res.status(500).json({ error_message: error.message, });
     }
@@ -59,8 +63,7 @@ router.delete("/:id", async (req, res) => { // delete user by: id
             return res.status(201).json({
                 message: "User has been deleted succesfully",
             });
-        }
-        else {
+        } else {
             return res.status(404).json({ message: "User not found" });
         }
 
