@@ -5,10 +5,14 @@ import { restart } from "nodemon";
 const router = Express.Router();
 
 // TODO: validate get by id, post, delete by id
+//       validate email: "" to null and vice versa to all
 
-router.post("/", async (req, res) => { // create new user
+// create new user
+router.post("/", async (req, res) => {
     try {
-        // console.log(req.body);
+        if (req.body.email === "") { // validate empty 
+            req.body.email = null;
+        }
         const user = await DB.User.create(req.body);
         return res.status(201).json({
             message: "User has been created succesfully",
@@ -21,19 +25,20 @@ router.post("/", async (req, res) => { // create new user
     }
 });
 
-router.get("/", async (req, res) => { // read all users
+// read all users
+router.get("/", async (req, res) => {
     try {
         const users = await DB.User.findAll({
             attributes: ['id', 'first_name', 'last_name', 'phone_number', 'email', 'email_verified', 'gender', 'dob', 'platform'],
         });
-        console.log(users);
         return res.status(201).json(users);
     } catch (error) {
         return res.status(500).json({ error_message: error.message, });
     }
 });
 
-router.get("/:id", async (req, res) => { // read user by: id
+// read user by: id
+router.get("/:id", async (req, res) => {
     try {
         const user = await DB.User.findAll({
             attributes: ['id', 'first_name', 'last_name', 'phone_number', 'email', 'email_verified', 'gender', 'dob', 'platform'],
@@ -41,7 +46,6 @@ router.get("/:id", async (req, res) => { // read user by: id
                 id: req.params.id,
             },
         });
-        console.log(user);
         if (user.length) {
             return res.status(201).json(user[0]);
         } else {
@@ -52,7 +56,8 @@ router.get("/:id", async (req, res) => { // read user by: id
     }
 });
 
-router.delete("/:id", async (req, res) => { // delete user by: id
+// delete user by: id
+router.delete("/:id", async (req, res) => {
     try {
         const userDeleted = await DB.User.destroy({
             where: {
@@ -72,7 +77,8 @@ router.delete("/:id", async (req, res) => { // delete user by: id
     }
 });
 
-router.put("/:id", async (req, res) => { // update user by: id
+// update user by: id
+router.put("/:id", async (req, res) => {
     try {
         const [numberOfAffectedRows, affectedRows] = await DB.User.update(req.body, {
             where: {
@@ -80,7 +86,6 @@ router.put("/:id", async (req, res) => { // update user by: id
             },
             returning: true,
         });
-        console.log("numberOfAffectedRows: " + numberOfAffectedRows + " affectedRows: " + affectedRows);
         if (numberOfAffectedRows) {
             return res.status(201).json({
                 message: "User Data has been updated succesfully",
