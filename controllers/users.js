@@ -50,21 +50,26 @@ router.get("/:id", async (req, res) => { // read user by: id
 
 router.delete("/:id", async (req, res) => { // delete user by: id
     try {
-        const user = await DB.User.destroy({
+        const userDeleted = await DB.User.destroy({
             where: {
                 id: req.params.id,
             }
         });
-        console.log(user);
-        return res.status(201).json({
-            message: "User has been deleted succesfully",
-        });
+        if (userDeleted) {
+            return res.status(201).json({
+                message: "User has been deleted succesfully",
+            });
+        }
+        else {
+            return res.status(404).json({ message: "User not found" });
+        }
+
     } catch (error) {
         return res.status(500).json({ error_message: error.message, });
     }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", async (req, res) => { // update user by: id
     try {
         const [numberOfAffectedRows, affectedRows] = await DB.User.update(req.body, {
             where: {
@@ -78,7 +83,7 @@ router.put("/:id", async (req, res) => {
                 message: "User Data has been updated succesfully",
             });
         } else {
-            return res.status(404).json({ message: "404: User not found" });
+            return res.status(404).json({ message: "User not found" });
         }
     } catch (error) {
         return res.status(500).json({ error_message: error.message, });
