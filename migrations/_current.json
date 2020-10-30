@@ -10,14 +10,14 @@
                     "field": "id",
                     "seqType": "Sequelize.INTEGER"
                 },
-                "firstName": {
+                "first_name": {
                     "allowNull": false,
-                    "field": "firstName",
+                    "field": "first_name",
                     "seqType": "Sequelize.STRING"
                 },
-                "lastName": {
+                "last_name": {
                     "allowNull": false,
-                    "field": "lastName",
+                    "field": "last_name",
                     "seqType": "Sequelize.STRING"
                 },
                 "phone_number": {
@@ -27,6 +27,8 @@
                     "seqType": "Sequelize.INTEGER"
                 },
                 "email": {
+                    "unique": true,
+                    "default": "null",
                     "field": "email",
                     "seqType": "Sequelize.STRING"
                 },
@@ -36,7 +38,7 @@
                 },
                 "gender": {
                     "field": "gender",
-                    "seqType": "Sequelize.ENUM('Male', 'Female', 'Prefer not to tell')"
+                    "seqType": "Sequelize.ENUM('male', 'female', 'other')"
                 },
                 "dob": {
                     "field": "dob",

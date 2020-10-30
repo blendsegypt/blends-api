@@ -1,13 +1,19 @@
 module.exports = function (sequelize, DataTypes) {
   return sequelize.define('User', {
     // Model attributes are defined here
-    firstName: {
+    first_name: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        isAlpha: true,
+      }
     },
-    lastName: {
+    last_name: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        isAlpha: true,
+      }
     },
     phone_number: {
       type: DataTypes.INTEGER,
@@ -16,15 +22,20 @@ module.exports = function (sequelize, DataTypes) {
     },
     email: {
       type: DataTypes.STRING,
+      unique: true,
+      default: "null",
+      validate: {
+        isEmail: true,
+      }
     },
     email_verified: {
       type: DataTypes.BOOLEAN,
     },
     gender: {
-      type: DataTypes.ENUM('Male', 'Female', 'Prefer not to tell'),
+      type: DataTypes.ENUM('male', 'female', 'other'),
     },
     dob: {
-      type: DataTypes.DATE
+      type: DataTypes.DATE,
     },
     password_hash: {
       type: DataTypes.STRING,

@@ -12,7 +12,7 @@ var Sequelize = require('sequelize');
 var info = {
     "revision": 1,
     "name": "noname",
-    "created": "2020-10-26T22:45:32.403Z",
+    "created": "2020-10-29T14:30:22.288Z",
     "comment": ""
 };
 
@@ -29,14 +29,14 @@ var migrationCommands = function(transaction) {
                     "primaryKey": true,
                     "allowNull": false
                 },
-                "firstName": {
+                "first_name": {
                     "type": Sequelize.STRING,
-                    "field": "firstName",
+                    "field": "first_name",
                     "allowNull": false
                 },
-                "lastName": {
+                "last_name": {
                     "type": Sequelize.STRING,
-                    "field": "lastName",
+                    "field": "last_name",
                     "allowNull": false
                 },
                 "phone_number": {
@@ -47,14 +47,16 @@ var migrationCommands = function(transaction) {
                 },
                 "email": {
                     "type": Sequelize.STRING,
-                    "field": "email"
+                    "field": "email",
+                    "default": "null",
+                    "unique": true
                 },
                 "email_verified": {
                     "type": Sequelize.BOOLEAN,
                     "field": "email_verified"
                 },
                 "gender": {
-                    "type": Sequelize.ENUM('Male', 'Female', 'Prefer not to tell'),
+                    "type": Sequelize.ENUM('male', 'female', 'other'),
                     "field": "gender"
                 },
                 "dob": {
