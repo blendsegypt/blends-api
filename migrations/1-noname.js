@@ -12,7 +12,7 @@ var Sequelize = require('sequelize');
 var info = {
     "revision": 1,
     "name": "noname",
-    "created": "2020-10-28T02:47:59.326Z",
+    "created": "2020-10-29T14:30:22.288Z",
     "comment": ""
 };
 
@@ -48,6 +48,7 @@ var migrationCommands = function(transaction) {
                 "email": {
                     "type": Sequelize.STRING,
                     "field": "email",
+                    "default": "null",
                     "unique": true
                 },
                 "email_verified": {

@@ -28,6 +28,7 @@
                 },
                 "email": {
                     "unique": true,
+                    "default": "null",
                     "field": "email",
                     "seqType": "Sequelize.STRING"
                 },
