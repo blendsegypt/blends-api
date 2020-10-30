@@ -1,25 +1,28 @@
 import DB from "../models";
-//Now you can use DB.User / DB.Product etc....
 import Express from "express";
-import { restart } from "nodemon";
+//import { Op } from "Sequelize"
+import { checkIfExists } from "../helpers/users";
 const router = Express.Router();
-
-// TODO: validate get by id, post, delete by id
-//       validate email: "" to null and vice versa to all
 
 // create new user
 router.post("/", async (req, res) => {
     try {
-        if (req.body.email === "") { // validate empty 
+        const isValidated = await checkIfExists(req.body);
+        if (req.body.email === "") {
             req.body.email = null;
         }
-        const user = await DB.User.create(req.body);
-        return res.status(201).json({
-            message: "User has been created succesfully",
-            data: {
-                user_id: user.id,
-            }
-        });
+        if (isValidated.flag) {
+            const user = await DB.User.create(req.body);
+            return res.status(201).json({
+                message: "User has been created succesfully",
+                data: {
+                    user_id: user.id,
+                }
+            });
+        }
+        else {
+            return res.status(400).json({ error_message: isValidated.message, exact_errors: isValidated.errors });
+        }
     } catch (error) {
         return res.status(500).json({ error_message: error.message, });
     }
@@ -80,18 +83,27 @@ router.delete("/:id", async (req, res) => {
 // update user by: id
 router.put("/:id", async (req, res) => {
     try {
-        const [numberOfAffectedRows, affectedRows] = await DB.User.update(req.body, {
-            where: {
-                id: req.params.id,
-            },
-            returning: true,
-        });
-        if (numberOfAffectedRows) {
-            return res.status(201).json({
-                message: "User Data has been updated succesfully",
+        const isValidated = await checkIfExists(req.body);
+        if (req.body.email === "") {
+            req.body.email = null;
+        }
+        if (isValidated.flag) {
+            console.log(req.body);
+            const [numberOfAffectedRows, affectedRows] = await DB.User.update(req.body, {
+                where: {
+                    id: req.params.id,
+                },
+                returning: true,
             });
+            if (numberOfAffectedRows) {
+                return res.status(201).json({
+                    message: "User Data has been updated succesfully",
+                });
+            } else {
+                return res.status(404).json({ message: "User not found" });
+            }
         } else {
-            return res.status(404).json({ message: "User not found" });
+            return res.status(400).json({ error_message: isValidated.message, exact_errors: isValidated.errors });
         }
     } catch (error) {
         return res.status(500).json({ error_message: error.message, });
