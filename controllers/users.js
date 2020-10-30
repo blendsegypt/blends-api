@@ -2,6 +2,9 @@ import DB from "../models";
 import Express from "express";
 import { checkIfExists } from "../helpers/users";
 const router = Express.Router();
+import addresses from "./adresses"
+
+router.use("/:id/addresses", addresses);
 
 // create new user
 router.post("/", async (req, res) => {
