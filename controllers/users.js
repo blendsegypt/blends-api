@@ -1,27 +1,26 @@
 import DB from "../models";
 import Express from "express";
-//import { Op } from "Sequelize"
 import { checkIfExists } from "../helpers/users";
 const router = Express.Router();
 
 // create new user
 router.post("/", async (req, res) => {
     try {
-        const isValidated = await checkIfExists(req.body);
-        if (req.body.email === "") {
-            req.body.email = null;
-        }
+        const user = req.body;
+        const isValidated = await checkIfExists(user);
+        user.email = user.email === "" ? null : user.email; //Convert "" to strict null
+        // Check pre-db validation
         if (isValidated.flag) {
-            const user = await DB.User.create(req.body);
+            const newUser = await DB.User.create(user);
             return res.status(201).json({
                 message: "User has been created succesfully",
                 data: {
-                    user_id: user.id,
+                    user_id: newUser.id,
                 }
             });
         }
         else {
-            return res.status(400).json({ error_message: isValidated.message, exact_errors: isValidated.errors });
+            return res.status(400).json({ error_message: isValidated.message, errors: isValidated.errors });
         }
     } catch (error) {
         return res.status(500).json({ error_message: error.message, });
@@ -32,7 +31,9 @@ router.post("/", async (req, res) => {
 router.get("/", async (req, res) => {
     try {
         const users = await DB.User.findAll({
-            attributes: ['id', 'first_name', 'last_name', 'phone_number', 'email', 'email_verified', 'gender', 'dob', 'platform'],
+            attributes: {
+                excludes: ["password_hash", "password_salt"],
+            }
         });
         return res.status(201).json(users);
     } catch (error) {
@@ -44,12 +45,14 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
     try {
         const user = await DB.User.findAll({
-            attributes: ['id', 'first_name', 'last_name', 'phone_number', 'email', 'email_verified', 'gender', 'dob', 'platform'],
+            attributes: {
+                excludes: [password_hash, password_salt],
+            },
             where: {
                 id: req.params.id,
             },
         });
-        if (user.length) {
+        if (user.length > 0) {
             return res.status(201).json(user[0]);
         } else {
             return res.status(404).json({ message: "User not found" });
@@ -74,7 +77,6 @@ router.delete("/:id", async (req, res) => {
         } else {
             return res.status(404).json({ message: "User not found" });
         }
-
     } catch (error) {
         return res.status(500).json({ error_message: error.message, });
     }
@@ -83,13 +85,11 @@ router.delete("/:id", async (req, res) => {
 // update user by: id
 router.put("/:id", async (req, res) => {
     try {
-        const isValidated = await checkIfExists(req.body);
-        if (req.body.email === "") {
-            req.body.email = null;
-        }
+        const user = req.body;
+        const isValidated = await checkIfExists(user);
+        user.email = user.email === "" ? null : user.email; //Convert "" to strict null
         if (isValidated.flag) {
-            console.log(req.body);
-            const [numberOfAffectedRows, affectedRows] = await DB.User.update(req.body, {
+            const numberOfAffectedRows = await DB.User.update(user, {
                 where: {
                     id: req.params.id,
                 },
