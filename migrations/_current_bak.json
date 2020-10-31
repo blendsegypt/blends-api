@@ -52,6 +52,17 @@
                     "allowNull": false,
                     "field": "updatedAt",
                     "seqType": "Sequelize.DATE"
+                },
+                "InternalCategoryId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "InternalCategories",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "InternalCategoryId",
+                    "seqType": "Sequelize.INTEGER"
                 }
             },
             "indexes": []
@@ -130,5 +141,5 @@
             "indexes": []
         }
     },
-    "revision": 3
+    "revision": 4
 }
