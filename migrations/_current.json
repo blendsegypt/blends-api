@@ -1,7 +1,7 @@
 {
     "tables": {
-        "Adresses": {
-            "tableName": "Adresses",
+        "Addresses": {
+            "tableName": "Addresses",
             "schema": {
                 "id": {
                     "allowNull": false,
@@ -174,5 +174,5 @@
             "indexes": []
         }
     },
-    "revision": 10
+    "revision": 3
 }

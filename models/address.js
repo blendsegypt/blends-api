@@ -1,5 +1,5 @@
 module.exports = function (sequelize, DataTypes) {
-    return sequelize.define('Adress', {
+    return sequelize.define('Address', {
         // Model attributes are defined here
         verified: {
             type: DataTypes.BOOLEAN,
