@@ -1,5 +1,74 @@
 {
     "tables": {
+        "Adresses": {
+            "tableName": "Adresses",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "verified": {
+                    "default": false,
+                    "field": "verified",
+                    "seqType": "Sequelize.BOOLEAN"
+                },
+                "nickname": {
+                    "allowNull": false,
+                    "field": "nickname",
+                    "seqType": "Sequelize.STRING"
+                },
+                "governate": {
+                    "allowNull": false,
+                    "field": "governate",
+                    "seqType": "Sequelize.STRING"
+                },
+                "details": {
+                    "allowNull": false,
+                    "field": "details",
+                    "seqType": "Sequelize.STRING"
+                },
+                "street": {
+                    "field": "street",
+                    "seqType": "Sequelize.STRING"
+                },
+                "building": {
+                    "allowNull": false,
+                    "field": "building",
+                    "seqType": "Sequelize.STRING"
+                },
+                "floor": {
+                    "field": "floor",
+                    "seqType": "Sequelize.STRING"
+                },
+                "flat": {
+                    "field": "flat",
+                    "seqType": "Sequelize.STRING"
+                },
+                "coordinates": {
+                    "allowNull": false,
+                    "field": "coordinates",
+                    "seqType": "Sequelize.STRING"
+                },
+                "driver_notes": {
+                    "field": "driver_notes",
+                    "seqType": "Sequelize.STRING"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
         "Areas": {
             "tableName": "Areas",
             "schema": {
@@ -105,5 +174,5 @@
             "indexes": []
         }
     },
-    "revision": 2
+    "revision": 9
 }
