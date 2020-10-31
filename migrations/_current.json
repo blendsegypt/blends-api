@@ -92,6 +92,17 @@
                     "allowNull": false,
                     "field": "updatedAt",
                     "seqType": "Sequelize.DATE"
+                },
+                "ProductCategoryId": {
+                    "allowNull": false,
+                    "field": "product_category",
+                    "references": {
+                        "model": "ProductCategories",
+                        "key": "id"
+                    },
+                    "onDelete": "cascade",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.INTEGER"
                 }
             },
             "indexes": []
@@ -209,5 +220,5 @@
             "indexes": []
         }
     },
-    "revision": 5
+    "revision": 6
 }
