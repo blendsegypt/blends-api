@@ -16,6 +16,7 @@ module.exports = function (sequelize, DataTypes) {
       },
       sale_price: {
         type: DataTypes.DOUBLE,
+        default: 0,
       },
       description: {
         type: DataTypes.STRING,
