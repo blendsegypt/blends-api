@@ -2,8 +2,11 @@ import DB from "../models";
 import Express from "express";
 import { checkIfExists } from "../helpers/users";
 const router = Express.Router();
-import addresses from "./adresses"
 
+// router imports
+import addresses from "./addresses"
+
+// routing middlewares
 router.use("/:id/addresses", addresses);
 
 // create new user
