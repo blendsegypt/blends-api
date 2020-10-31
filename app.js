@@ -6,6 +6,7 @@ import Logger from "morgan"; // Morgan Logger for debugging
 import UserController from "./controllers/users";
 import InternalCategoriesController from "./controllers/internalCategories";
 import ProductCategoriesController from "./controllers/productCategories";
+import ProductsAsAdmin from "./controllers/productsAsAdmin";
 
 //Initialize Express Application
 var App = Express();
@@ -27,5 +28,6 @@ App.use(Express.static(Path.join(__dirname, "public")));
 App.use("/users", UserController);
 App.use("/internal-categories", InternalCategoriesController);
 App.use("/product-categories", ProductCategoriesController);
+App.use("/admin/products", ProductsAsAdmin);
 
 export default App;

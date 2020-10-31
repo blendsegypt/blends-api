@@ -28,6 +28,85 @@
             },
             "indexes": []
         },
+        "Products": {
+            "tableName": "Products",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "order": {
+                    "field": "order",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "name": {
+                    "allowNull": false,
+                    "field": "name",
+                    "seqType": "Sequelize.STRING"
+                },
+                "price": {
+                    "allowNull": false,
+                    "field": "price",
+                    "seqType": "Sequelize.DOUBLE PRECISION"
+                },
+                "sale_price": {
+                    "field": "sale_price",
+                    "seqType": "Sequelize.DOUBLE PRECISION"
+                },
+                "description": {
+                    "field": "description",
+                    "seqType": "Sequelize.STRING"
+                },
+                "SKU": {
+                    "allowNull": false,
+                    "field": "SKU",
+                    "seqType": "Sequelize.STRING"
+                },
+                "retail": {
+                    "field": "retail",
+                    "seqType": "Sequelize.BOOLEAN"
+                },
+                "brand": {
+                    "default": "Blends",
+                    "field": "brand",
+                    "seqType": "Sequelize.STRING"
+                },
+                "listed": {
+                    "allowNull": false,
+                    "field": "listed",
+                    "seqType": "Sequelize.BOOLEAN"
+                },
+                "quantity_per_box": {
+                    "field": "quantity_per_box",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "ProductCategoryId": {
+                    "allowNull": false,
+                    "field": "product_category",
+                    "references": {
+                        "model": "ProductCategories",
+                        "key": "id"
+                    },
+                    "onDelete": "cascade",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
+        },
         "ProductCategories": {
             "tableName": "ProductCategories",
             "schema": {
@@ -52,6 +131,17 @@
                     "allowNull": false,
                     "field": "updatedAt",
                     "seqType": "Sequelize.DATE"
+                },
+                "InternalCategoryId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "InternalCategories",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "InternalCategoryId",
+                    "seqType": "Sequelize.INTEGER"
                 }
             },
             "indexes": []
@@ -130,5 +220,5 @@
             "indexes": []
         }
     },
-    "revision": 3
+    "revision": 6
 }
