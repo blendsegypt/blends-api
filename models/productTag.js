@@ -8,5 +8,10 @@ module.exports = function (sequelize, DataTypes) {
     },
   });
 
+  ProductTag.associate = (models) => {
+    ProductTag.belongsToMany(models.Product, { through: "Products_Tags" });
+    models.Product.belongsToMany(ProductTag, { through: "Products_Tags" });
+  };
+
   return ProductTag;
 };
