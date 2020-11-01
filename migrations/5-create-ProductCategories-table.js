@@ -5,28 +5,46 @@ var Sequelize = require("sequelize");
 /**
  * Actions summary:
  *
- * changeColumn "sale_price" on table "Products"
+ * createTable "ProductCategories", deps: []
  *
  **/
 
 var info = {
-  revision: 7,
-  name: "set-sale-price-default-to-zero",
-  created: "2020-10-31T18:17:27.314Z",
+  revision: 5,
+  name: "create-ProductCategories-table",
+  created: "2020-10-31T12:03:52.656Z",
   comment: "",
 };
 
 var migrationCommands = function (transaction) {
   return [
     {
-      fn: "changeColumn",
+      fn: "createTable",
       params: [
-        "Products",
-        "sale_price",
+        "ProductCategories",
         {
-          type: Sequelize.DOUBLE,
-          field: "sale_price",
-          default: 0,
+          id: {
+            type: Sequelize.INTEGER,
+            field: "id",
+            autoIncrement: true,
+            primaryKey: true,
+            allowNull: false,
+          },
+          name: {
+            type: Sequelize.STRING,
+            field: "name",
+            allowNull: false,
+          },
+          createdAt: {
+            type: Sequelize.DATE,
+            field: "createdAt",
+            allowNull: false,
+          },
+          updatedAt: {
+            type: Sequelize.DATE,
+            field: "updatedAt",
+            allowNull: false,
+          },
         },
         {
           transaction: transaction,
@@ -38,14 +56,9 @@ var migrationCommands = function (transaction) {
 var rollbackCommands = function (transaction) {
   return [
     {
-      fn: "changeColumn",
+      fn: "dropTable",
       params: [
-        "Products",
-        "sale_price",
-        {
-          type: Sequelize.DOUBLE,
-          field: "sale_price",
-        },
+        "ProductCategories",
         {
           transaction: transaction,
         },

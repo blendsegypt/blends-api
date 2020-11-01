@@ -5,14 +5,14 @@ var Sequelize = require("sequelize");
 /**
  * Actions summary:
  *
- * createTable "CustomOptions", deps: []
+ * createTable "ProductTags", deps: []
  *
  **/
 
 var info = {
-  revision: 9,
-  name: "create-CustomOptions-table",
-  created: "2020-11-01T17:03:01.959Z",
+  revision: 12,
+  name: "create-ProductTag-table",
+  created: "2020-11-01T14:09:42.950Z",
   comment: "",
 };
 
@@ -21,7 +21,7 @@ var migrationCommands = function (transaction) {
     {
       fn: "createTable",
       params: [
-        "CustomOptions",
+        "ProductTags",
         {
           id: {
             type: Sequelize.INTEGER,
@@ -34,17 +34,9 @@ var migrationCommands = function (transaction) {
             type: Sequelize.STRING,
             field: "label",
           },
-          price: {
-            type: Sequelize.DOUBLE,
-            field: "price",
-          },
-          value: {
+          color: {
             type: Sequelize.STRING,
-            field: "value",
-          },
-          active: {
-            type: Sequelize.BOOLEAN,
-            field: "active",
+            field: "color",
           },
           createdAt: {
             type: Sequelize.DATE,
@@ -69,7 +61,7 @@ var rollbackCommands = function (transaction) {
     {
       fn: "dropTable",
       params: [
-        "CustomOptions",
+        "ProductTags",
         {
           transaction: transaction,
         },

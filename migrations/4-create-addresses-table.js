@@ -5,14 +5,14 @@ var Sequelize = require("sequelize");
 /**
  * Actions summary:
  *
- * createTable "Products", deps: []
+ * createTable "Addresses", deps: []
  *
  **/
 
 var info = {
-  revision: 5,
-  name: "create-Products-table",
-  created: "2020-10-31T14:31:03.920Z",
+  revision: 4,
+  name: "create-addresses-table",
+  created: "2020-10-31T20:20:47.474Z",
   comment: "",
 };
 
@@ -21,7 +21,7 @@ var migrationCommands = function (transaction) {
     {
       fn: "createTable",
       params: [
-        "Products",
+        "Addresses",
         {
           id: {
             type: Sequelize.INTEGER,
@@ -30,50 +30,51 @@ var migrationCommands = function (transaction) {
             primaryKey: true,
             allowNull: false,
           },
-          order: {
-            type: Sequelize.INTEGER,
-            field: "order",
-          },
-          name: {
-            type: Sequelize.STRING,
-            field: "name",
-            allowNull: false,
-          },
-          price: {
-            type: Sequelize.DOUBLE,
-            field: "price",
-            allowNull: false,
-          },
-          sale_price: {
-            type: Sequelize.DOUBLE,
-            field: "sale_price",
-          },
-          description: {
-            type: Sequelize.STRING,
-            field: "description",
-          },
-          SKU: {
-            type: Sequelize.STRING,
-            field: "SKU",
-            allowNull: false,
-          },
-          retail: {
+          verified: {
             type: Sequelize.BOOLEAN,
-            field: "retail",
+            field: "verified",
+            default: false,
           },
-          brand: {
+          nickname: {
             type: Sequelize.STRING,
-            field: "brand",
-            default: "Blends",
-          },
-          listed: {
-            type: Sequelize.BOOLEAN,
-            field: "listed",
+            field: "nickname",
             allowNull: false,
           },
-          quantity_per_box: {
-            type: Sequelize.INTEGER,
-            field: "quantity_per_box",
+          governate: {
+            type: Sequelize.STRING,
+            field: "governate",
+            allowNull: false,
+          },
+          details: {
+            type: Sequelize.STRING,
+            field: "details",
+            allowNull: false,
+          },
+          street: {
+            type: Sequelize.STRING,
+            field: "street",
+          },
+          building: {
+            type: Sequelize.STRING,
+            field: "building",
+            allowNull: false,
+          },
+          floor: {
+            type: Sequelize.STRING,
+            field: "floor",
+          },
+          flat: {
+            type: Sequelize.STRING,
+            field: "flat",
+          },
+          coordinates: {
+            type: Sequelize.STRING,
+            field: "coordinates",
+            allowNull: false,
+          },
+          driver_notes: {
+            type: Sequelize.STRING,
+            field: "driver_notes",
           },
           createdAt: {
             type: Sequelize.DATE,
@@ -98,7 +99,7 @@ var rollbackCommands = function (transaction) {
     {
       fn: "dropTable",
       params: [
-        "Products",
+        "Addresses",
         {
           transaction: transaction,
         },
