@@ -7,6 +7,7 @@ import UserController from "./controllers/users";
 import InternalCategoriesController from "./controllers/internalCategories";
 import ProductCategoriesController from "./controllers/productCategories";
 import ProductsAsAdmin from "./controllers/productsAsAdmin";
+import ProductCustomOptions from "./controllers/productCustomOptions";
 
 //Initialize Express Application
 var App = Express();
@@ -29,5 +30,6 @@ App.use("/users", UserController);
 App.use("/internal-categories", InternalCategoriesController);
 App.use("/product-categories", ProductCategoriesController);
 App.use("/admin/products", ProductsAsAdmin);
+App.use("/admin/products-custom-options", ProductCustomOptions);
 
 export default App;
