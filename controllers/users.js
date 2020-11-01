@@ -7,7 +7,7 @@ const router = Express.Router();
 import addresses from "./addresses"
 
 // routing middlewares
-router.use("/:id/addresses", addresses);
+router.use("/:user_id/addresses", addresses);
 
 // create new user
 router.post("/", async (req, res) => {
