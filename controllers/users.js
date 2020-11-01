@@ -3,6 +3,12 @@ import Express from "express";
 import { checkIfExists } from "../helpers/users";
 const router = Express.Router();
 
+// router imports
+import addresses from "./addresses"
+
+// routing middlewares
+router.use("/:user_id/addresses", addresses);
+
 // create new user
 router.post("/", async (req, res) => {
   try {

@@ -1,7 +1,7 @@
 import DB from "../models";
 //Now you can use DB.User / DB.Product etc....
 import Express from "express";
-const router = Express.router();
+const router = Express.Router();
 
 router.get("/", () => {
   
