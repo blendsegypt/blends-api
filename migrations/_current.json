@@ -66,6 +66,17 @@
                     "field": "updatedAt",
                     "seqType": "Sequelize.DATE"
                 },
+                "AreaId": {
+                    "allowNull": false,
+                    "field": "area_id",
+                    "references": {
+                        "model": "Areas",
+                        "key": "id"
+                    },
+                    "onDelete": "cascade",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.INTEGER"
+                },
                 "UserId": {
                     "allowNull": false,
                     "field": "user_id",
@@ -185,5 +196,5 @@
             "indexes": []
         }
     },
-    "revision": 4
+    "revision": 5
 }
