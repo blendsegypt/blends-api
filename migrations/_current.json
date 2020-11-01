@@ -35,6 +35,17 @@
                     "allowNull": false,
                     "field": "updatedAt",
                     "seqType": "Sequelize.DATE"
+                },
+                "ProductCustomOptionId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "ProductCustomOptions",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "ProductCustomOptionId",
+                    "seqType": "Sequelize.INTEGER"
                 }
             },
             "indexes": []
@@ -299,5 +310,5 @@
             "indexes": []
         }
     },
-    "revision": 9
+    "revision": 10
 }
