@@ -4,7 +4,7 @@
 - <b>Backend API</b>
 - <b>Version:</b> ---
 - <b>Status:</b> In Progress
-- <b>Tech Stack:</b> NodeJS / ExpressJS
+- <b>Tech Stack:</b> NodeJS / ExpressJS / PostgreSQL
 - <b>3rd Party :</b> ---
 ## API Endpoints
 | Endpoint      | Method        | Functionality     |
