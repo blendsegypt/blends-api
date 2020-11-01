@@ -53,6 +53,7 @@
                     "seqType": "Sequelize.DOUBLE PRECISION"
                 },
                 "sale_price": {
+                    "default": 0,
                     "field": "sale_price",
                     "seqType": "Sequelize.DOUBLE PRECISION"
                 },
@@ -220,5 +221,5 @@
             "indexes": []
         }
     },
-    "revision": 6
+    "revision": 7
 }
