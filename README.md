@@ -104,5 +104,5 @@
 ### Products Tags
 - **label** (string)
 - **color** (string ("#hexadec"))
-- **ProductId** (id)
+- **product_id** (id)
 
