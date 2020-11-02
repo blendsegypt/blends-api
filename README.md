@@ -103,5 +103,6 @@
 - **active** (boolean)
 ### Products Tags
 - **label** (string)
-- **color** (string ("#hexadec")
+- **color** (string ("#hexadec"))
+- **ProductId** (id)
 
