@@ -95,6 +95,7 @@
 - **icon** (string)
 - **mandatory** (boolean)
 - **active** (boolean)
+-- **ProductId** (id)
 - **CustomOptions** (array[CustomOption])
 ### CustomOption
 - **label** (string)
