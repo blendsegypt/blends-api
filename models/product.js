@@ -45,5 +45,9 @@ module.exports = function (sequelize, DataTypes) {
     }
   );
 
+  Product.associate = (models) => {
+    Product.hasMany(models.ProductCustomOption);
+  };
+
   return Product;
 };
