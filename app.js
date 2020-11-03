@@ -2,6 +2,7 @@ import Express from "express"; // Express
 import Path from "path"; // Path to enable path methods
 import CookieParser from "cookie-parser"; // Cookie Parser to parse cookies from HTTP requests
 import Logger from "morgan"; // Morgan Logger for debugging
+import cors from "cors"; //Allow cross-origin requests
 //Controller import example:
 import UserController from "./controllers/users";
 import InternalCategoriesController from "./controllers/internalCategories";
@@ -19,6 +20,7 @@ App.use(Express.json());
 App.use(Express.urlencoded({ extended: false }));
 App.use(CookieParser());
 App.use(Express.static(Path.join(__dirname, "public")));
+App.use(cors());
 
 /*
  *
