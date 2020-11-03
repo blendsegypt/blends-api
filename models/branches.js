@@ -31,15 +31,6 @@ module.exports = function (sequelize, DataTypes) {
             onDelete: "cascade",
         });
 
-        // Branch hasOne addresses
-        Branch.belongsTo(models.Address, {
-            foreignKey: {
-                field: "address_id",
-                allowNull: false,
-            },
-            onDelete: "cascade",
-        });
-
         //supported Area association
         Branch.belongsToMany(models.Area, { through: "SupportedAreas" });
         models.Area.belongsToMany(Branch, { through: "SupportedAreas" });
