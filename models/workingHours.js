@@ -16,15 +16,5 @@ module.exports = function (sequelize, DataTypes) {
         // Other model options go here
     });
 
-    // WorkingHours.associate = (models) => {
-    //     WorkingHours.hasMany(models.WorkingHours, {
-    //         foreignKey: {
-    //             field: "branch_id",
-    //             allowNull: false,
-    //         },
-    //         onDelete: "cascade",
-    //     });
-    // };
-
     return WorkingHours;
 };
