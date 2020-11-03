@@ -1,3 +1,6 @@
+// TO BE DISCUSSED: 
+// one-to-one relation with addresses
+// many-to-many
 module.exports = function (sequelize, DataTypes) {
     const Branch = sequelize.define(
         'Branch',
@@ -22,27 +25,26 @@ module.exports = function (sequelize, DataTypes) {
         // Other model options go here
     });
 
-    // Branch.associate = (models) => {
-    //     Branch.hasMany(models.WorkingHours, {
-    //         foreignKey: {
-    //             field: "branch_id",
-    //             allowNull: false,
-    //         },
-    //         onDelete: "cascade",
-    //     });
-    // };
+    Branch.associate = (models) => {
+        Branch.hasMany(models.WorkingHours, {
+            foreignKey: {
+                field: "branch_id",
+                allowNull: false,
+            },
+            onDelete: "cascade",
+        });
 
-    // Branch.associate = (models) => {
-    //     Branch.hasOne(models.Address, {
-    //         foreignKey: {
-    //             field: "address_id",
-    //             allowNull: false,
-    //         },
-    //         onDelete: "cascade",
-    //     });
-    // };
+        // Branch hasOne addresses
+        Branch.belongsTo(models.Address, {
+            foreignKey: {
+                field: "address_id",
+                allowNull: false,
+            },
+            onDelete: "cascade",
+        });
 
-    //supported Area association
+        //supported Area association
 
+    };
     return Branch;
 };
