@@ -10,6 +10,7 @@ import ProductCategoriesController from "./controllers/productCategories";
 import ProductsAsAdmin from "./controllers/productsAsAdmin";
 import ProductCustomOptions from "./controllers/productCustomOptions";
 import ProductTags from "./controllers/productTags";
+import ProductAsUser from "./controllers/productAsUser";
 
 //Initialize Express Application
 var App = Express();
@@ -35,5 +36,6 @@ App.use("/product-categories", ProductCategoriesController);
 App.use("/admin/products", ProductsAsAdmin);
 App.use("/admin/products-custom-options", ProductCustomOptions);
 App.use("/admin/products-tags", ProductTags);
+App.use("/products", ProductAsUser);
 
 export default App;
