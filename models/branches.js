@@ -1,6 +1,3 @@
-// TO BE DISCUSSED: 
-// one-to-one relation with addresses
-// many-to-many
 module.exports = function (sequelize, DataTypes) {
     const Branch = sequelize.define(
         'Branch',
