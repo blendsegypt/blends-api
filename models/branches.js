@@ -44,6 +44,8 @@ module.exports = function (sequelize, DataTypes) {
         });
 
         //supported Area association
+        Branch.belongsToMany(models.Area, { through: "SupportedAreas" });
+        models.Area.belongsToMany(Branch, { through: "SupportedAreas" });
 
     };
     return Branch;
