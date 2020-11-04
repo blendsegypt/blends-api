@@ -14,6 +14,7 @@ module.exports = function (sequelize, DataTypes) {
   );
 
   ProductCategory.associate = (models) => {
+    ProductCategory.belongsTo(models.InternalCategory);
     ProductCategory.hasMany(models.Product, {
       foreignKey: {
         field: "product_category",
