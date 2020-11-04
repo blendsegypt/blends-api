@@ -4,7 +4,7 @@ import { checkIfExists } from "../helpers/users";
 const router = Express.Router();
 
 // router imports
-import addresses from "./addresses"
+import addresses from "./addresses";
 
 // routing middlewares
 router.use("/:user_id/addresses", addresses);
@@ -12,7 +12,8 @@ router.use("/:user_id/addresses", addresses);
 // create new user
 router.post("/", async (req, res) => {
   try {
-    const user = req.body;
+    const user = Object.assign({}, req.body);
+    user.phone_number = Number(user.phone_number);
     const isValidated = await checkIfExists(user);
     user.email = user.email === "" ? null : user.email; //Convert "" to strict null
     // Check pre-db validation
@@ -25,12 +26,10 @@ router.post("/", async (req, res) => {
         },
       });
     } else {
-      return res
-        .status(400)
-        .json({
-          error_message: isValidated.message,
-          errors: isValidated.errors,
-        });
+      return res.status(400).json({
+        error_message: isValidated.message,
+        errors: isValidated.errors,
+      });
     }
   } catch (error) {
     return res.status(500).json({ error_message: error.message });
@@ -65,6 +64,7 @@ router.get("/:id", async (req, res) => {
         id: req.params.id,
       },
     });
+    user[0].phone_number = String(user[0].phone_number);
     if (user.length > 0) {
       return res.status(201).json({
         message: "User has been retreived succesfully",
@@ -101,7 +101,8 @@ router.delete("/:id", async (req, res) => {
 // update user by: id
 router.put("/:id", async (req, res) => {
   try {
-    const user = req.body;
+    const user = Object.assign({}, req.body);
+    user.phone_number = Number(user.phone_number);
     const isValidated = await checkIfExists(user);
     user.email = user.email === "" ? null : user.email; //Convert "" to strict null
     if (isValidated.flag) {
@@ -119,12 +120,10 @@ router.put("/:id", async (req, res) => {
         return res.status(404).json({ message: "User not found" });
       }
     } else {
-      return res
-        .status(400)
-        .json({
-          error_message: isValidated.message,
-          exact_errors: isValidated.errors,
-        });
+      return res.status(400).json({
+        error_message: isValidated.message,
+        exact_errors: isValidated.errors,
+      });
     }
   } catch (error) {
     return res.status(500).json({ error_message: error.message });
