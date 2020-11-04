@@ -23,7 +23,16 @@ router.post("/", async (req, res) => {
 router.get("/", async (req, res) => {
   try {
     const productCustomOptions = await DB.ProductCustomOption.findAll({
-      include: DB.CustomOption,
+      include: [
+        {
+          model: DB.CustomOption,
+          attributes: ["id", "label", "price", "active"],
+        },
+        {
+          model: DB.Product,
+          attributes: ["id", "name"],
+        },
+      ],
     });
     res.status(200).json({
       message: "Product custom options succesfully retreived",
@@ -48,13 +57,15 @@ router.put("/:id", async (req, res) => {
         include: [DB.CustomOption],
       }
     );
-    // Bulk insert new Custom Options or update them if they exist
-    if (newProductCustomOption.CustomOptions) {
-      await DB.CustomOption.bulkCreate(newProductCustomOption.CustomOptions, {
-        fields: ["id", "label", "price", "value", "active"],
-        updateOnDuplicate: ["id", "label", "price", "value", "active"],
-      });
-    }
+    // Remove existing custom options
+    await DB.CustomOption.destroy({
+      where: {
+        ProductCustomOptionId: newProductCustomOption.id,
+      },
+    });
+    // Insert new custom options
+    await DB.CustomOption.bulkCreate(newProductCustomOption.CustomOptions);
+
     if (numberOfAffectedRows) {
       res.status(200).json({
         message: "Product custom option was succesfully updated",
@@ -72,6 +83,13 @@ router.put("/:id", async (req, res) => {
 //delete product custom option
 router.delete("/:id", async (req, res) => {
   try {
+    // Delete Custom Options
+    await DB.CustomOption.destroy({
+      where: {
+        ProductCustomOptionId: req.params.id,
+      },
+    });
+    // Delete Product Custom Option
     const productCustomOptionDeleted = await DB.ProductCustomOption.destroy({
       where: {
         id: req.params.id,
