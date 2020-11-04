@@ -19,7 +19,9 @@ router.post("/", async (req, res) => {
 //list all product categories
 router.get("/", async (req, res) => {
   try {
-    const productCategories = await DB.ProductCategory.findAll();
+    const productCategories = await DB.ProductCategory.findAll({
+      include: [DB.InternalCategory],
+    });
     return res.status(200).json({
       message: "Product Categories has been succesfully retreived.",
       data: productCategories,
