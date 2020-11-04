@@ -22,6 +22,7 @@ module.exports = function (sequelize, DataTypes) {
   );
 
   ProductCustomOption.associate = (models) => {
+    ProductCustomOption.belongsTo(models.Product);
     ProductCustomOption.hasMany(models.CustomOption);
   };
 
