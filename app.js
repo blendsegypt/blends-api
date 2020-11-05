@@ -10,6 +10,7 @@ import ProductsAsAdmin from "./controllers/productsAsAdmin";
 import ProductCustomOptions from "./controllers/productCustomOptions";
 import ProductTags from "./controllers/productTags";
 import ProductAsUser from "./controllers/productAsUser";
+import Branches from "./controllers/branches";
 
 //Initialize Express Application
 var App = Express();
@@ -35,5 +36,6 @@ App.use("/admin/products", ProductsAsAdmin);
 App.use("/admin/products-custom-options", ProductCustomOptions);
 App.use("/admin/products-tags", ProductTags);
 App.use("/products", ProductAsUser);
+App.use("/admin/branches", Branches);
 
 export default App;
