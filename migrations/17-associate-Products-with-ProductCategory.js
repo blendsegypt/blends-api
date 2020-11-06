@@ -5,14 +5,15 @@ var Sequelize = require("sequelize");
 /**
  * Actions summary:
  *
- * addColumn "AreaId" to table "Addresses"
+ * addColumn "internalCategoryId" to table "ProductCategories"
+ * addColumn "ProductCategoryId" to table "Products"
  *
  **/
 
 var info = {
-  revision: 9,
-  name: "link-Areas-with-Addresses",
-  created: "2020-10-31T23:46:26.240Z",
+  revision: 17,
+  name: "associate-Products-with-ProductCategory",
+  created: "2020-11-06T15:13:30.738Z",
   comment: "",
 };
 
@@ -21,17 +22,17 @@ var migrationCommands = function (transaction) {
     {
       fn: "addColumn",
       params: [
-        "Addresses",
-        "area_id",
+        "Products",
+        "product_category_id",
         {
           type: Sequelize.INTEGER,
           onUpdate: "CASCADE",
           onDelete: "cascade",
           references: {
-            model: "Areas",
+            model: "ProductCategories",
             key: "id",
           },
-          field: "area_id",
+          field: "product_category_id",
           allowNull: false,
         },
         {
@@ -46,8 +47,8 @@ var rollbackCommands = function (transaction) {
     {
       fn: "removeColumn",
       params: [
-        "Addresses",
-        "area_id",
+        "Products",
+        "product_category_id",
         {
           transaction: transaction,
         },

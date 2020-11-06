@@ -12,8 +12,17 @@ module.exports = function (sequelize, DataTypes) {
       // Other model options go here
     }
   );
+
   InternalCategory.associate = (models) => {
-    InternalCategory.hasMany(models.ProductCategory);
+    InternalCategory.hasMany(models.ProductCategory, {
+      as: "internal_category_id",
+      foreignKey: {
+        field: "internal_category_id",
+        allowNull: false,
+      },
+      onDelete: "cascade",
+    });
+    models.ProductCategory.belongsTo(InternalCategory);
   };
   return InternalCategory;
 };

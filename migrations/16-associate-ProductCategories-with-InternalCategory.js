@@ -5,14 +5,15 @@ var Sequelize = require("sequelize");
 /**
  * Actions summary:
  *
- * addColumn "UserId" to table "Addresses"
+ * addColumn "internalCategoryId" to table "ProductCategories"
+ * addColumn "InternalCategoryId" to table "ProductCategories"
  *
  **/
 
 var info = {
-  revision: 7,
-  name: "link-Users-with-Addresses",
-  created: "2020-10-31T20:44:06.107Z",
+  revision: 16,
+  name: "associate-ProductCategories-with-InternalCategory",
+  created: "2020-11-06T15:06:53.090Z",
   comment: "",
 };
 
@@ -21,17 +22,17 @@ var migrationCommands = function (transaction) {
     {
       fn: "addColumn",
       params: [
-        "Addresses",
-        "user_id",
+        "ProductCategories",
+        "internal_category_id",
         {
           type: Sequelize.INTEGER,
           onUpdate: "CASCADE",
           onDelete: "cascade",
           references: {
-            model: "Users",
+            model: "InternalCategories",
             key: "id",
           },
-          field: "user_id",
+          field: "internal_category_id",
           allowNull: false,
         },
         {
@@ -46,8 +47,8 @@ var rollbackCommands = function (transaction) {
     {
       fn: "removeColumn",
       params: [
-        "Addresses",
-        "user_id",
+        "ProductCategories",
+        "internal_category_id",
         {
           transaction: transaction,
         },

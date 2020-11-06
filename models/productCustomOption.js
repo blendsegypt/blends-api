@@ -22,8 +22,15 @@ module.exports = function (sequelize, DataTypes) {
   );
 
   ProductCustomOption.associate = (models) => {
-    ProductCustomOption.belongsTo(models.Product);
-    ProductCustomOption.hasMany(models.CustomOption);
+    ProductCustomOption.hasMany(models.CustomOption, {
+      as: "product_custom_option_id",
+      foreignKey: {
+        field: "product_custom_option_id",
+        allowNull: false,
+      },
+      onDelete: "cascade",
+    });
+    models.CustomOption.belongsTo(ProductCustomOption);
   };
 
   return ProductCustomOption;

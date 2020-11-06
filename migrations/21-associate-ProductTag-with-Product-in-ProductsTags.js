@@ -5,50 +5,68 @@ var Sequelize = require('sequelize');
 /**
  * Actions summary:
  *
- * addColumn "ProductId" to table "ProductCustomOptions"
+ * createTable "ProductsTags", deps: [ProductTags, Products]
  *
  **/
 
 var info = {
-    "revision": 17,
-    "name": "link-Product-with-ProductCustomOption",
-    "created": "2020-11-02T11:17:15.281Z",
+    "revision": 21,
+    "name": "associate-ProductTag-with-Product-in-ProductsTags",
+    "created": "2020-11-06T15:45:06.737Z",
     "comment": ""
 };
 
 var migrationCommands = function(transaction) {
     return [{
-        fn: "addColumn",
+        fn: "createTable",
         params: [
-            "ProductCustomOptions",
-            "ProductId",
+            "ProductsTags",
             {
-                "type": Sequelize.INTEGER,
-                "field": "ProductId",
-                "onUpdate": "CASCADE",
-                "onDelete": "SET NULL",
-                "references": {
-                    "model": "Products",
-                    "key": "id"
+                "createdAt": {
+                    "type": Sequelize.DATE,
+                    "field": "createdAt",
+                    "allowNull": false
                 },
-                "allowNull": true
+                "updatedAt": {
+                    "type": Sequelize.DATE,
+                    "field": "updatedAt",
+                    "allowNull": false
+                },
+                "product_tag_id": {
+                    "type": Sequelize.INTEGER,
+                    "field": "product_tag_id",
+                    "onUpdate": "CASCADE",
+                    "onDelete": "CASCADE",
+                    "references": {
+                        "model": "ProductTags",
+                        "key": "id"
+                    },
+                    "primaryKey": true
+                },
+                "product_id": {
+                    "type": Sequelize.INTEGER,
+                    "field": "product_id",
+                    "onUpdate": "CASCADE",
+                    "onDelete": "CASCADE",
+                    "references": {
+                        "model": "Products",
+                        "key": "id"
+                    },
+                    "primaryKey": true
+                }
             },
             {
-                transaction: transaction
+                "transaction": transaction
             }
         ]
     }];
 };
 var rollbackCommands = function(transaction) {
     return [{
-        fn: "removeColumn",
-        params: [
-            "ProductCustomOptions",
-            "ProductId",
-            {
-                transaction: transaction
-            }
-        ]
+        fn: "dropTable",
+        params: ["ProductsTags", {
+            transaction: transaction
+        }]
     }];
 };
 

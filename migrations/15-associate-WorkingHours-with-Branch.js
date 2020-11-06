@@ -10,9 +10,9 @@ var Sequelize = require('sequelize');
  **/
 
 var info = {
-    "revision": 20,
-    "name": "link-Branches-with-WorkingHours",
-    "created": "2020-11-02T23:58:06.823Z",
+    "revision": 15,
+    "name": "associate-WorkingHours-with-Branch",
+    "created": "2020-11-06T15:02:49.386Z",
     "comment": ""
 };
 
