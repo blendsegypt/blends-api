@@ -19,7 +19,22 @@ router.post("/", async (req, res) => {
 //list all products
 router.get("/", async (req, res) => {
   try {
-    const products = await DB.Product.findAll();
+    const products = await DB.Product.findAll({
+      include: [
+        {
+          model: DB.ProductTag,
+          attributes: ["id", "label", "color"],
+        },
+        {
+          model: DB.ProductCustomOption,
+          attributes: ["id", "label"],
+        },
+        {
+          model: DB.ProductCategory,
+          attributes: ["id", "name"],
+        },
+      ],
+    });
     return res.status(200).json({
       message: "Products has been succesfully retreived",
       data: products,
