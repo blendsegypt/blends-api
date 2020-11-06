@@ -5,68 +5,50 @@ var Sequelize = require('sequelize');
 /**
  * Actions summary:
  *
- * createTable "SupportedAreas", deps: [Branches, Areas]
+ * addColumn "AreaId" to table "Addresses"
  *
  **/
 
 var info = {
-    "revision": 22,
-    "name": "link-Branches-with-Areas-through-SupportedAreas",
-    "created": "2020-11-03T14:53:18.447Z",
+    "revision": 14,
+    "name": "associate-Area-with-Address",
+    "created": "2020-11-06T14:46:37.999Z",
     "comment": ""
 };
 
 var migrationCommands = function(transaction) {
     return [{
-        fn: "createTable",
+        fn: "addColumn",
         params: [
-            "SupportedAreas",
+            "Addresses",
+            "area_id",
             {
-                "createdAt": {
-                    "type": Sequelize.DATE,
-                    "field": "createdAt",
-                    "allowNull": false
+                "type": Sequelize.INTEGER,
+                "onUpdate": "CASCADE",
+                "onDelete": "cascade",
+                "references": {
+                    "model": "Areas",
+                    "key": "id"
                 },
-                "updatedAt": {
-                    "type": Sequelize.DATE,
-                    "field": "updatedAt",
-                    "allowNull": false
-                },
-                "BranchId": {
-                    "type": Sequelize.INTEGER,
-                    "field": "BranchId",
-                    "onUpdate": "CASCADE",
-                    "onDelete": "CASCADE",
-                    "references": {
-                        "model": "Branches",
-                        "key": "id"
-                    },
-                    "primaryKey": true
-                },
-                "AreaId": {
-                    "type": Sequelize.INTEGER,
-                    "field": "AreaId",
-                    "onUpdate": "CASCADE",
-                    "onDelete": "CASCADE",
-                    "references": {
-                        "model": "Areas",
-                        "key": "id"
-                    },
-                    "primaryKey": true
-                }
+                "field": "area_id",
+                "allowNull": false
             },
             {
-                "transaction": transaction
+                transaction: transaction
             }
         ]
     }];
 };
 var rollbackCommands = function(transaction) {
     return [{
-        fn: "dropTable",
-        params: ["SupportedAreas", {
-            transaction: transaction
-        }]
+        fn: "removeColumn",
+        params: [
+            "Addresses",
+            "area_id",
+            {
+                transaction: transaction
+            }
+        ]
     }];
 };
 

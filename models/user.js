@@ -1,6 +1,6 @@
 module.exports = function (sequelize, DataTypes) {
   const User = sequelize.define(
-    'User',
+    "User",
     {
       // Model attributes are defined here
       first_name: {
@@ -8,14 +8,14 @@ module.exports = function (sequelize, DataTypes) {
         allowNull: false,
         validate: {
           isAlpha: true,
-        }
+        },
       },
       last_name: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
           isAlpha: true,
-        }
+        },
       },
       phone_number: {
         type: DataTypes.INTEGER,
@@ -28,13 +28,13 @@ module.exports = function (sequelize, DataTypes) {
         default: "null",
         validate: {
           isEmail: true,
-        }
+        },
       },
       email_verified: {
         type: DataTypes.BOOLEAN,
       },
       gender: {
-        type: DataTypes.ENUM('male', 'female', 'other'),
+        type: DataTypes.ENUM("male", "female", "other"),
       },
       dob: {
         type: DataTypes.DATE,
@@ -49,21 +49,25 @@ module.exports = function (sequelize, DataTypes) {
         unique: true,
       },
       platform: {
-        type: DataTypes.ENUM('ios', 'android', 'other'),
+        type: DataTypes.ENUM("ios", "android", "other"),
         allowNull: false,
-      }
-    }, {
-    // Other model options go here
-  });
+      },
+    },
+    {
+      // Other model options go here
+    }
+  );
 
   User.associate = (models) => {
     User.hasMany(models.Address, {
+      as: "user_id",
       foreignKey: {
         field: "user_id",
         allowNull: false,
       },
       onDelete: "cascade",
     });
+    models.Address.belongsTo(User);
   };
 
   return User;

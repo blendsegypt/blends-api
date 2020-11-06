@@ -5,34 +5,34 @@ var Sequelize = require("sequelize");
 /**
  * Actions summary:
  *
- * changeColumn "ProductCategoryId" on table "Products"
- * changeColumn "ProductCategoryId" on table "Products"
+ * addColumn "productCategoryId" to table "Products"
+ * addColumn "ProductId" to table "ProductCustomOptions"
  *
  **/
 
 var info = {
   revision: 18,
-  name: "associate-Product-with-ProductCategory",
-  created: "2020-11-05T16:08:39.573Z",
+  name: "associate-Product-with-ProductCustomOption",
+  created: "2020-11-06T15:25:32.261Z",
   comment: "",
 };
 
 var migrationCommands = function (transaction) {
   return [
     {
-      fn: "changeColumn",
+      fn: "addColumn",
       params: [
-        "Products",
-        "product_category",
+        "ProductCustomOptions",
+        "product_id",
         {
           type: Sequelize.INTEGER,
-          field: "product_category",
           onUpdate: "CASCADE",
           onDelete: "SET NULL",
           references: {
-            model: "ProductCategories",
+            model: "Products",
             key: "id",
           },
+          field: "product_id",
           allowNull: true,
         },
         {
@@ -45,21 +45,10 @@ var migrationCommands = function (transaction) {
 var rollbackCommands = function (transaction) {
   return [
     {
-      fn: "changeColumn",
+      fn: "removeColumn",
       params: [
-        "Products",
-        "product_category",
-        {
-          type: Sequelize.INTEGER,
-          onUpdate: "CASCADE",
-          onDelete: "cascade",
-          references: {
-            model: "ProductCategories",
-            key: "id",
-          },
-          field: "product_category",
-          allowNull: false,
-        },
+        "ProductCustomOptions",
+        "product_id",
         {
           transaction: transaction,
         },

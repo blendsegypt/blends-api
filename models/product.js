@@ -46,14 +46,13 @@ module.exports = function (sequelize, DataTypes) {
   );
 
   Product.associate = (models) => {
-    Product.belongsTo(models.ProductCategory, {
+    Product.hasMany(models.ProductCustomOption, {
+      as: "product_id",
       foreignKey: {
-        field: "product_category",
-        allowNull: false,
+        field: "product_id",
       },
-      onDelete: "cascade",
     });
-    Product.hasMany(models.ProductCustomOption);
+    models.ProductCustomOption.belongsTo(Product);
   };
 
   return Product;

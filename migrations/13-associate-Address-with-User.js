@@ -5,14 +5,14 @@ var Sequelize = require('sequelize');
 /**
  * Actions summary:
  *
- * addColumn "AddressId" to table "Branches"
+ * addColumn "UserId" to table "Addresses"
  *
  **/
 
 var info = {
-    "revision": 21,
-    "name": "link-Branches-with-Addresses",
-    "created": "2020-11-03T00:38:46.319Z",
+    "revision": 13,
+    "name": "associate-Address-with-User",
+    "created": "2020-11-06T14:43:32.514Z",
     "comment": ""
 };
 
@@ -20,17 +20,17 @@ var migrationCommands = function(transaction) {
     return [{
         fn: "addColumn",
         params: [
-            "Branches",
-            "address_id",
+            "Addresses",
+            "user_id",
             {
                 "type": Sequelize.INTEGER,
                 "onUpdate": "CASCADE",
                 "onDelete": "cascade",
                 "references": {
-                    "model": "Addresses",
+                    "model": "Users",
                     "key": "id"
                 },
-                "field": "address_id",
+                "field": "user_id",
                 "allowNull": false
             },
             {
@@ -43,8 +43,8 @@ var rollbackCommands = function(transaction) {
     return [{
         fn: "removeColumn",
         params: [
-            "Branches",
-            "address_id",
+            "Addresses",
+            "user_id",
             {
                 transaction: transaction
             }

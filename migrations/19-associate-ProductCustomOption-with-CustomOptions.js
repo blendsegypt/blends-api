@@ -5,56 +5,36 @@ var Sequelize = require("sequelize");
 /**
  * Actions summary:
  *
- * createTable "Products_Tags", deps: [ProductTags, Products]
+ * removeColumn "product_category" from table "Products"
+ * addColumn "ProductCustomOptionId" to table "CustomOptions"
+ * addColumn "ProductCategoryId" to table "Products"
  *
  **/
 
 var info = {
-  revision: 13,
-  name: "link-Product-with-ProductTag",
-  created: "2020-11-01T14:19:21.965Z",
+  revision: 19,
+  name: "associate-ProductCustomOption-with-CustomOptions",
+  created: "2020-11-06T15:28:08.180Z",
   comment: "",
 };
 
 var migrationCommands = function (transaction) {
   return [
     {
-      fn: "createTable",
+      fn: "addColumn",
       params: [
-        "Products_Tags",
+        "CustomOptions",
+        "product_custom_option_id",
         {
-          createdAt: {
-            type: Sequelize.DATE,
-            field: "createdAt",
-            allowNull: false,
+          type: Sequelize.INTEGER,
+          onUpdate: "CASCADE",
+          onDelete: "cascade",
+          references: {
+            model: "ProductCustomOptions",
+            key: "id",
           },
-          updatedAt: {
-            type: Sequelize.DATE,
-            field: "updatedAt",
-            allowNull: false,
-          },
-          ProductTagId: {
-            type: Sequelize.INTEGER,
-            field: "ProductTagId",
-            onUpdate: "CASCADE",
-            onDelete: "CASCADE",
-            references: {
-              model: "ProductTags",
-              key: "id",
-            },
-            primaryKey: true,
-          },
-          ProductId: {
-            type: Sequelize.INTEGER,
-            field: "ProductId",
-            onUpdate: "CASCADE",
-            onDelete: "CASCADE",
-            references: {
-              model: "Products",
-              key: "id",
-            },
-            primaryKey: true,
-          },
+          field: "product_custom_option_id",
+          allowNull: false,
         },
         {
           transaction: transaction,
@@ -66,9 +46,10 @@ var migrationCommands = function (transaction) {
 var rollbackCommands = function (transaction) {
   return [
     {
-      fn: "dropTable",
+      fn: "removeColumn",
       params: [
-        "Products_Tags",
+        "CustomOptions",
+        "product_custom_option_id",
         {
           transaction: transaction,
         },

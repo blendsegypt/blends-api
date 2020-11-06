@@ -5,50 +5,68 @@ var Sequelize = require('sequelize');
 /**
  * Actions summary:
  *
- * removeColumn "address_id" from table "Branches"
+ * createTable "SupportedAreas", deps: [Branches, Areas]
  *
  **/
 
 var info = {
-    "revision": 23,
-    "name": "remove-branch-address-link",
-    "created": "2020-11-03T16:00:42.678Z",
+    "revision": 20,
+    "name": "associate-Branch-with-Areas-in-SupportedAreas",
+    "created": "2020-11-06T15:43:26.445Z",
     "comment": ""
 };
 
 var migrationCommands = function(transaction) {
     return [{
-        fn: "removeColumn",
+        fn: "createTable",
         params: [
-            "Branches",
-            "address_id",
+            "SupportedAreas",
             {
-                transaction: transaction
+                "createdAt": {
+                    "type": Sequelize.DATE,
+                    "field": "createdAt",
+                    "allowNull": false
+                },
+                "updatedAt": {
+                    "type": Sequelize.DATE,
+                    "field": "updatedAt",
+                    "allowNull": false
+                },
+                "branch_id": {
+                    "type": Sequelize.INTEGER,
+                    "field": "branch_id",
+                    "onUpdate": "CASCADE",
+                    "onDelete": "CASCADE",
+                    "references": {
+                        "model": "Branches",
+                        "key": "id"
+                    },
+                    "primaryKey": true
+                },
+                "area_id": {
+                    "type": Sequelize.INTEGER,
+                    "field": "area_id",
+                    "onUpdate": "CASCADE",
+                    "onDelete": "CASCADE",
+                    "references": {
+                        "model": "Areas",
+                        "key": "id"
+                    },
+                    "primaryKey": true
+                }
+            },
+            {
+                "transaction": transaction
             }
         ]
     }];
 };
 var rollbackCommands = function(transaction) {
     return [{
-        fn: "addColumn",
-        params: [
-            "Branches",
-            "address_id",
-            {
-                "type": Sequelize.INTEGER,
-                "onUpdate": "CASCADE",
-                "onDelete": "cascade",
-                "references": {
-                    "model": "Addresses",
-                    "key": "id"
-                },
-                "field": "address_id",
-                "allowNull": false
-            },
-            {
-                transaction: transaction
-            }
-        ]
+        fn: "dropTable",
+        params: ["SupportedAreas", {
+            transaction: transaction
+        }]
     }];
 };
 

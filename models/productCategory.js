@@ -14,15 +14,15 @@ module.exports = function (sequelize, DataTypes) {
   );
 
   ProductCategory.associate = (models) => {
-    ProductCategory.belongsTo(models.InternalCategory);
     ProductCategory.hasMany(models.Product, {
+      as: "product_category_id",
       foreignKey: {
-        field: "product_category",
+        field: "product_category_id",
         allowNull: false,
       },
       onDelete: "cascade",
     });
+    models.Product.belongsTo(ProductCategory);
   };
-
   return ProductCategory;
 };
