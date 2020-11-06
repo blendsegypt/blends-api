@@ -37,12 +37,10 @@ module.exports = function (sequelize, DataTypes) {
 
     //supported Area association
     Branch.belongsToMany(models.Area, {
-      as: "branches",
       through: "SupportedAreas",
       foreignKey: "branch_id",
     });
     models.Area.belongsToMany(Branch, {
-      as: "supported_areas",
       through: "SupportedAreas",
       foreignKey: "area_id",
     });
