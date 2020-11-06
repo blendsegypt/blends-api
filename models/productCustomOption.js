@@ -25,12 +25,14 @@ module.exports = function (sequelize, DataTypes) {
     ProductCustomOption.hasMany(models.CustomOption, {
       as: "product_custom_option_id",
       foreignKey: {
-        field: "product_custom_option_id",
+        name: "product_custom_option_id",
         allowNull: false,
       },
       onDelete: "cascade",
     });
-    models.CustomOption.belongsTo(ProductCustomOption);
+    models.CustomOption.belongsTo(ProductCustomOption, {
+      foreignKey: "product_custom_option_id",
+    });
   };
 
   return ProductCustomOption;

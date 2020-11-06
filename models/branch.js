@@ -28,12 +28,12 @@ module.exports = function (sequelize, DataTypes) {
     Branch.hasMany(models.WorkingHours, {
       as: "branch_id",
       foreignKey: {
-        field: "branch_id",
+        name: "branch_id",
         allowNull: false,
       },
       onDelete: "cascade",
     });
-    models.WorkingHours.belongsTo(Branch);
+    models.WorkingHours.belongsTo(Branch, { foreignKey: "branch_id" });
 
     //supported Area association
     Branch.belongsToMany(models.Area, {

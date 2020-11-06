@@ -62,12 +62,12 @@ module.exports = function (sequelize, DataTypes) {
     User.hasMany(models.Address, {
       as: "user_id",
       foreignKey: {
-        field: "user_id",
+        name: "user_id",
         allowNull: false,
       },
       onDelete: "cascade",
     });
-    models.Address.belongsTo(User);
+    models.Address.belongsTo(User, { foreignKey: "user_id" });
   };
 
   return User;

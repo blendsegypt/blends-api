@@ -19,12 +19,12 @@ module.exports = function (sequelize, DataTypes) {
     Area.hasMany(models.Address, {
       as: "area_id",
       foreignKey: {
-        field: "area_id",
+        name: "area_id",
         allowNull: false,
       },
       onDelete: "cascade",
     });
-    models.Address.belongsTo(Area);
+    models.Address.belongsTo(Area, { foreignKey: "area_id" });
   };
   return Area;
 };

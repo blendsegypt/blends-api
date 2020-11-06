@@ -49,10 +49,10 @@ module.exports = function (sequelize, DataTypes) {
     Product.hasMany(models.ProductCustomOption, {
       as: "product_id",
       foreignKey: {
-        field: "product_id",
+        name: "product_id",
       },
     });
-    models.ProductCustomOption.belongsTo(Product);
+    models.ProductCustomOption.belongsTo(Product, { foreignKey: "product_id" });
   };
 
   return Product;

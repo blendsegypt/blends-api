@@ -17,12 +17,14 @@ module.exports = function (sequelize, DataTypes) {
     InternalCategory.hasMany(models.ProductCategory, {
       as: "internal_category_id",
       foreignKey: {
-        field: "internal_category_id",
+        name: "internal_category_id",
         allowNull: false,
       },
       onDelete: "cascade",
     });
-    models.ProductCategory.belongsTo(InternalCategory);
+    models.ProductCategory.belongsTo(InternalCategory, {
+      foreignKey: "internal_category_id",
+    });
   };
   return InternalCategory;
 };

@@ -17,12 +17,14 @@ module.exports = function (sequelize, DataTypes) {
     ProductCategory.hasMany(models.Product, {
       as: "product_category_id",
       foreignKey: {
-        field: "product_category_id",
+        name: "product_category_id",
         allowNull: false,
       },
       onDelete: "cascade",
     });
-    models.Product.belongsTo(ProductCategory);
+    models.Product.belongsTo(ProductCategory, {
+      foreignKey: "product_category_id",
+    });
   };
   return ProductCategory;
 };
