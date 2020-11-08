@@ -108,7 +108,7 @@ router.put("/:id", async (req, res) => {
     const isValidated = await checkIfExists(user);
     user.email = user.email === "" ? null : user.email; //Convert "" to strict null
     if (isValidated.flag) {
-      const numberOfAffectedRows = await DB.User.update(user, {
+      const [numberOfAffectedRows] = await DB.User.update(user, {
         where: {
           id: req.params.id,
         },
