@@ -6,14 +6,51 @@ const router = Express.Router();
 router.post("/", async (req, res) => {
   try {
     const product = req.body;
-    const createdProduct = await DB.Product.create(product);
-    if (product.product_tags) {
-      await createdProduct.setProduct_tags(product.product_tags);
-    }
-    return res.status(201).json({
-      message: "Product has been created succesfully",
-      data: createdProduct,
+    //Product creation requires a transaction to add inventory records for each branch (for retail products)
+    let productCreated = false;
+    let createdProduct;
+    productCreated = await DB.sequelize.transaction(async (t) => {
+      // Create Product
+      createdProduct = await DB.Product.create(product, {
+        transaction: t,
+      });
+      if (product.product_tags) {
+        // Set Product Tags
+        await createdProduct.setProduct_tags(product.product_tags, {
+          transaction: t,
+        });
+      }
+      // Add inventory record for retail products
+      if (product.retail) {
+        const inventories = [];
+        const branches = await DB.Branch.findAll({
+          attributes: ["name"],
+          transaction: t,
+        });
+        branches.forEach(async (branch) => {
+          inventories.push({
+            product_id: createdProduct.id,
+            branch_name: branch.name,
+            product_name: createdProduct.name,
+            actual_stock: 0,
+            safe_stock: 0,
+            min_stock: 0,
+          });
+        });
+        await DB.Inventory.bulkCreate(inventories);
+      }
+      return true;
     });
+    if (productCreated) {
+      return res.status(201).json({
+        message: "Product has been created succesfully",
+        data: createdProduct,
+      });
+    } else {
+      return res.status(500).json({
+        error_message: "An Error occured during transaction",
+      });
+    }
   } catch (error) {
     res.status(500).json({ error_message: error.message });
   }
@@ -86,6 +123,11 @@ router.delete("/:id", async (req, res) => {
     const productDeleted = await DB.Product.destroy({
       where: {
         id: req.params.id,
+      },
+    });
+    await DB.Inventory.destroy({
+      where: {
+        product_id: req.params.id,
       },
     });
     if (productDeleted) {
