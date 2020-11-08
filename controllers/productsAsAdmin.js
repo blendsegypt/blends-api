@@ -7,6 +7,9 @@ router.post("/", async (req, res) => {
   try {
     const product = req.body;
     const createdProduct = await DB.Product.create(product);
+    if (product.product_tags) {
+      await createdProduct.setProduct_tags(product.product_tags);
+    }
     return res.status(201).json({
       message: "Product has been created succesfully",
       data: createdProduct,
@@ -56,6 +59,11 @@ router.put("/:id", async (req, res) => {
         id: req.params.id,
       },
     });
+    //update tags
+    const product = await DB.Product.findByPk(req.params.id);
+    if (newProduct.product_tags) {
+      await product.setProduct_tags(newProduct.product_tags);
+    }
     if (numberOfAffectedRows) {
       return res.status(200).json({
         message: "Product has been succesfully updated",
