@@ -23,14 +23,17 @@ router.get("/", async (req, res) => {
       include: [
         {
           model: DB.ProductTag,
+          as: "product_tags",
           attributes: ["id", "label", "color"],
         },
         {
           model: DB.ProductCustomOption,
+          as: "product_custom_options",
           attributes: ["id", "label"],
         },
         {
           model: DB.ProductCategory,
+          as: "product_category",
           attributes: ["id", "name"],
         },
       ],
