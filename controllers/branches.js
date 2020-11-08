@@ -11,7 +11,7 @@ router.post("/", async (req, res) => {
         // create new branch 
         const newBranch = await DB.Branch.create(
             branch,
-            { include: [DB.WorkingHours] }, // create new entries in WorkingHours with branch_id
+            { include: [{ model: DB.WorkingHours, as: "working_hours" }] }, // create new entries in WorkingHours with branch_id
         );
         await newBranch.addAreas(branch.SupportedAreas); // create new entries in SupportedAreas with branch_id & address_id
         return res.status(201).json({
@@ -31,6 +31,7 @@ router.get("/", async (req, res) => {
                 // get attributes from WorkingHours table
                 {
                     model: DB.WorkingHours,
+                    as: "working_hours",
                     attributes: ["id", "days", "opens_at", "closes_at"],
                 },
                 // get attributes from Area through SupportedArea
@@ -60,6 +61,7 @@ router.get("/:id", async (req, res) => {
                 // get attributes from WorkingHours table
                 {
                     model: DB.WorkingHours,
+                    as: "working_hours",
                     attributes: ["id", "days", "opens_at", "closes_at"],
                 },
                 // get attributes from Area through SupportedArea
@@ -105,10 +107,10 @@ router.put("/:id", async (req, res) => {
             }
         );
         // delete old working hours and update with new if exists in the request
-        if (branchUpdates.hasOwnProperty('WorkingHours')) {
+        if (branchUpdates.hasOwnProperty('working_hours')) {
             // add parameter BranchId to WorkingHours sub-object
-            for (let i = 0; i < branchUpdates.WorkingHours.length; i++) {
-                branchUpdates.WorkingHours[i].BranchId = req.params.id;
+            for (let i = 0; i < branchUpdates.working_hours.length; i++) {
+                branchUpdates.working_hours[i].branch_id = req.params.id;
             }
             const workingHoursDeleted = await DB.WorkingHours.destroy({
                 where: {
@@ -116,28 +118,13 @@ router.put("/:id", async (req, res) => {
                 },
             });
             const newWorkingHours = await DB.WorkingHours.bulkCreate(
-                branchUpdates.WorkingHours, { returning: true });
+                branchUpdates.working_hours, { returning: true });
             if (newWorkingHours.length > 0 || workingHoursDeleted)
                 isWorkingHoursUpdated = true;
         }
         // delete old supported areas and update with new if exists in the request
         if (branchUpdates.hasOwnProperty('SupportedAreas')) {
             const branch = await DB.Branch.findOne({
-                include: [
-                    // get attributes from WorkingHours table
-                    {
-                        model: DB.WorkingHours,
-                        attributes: ["id", "days", "opens_at", "closes_at"],
-                    },
-                    // get attributes from Area through SupportedArea
-                    {
-                        model: DB.Area,
-                        attributes: ["id", "name"],
-                        through: {
-                            attributes: [],
-                        }
-                    }
-                ],
                 where: {
                     id: req.params.id,
                 },
@@ -162,7 +149,6 @@ router.put("/:id", async (req, res) => {
 
 // delete branch by :id
 router.delete("/:id", async (req, res) => {
-    console.log("Hellooooz")
     try {
         const branchDeleted = await DB.Branch.destroy({
             where: {

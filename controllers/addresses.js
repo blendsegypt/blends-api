@@ -10,7 +10,7 @@ const router = Express.Router({
 router.post("/", async (req, res) => {
     try {
         const address = req.body;
-        address.UserId = req.params.user_id;
+        address.user_id = req.params.user_id;
         const newAddress = await DB.Address.create(address);
         return res.status(201).json({
             message: "Address has been succesfully created",
