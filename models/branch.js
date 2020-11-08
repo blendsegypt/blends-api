@@ -26,7 +26,7 @@ module.exports = function (sequelize, DataTypes) {
 
   Branch.associate = (models) => {
     Branch.hasMany(models.WorkingHours, {
-      as: "branch_id",
+      as: "working_hours",
       foreignKey: {
         name: "branch_id",
         allowNull: false,

@@ -41,7 +41,7 @@ router.get("/", async (req, res) => {
   try {
     const users = await DB.User.findAll({
       attributes: {
-        excludes: ["password_hash", "password_salt"],
+        exclude: ["password_hash", "password_salt"],
       },
     });
     return res.status(201).json({
@@ -56,19 +56,19 @@ router.get("/", async (req, res) => {
 // read user by: id
 router.get("/:id", async (req, res) => {
   try {
-    const user = await DB.User.findAll({
+    const user = await DB.User.findOne({
       attributes: {
-        excludes: [password_hash, password_salt],
+        exclude: ["password_hash", "password_salt"],
       },
       where: {
         id: req.params.id,
       },
     });
-    user[0].phone_number = String(user[0].phone_number);
-    if (user.length > 0) {
+    if (user !== null) {
+      user.phone_number = String(user.phone_number);
       return res.status(201).json({
         message: "User has been retreived succesfully",
-        data: user[0],
+        data: user,
       });
     } else {
       return res.status(404).json({ message: "User not found" });
