@@ -10,12 +10,11 @@ module.exports = function (sequelize, DataTypes) {
 
   ProductTag.associate = (models) => {
     ProductTag.belongsToMany(models.Product, {
-      as: "product_tag",
       through: "ProductsTags",
       foreignKey: "product_tag_id",
     });
     models.Product.belongsToMany(ProductTag, {
-      as: "product",
+      as: "product_tags",
       through: "ProductsTags",
       foreignKey: "product_id",
     });

@@ -23,7 +23,7 @@ module.exports = function (sequelize, DataTypes) {
 
   ProductCustomOption.associate = (models) => {
     ProductCustomOption.hasMany(models.CustomOption, {
-      as: "product_custom_option_id",
+      as: "custom_options",
       foreignKey: {
         name: "product_custom_option_id",
         allowNull: false,
