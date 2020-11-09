@@ -9,6 +9,7 @@ import ProductCategoriesController from "../controllers/productCategories"; // a
 import ProductsAsAdmin from "../controllers/productsAsAdmin"; // admin
 import ProductCustomOptions from "../controllers/productCustomOptions"; // admin
 import ProductTags from "../controllers/productTags"; // admin
+import PromoCodes from "../controllers/promoCodes"; // admin
 
 // route admin controllers
 router.use("/users", UserController);
@@ -18,5 +19,6 @@ router.use("/product-categories", ProductCategoriesController);
 router.use("/products", ProductsAsAdmin);
 router.use("/products-custom-options", ProductCustomOptions);
 router.use("/products-tags", ProductTags);
+router.use("/promo-codes", PromoCodes);
 
 export default router;
