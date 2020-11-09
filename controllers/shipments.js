@@ -6,7 +6,10 @@ const router = Express.Router();
 router.get("/", async (req, res) => {
   try {
     const shipments = await DB.Shipment.findAll({
-      include: [{ model: DB.Branch, attributes: ["name"] }],
+      include: [
+        { model: DB.Branch, attributes: ["name"] },
+        { model: DB.Product, attributes: ["name"] },
+      ],
     });
     res.status(200).json({
       message: "Shipments succesfully retrieved",
