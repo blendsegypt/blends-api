@@ -7,6 +7,10 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
+      branch_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
       branch_name: {
         type: DataTypes.STRING,
         allowNull: false,
