@@ -24,13 +24,14 @@ router.post("/", async (req, res) => {
       if (product.retail) {
         const inventories = [];
         const branches = await DB.Branch.findAll({
-          attributes: ["name"],
+          attributes: ["id", "name"],
           transaction: t,
         });
-        branches.forEach(async (branch) => {
+        branches.forEach((branch) => {
           inventories.push({
             product_id: createdProduct.id,
             branch_name: branch.name,
+            branch_id: branch.id,
             product_name: createdProduct.name,
             actual_stock: 0,
             safe_stock: 0,
