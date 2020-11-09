@@ -14,6 +14,9 @@ module.exports = function (sequelize, DataTypes) {
       expiry_date: {
         type: DataTypes.DATE,
       },
+      expired: {
+        type: DataTypes.BOOLEAN,
+      },
     },
     {
       // Other model options go here
