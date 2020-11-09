@@ -11,7 +11,7 @@ import ProductCustomOptions from "../controllers/productCustomOptions"; // admin
 import ProductTags from "../controllers/productTags"; // admin
 import PromoCodes from "../controllers/promoCodes"; // admin
 import Inventory from "../controllers/inventory";
-
+import Shipments from "../controllers/shipments";
 
 // route admin controllers
 router.use("/users", UserController);
@@ -23,5 +23,6 @@ router.use("/products-custom-options", ProductCustomOptions);
 router.use("/products-tags", ProductTags);
 router.use("/promo-codes", PromoCodes);
 router.use("/inventory", Inventory);
+router.use("/shipments", Shipments);
 
 export default router;
