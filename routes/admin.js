@@ -13,6 +13,7 @@ import PromoCodes from "../controllers/promoCodes"; // admin
 import Inventory from "../controllers/inventory";
 import Shipments from "../controllers/shipments";
 import OrdersAsAdmin from "../controllers/ordersAsAdmin";
+import Areas from "../controllers/areas";
 
 // route admin controllers
 router.use("/users", UserController);
@@ -26,5 +27,6 @@ router.use("/promo-codes", PromoCodes);
 router.use("/inventory", Inventory);
 router.use("/shipments", Shipments);
 router.use("/orders", OrdersAsAdmin);
+router.use("/areas", Areas);
 
 export default router;
