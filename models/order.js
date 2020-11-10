@@ -59,6 +59,13 @@ module.exports = function (sequelize, DataTypes) {
       onDelete: "cascade",
     });
     models.User.hasMany(Order, { foreignKey: "user_id" });
+    // Orders belong to an address (delivery address)
+    Order.belongsTo(models.Address, {
+      foreignKey: {
+        name: "delivery_address_id",
+      },
+    });
+    models.Address.hasMany(Order, { foreignKey: "delivery_address_id" });
     // Orders belong to a branch
     Order.belongsTo(models.Branch, {
       foreignKey: {
