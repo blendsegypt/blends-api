@@ -30,7 +30,10 @@ module.exports = function (sequelize, DataTypes) {
             free_product: { // product_id
                 type: DataTypes.INTEGER,
             },
-            cashback_percentage: {
+            cashback_amount: {
+                type: DataTypes.DOUBLE,
+            },
+            fixed_amount: {
                 type: DataTypes.DOUBLE,
             }
         }, {
