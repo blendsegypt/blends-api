@@ -24,7 +24,10 @@ module.exports = function (sequelize, DataTypes) {
       },
       onDelete: "cascade",
     });
-    models.Order.hasMany(OrderItem, { foreignKey: "order_id" });
+    models.Order.hasMany(OrderItem, {
+      as: "OrderItems",
+      foreignKey: "order_id",
+    });
     OrderItem.belongsTo(models.Product, { foreignKey: "product_id" });
   };
 
