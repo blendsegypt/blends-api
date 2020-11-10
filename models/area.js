@@ -7,7 +7,7 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.STRING,
       },
       area_fence: {
-        type: DataTypes.ARRAY(DataTypes.DOUBLE),
+        type: DataTypes.ARRAY(DataTypes.STRING),
       },
     },
     {
