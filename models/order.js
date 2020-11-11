@@ -75,6 +75,12 @@ module.exports = function (sequelize, DataTypes) {
       onDelete: "cascade",
     });
     models.Branch.hasMany(Order, { foreignKey: "branch_id" });
+    //Orders has one promocode (optional)
+    Order.belongsTo(models.PromoCode, {
+      foreignKey: {
+        name: "promocode_id",
+      },
+    });
   };
 
   return Order;
