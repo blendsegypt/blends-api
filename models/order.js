@@ -12,10 +12,6 @@ module.exports = function (sequelize, DataTypes) {
       delivered_at: {
         type: DataTypes.DATE,
       },
-      order_number: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
       order_status: {
         type: DataTypes.ENUM(
           "Received",
