@@ -7,7 +7,22 @@ router.post("/", async (req, res) => {
   try {
     const newOrder = req.body;
     newOrder.order_status = "Received";
-    const orderCreated = await DB.Order.create(newOrder, {
+    //Forward to a branch
+    const branch = await DB.Branch.findAll({
+      include: [
+        {
+          model: DB.Area,
+          required: true,
+          through: {
+            where: {
+              area_id: newOrder.area_id,
+            },
+          },
+        },
+      ],
+    });
+    newOrder.branch_id = branch[0].id;
+    const order = await DB.Order.create(newOrder, {
       include: [
         {
           model: DB.OrderItem,
@@ -17,7 +32,7 @@ router.post("/", async (req, res) => {
     });
     res.status(201).json({
       message: "Order Created!",
-      data: orderCreated,
+      data: order,
     });
   } catch (error) {
     res.status(500).json({ error_message: error.message });
@@ -54,9 +69,13 @@ router.get("/", async (req, res) => {
           include: [
             {
               model: DB.Product,
-              attributes: ["name"],
+              attributes: ["id", "name"],
             },
           ],
+        },
+        {
+          model: DB.PromoCode,
+          attributes: ["code"],
         },
       ],
     });
@@ -72,7 +91,7 @@ router.get("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
   try {
     const updatedOrder = req.body;
-    // Updated order status timestamp fields
+    // If order status changed
     if (updatedOrder.order_status) {
       const timeNow = new Date();
       if (updatedOrder.order_status === "Preparing") {
@@ -82,6 +101,15 @@ router.put("/:id", async (req, res) => {
       } else if (updatedOrder.order_status === "Delivered") {
         updatedOrder.delivered_at = timeNow;
       }
+    }
+    // If order products/options changed
+    if (updatedOrder.hasOwnProperty("OrderItems")) {
+      await DB.OrderItem.destroy({
+        where: {
+          order_id: req.params.id,
+        },
+      });
+      await DB.OrderItem.bulkCreate(updatedOrder.OrderItems);
     }
     const [numberOfAffectedRows] = await DB.Order.update(updatedOrder, {
       where: {
