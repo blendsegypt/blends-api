@@ -1,5 +1,7 @@
 import DB from "../models";
 import { Op } from "Sequelize";
+import vaalidatePhoneNumber from "./validatePhoneNumber";
+import validatePhoneNumber from "./validatePhoneNumber";
 
 // Define unique validation errors and return a string of errors
 const generateErrors = function (
@@ -78,4 +80,25 @@ const checkIfExists = async function ({
   }
 };
 
-export { checkIfExists };
+const validateUserFields = (user) => {
+  const errors = [];
+  // Validate phone number
+  if (!validatePhoneNumber(user.phone_number)) {
+    errors.push("INVALID_PHONE_NUMBER");
+  }
+  // Validated first/last name
+  if (
+    !/^[a-zA-Z]+$/.test(user.first_name) ||
+    !/^[a-zA-Z]+$/.test(user.last_name)
+  ) {
+    errors.push("INVALID_FIRST/LAST_NAME");
+  }
+  // Validate platform
+  if (!["ios", "android"].includes(user.platform)) {
+    errors.push("INVALID_PLATFORM");
+  }
+
+  return errors;
+};
+
+export { checkIfExists, validateUserFields };
