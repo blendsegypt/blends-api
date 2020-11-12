@@ -20,18 +20,26 @@ module.exports = function (sequelize, DataTypes) {
             },
             max_usage_per_user: {
                 type: DataTypes.INTEGER,
+                defaultValue: 1,
             },
             min_order_value: {
                 type: DataTypes.DOUBLE,
+                defaultValue: 0.0,
             },
             percentage_discount: {
                 type: DataTypes.INTEGER,
+                defaultValue: 0,
             },
             free_product: { // product_id
                 type: DataTypes.INTEGER,
             },
-            cashback_percentage: {
+            cashback_amount: {
                 type: DataTypes.DOUBLE,
+                defaultValue: 0.0,
+            },
+            fixed_amount: {
+                type: DataTypes.DOUBLE,
+                defaultValue: 0.0,
             }
         }, {
         // Other model options go here
