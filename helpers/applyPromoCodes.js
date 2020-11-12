@@ -4,7 +4,7 @@ import { Op } from "Sequelize";
 
 // checks for promo code expiry
 const isPromoCodeExpired = (promoCode) => {
-    const today = new Date('2021', '1', '15');
+    const today = new Date();
     const startDate = new Date(promoCode.start_date);
     const endDate = new Date(promoCode.end_date);
 
@@ -50,8 +50,8 @@ const checkUsage = async (promoCode, userId) => {
         // promoCode used by user 
         //  - promoCode can be re-used
         if (userPromoCode.usage < promoCode.max_usage_per_user) {
-            userPromoCode.usage++;
-            await DB.UserPromoCode.update({ usage: userPromoCode.usage }, {
+            const newUsage = userPromoCode.usage + 1;
+            await DB.UserPromoCode.update({ usage: newUsage }, {
                 where: {
                     [Op.and]: [
                         { user_id: userId },
@@ -90,6 +90,8 @@ const applyPromoCode = (promoCode, order) => {
             if (promoCode.free_product != null) {
                 order.orderItems.push({
                     product_id: promoCode.free_product,
+                    quantity: 1,
+                    options: [],
                     price: 0,
                 });
             }
