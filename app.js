@@ -4,6 +4,7 @@ import CookieParser from "cookie-parser"; // Cookie Parser to parse cookies from
 import Logger from "morgan"; // Morgan Logger for debugging
 import cors from "cors"; //Allow cross-origin requests
 import expiredShipmentsCronJob from "./cron/expiredShipments";
+import dotenv from "dotenv";
 
 // import routes
 import appRoutes from "./routes/app";
@@ -11,6 +12,9 @@ import adminRoutes from "./routes/admin";
 
 //Initialize Express Application
 var App = Express();
+
+//Environmental variables handling
+dotenv.config();
 
 // Apply Middleware
 App.use(Logger("dev"));
