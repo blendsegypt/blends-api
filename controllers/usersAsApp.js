@@ -4,6 +4,7 @@ const router = Express.Router();
 import generateOTP from "../helpers/generateOTP";
 import validatePhoneNumber from "../helpers/validatePhoneNumber";
 import { validateUserFields } from "../helpers/users";
+import { generateReferralCode } from "../helpers/generateReferralCode";
 
 //verify phone number and send OTP
 router.post("/verify/phone", async (req, res) => {
@@ -114,6 +115,7 @@ router.post("/register", async (req, res) => {
       platform: user.platform,
       password_hash: user.password_hash,
       password_salt: user.password_salt,
+      referral_code: generateReferralCode(user.first_name),
     });
 
     return res.status(201).json({

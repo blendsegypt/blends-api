@@ -1,6 +1,7 @@
 import DB from "../models";
 import Express from "express";
 import { checkIfExists } from "../helpers/users";
+import { generateReferralCode } from "../helpers/generateReferralCode";
 const router = Express.Router();
 
 // router imports
@@ -14,6 +15,7 @@ router.post("/", async (req, res) => {
   try {
     const user = Object.assign({}, req.body);
     user.phone_number = Number(user.phone_number);
+    user.referral_code = generateReferralCode(user.first_name);
     const isValidated = await checkIfExists(user);
     user.email = user.email === "" ? null : user.email; //Convert "" to strict null
     // Check pre-db validation
