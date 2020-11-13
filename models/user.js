@@ -52,6 +52,11 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.ENUM("ios", "android", "other"),
         allowNull: false,
       },
+      referral_code: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+      },
     },
     {
       // Other model options go here

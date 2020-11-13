@@ -5,26 +5,26 @@ var Sequelize = require('sequelize');
 /**
  * Actions summary:
  *
- * changeColumn "phone_number" on table "Users"
+ * addColumn "referral_code" to table "Users"
  *
  **/
 
 var info = {
     "revision": 38,
-    "name": "change-phone_number-from-Integer-to-String",
-    "created": "2020-11-12T16:59:19.733Z",
+    "name": "add-referral-code-to-user-table",
+    "created": "2020-11-13T13:16:57.507Z",
     "comment": ""
 };
 
 var migrationCommands = function(transaction) {
     return [{
-        fn: "changeColumn",
+        fn: "addColumn",
         params: [
             "Users",
-            "phone_number",
+            "referral_code",
             {
                 "type": Sequelize.STRING,
-                "field": "phone_number",
+                "field": "referral_code",
                 "unique": true,
                 "allowNull": false
             },
@@ -36,16 +36,10 @@ var migrationCommands = function(transaction) {
 };
 var rollbackCommands = function(transaction) {
     return [{
-        fn: "changeColumn",
+        fn: "removeColumn",
         params: [
             "Users",
-            "phone_number",
-            {
-                "type": Sequelize.INTEGER,
-                "field": "phone_number",
-                "unique": true,
-                "allowNull": false
-            },
+            "referral_code",
             {
                 transaction: transaction
             }
