@@ -8,7 +8,7 @@ module.exports = function (sequelize, DataTypes) {
         allowNull: false,
       },
       token: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false,
       },
     },

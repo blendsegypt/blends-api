@@ -10,9 +10,9 @@ var Sequelize = require('sequelize');
  **/
 
 var info = {
-    "revision": 39,
+    "revision": 2,
     "name": "create-RefreshTokens-table",
-    "created": "2020-11-13T18:54:12.744Z",
+    "created": "2020-11-14T13:51:51.344Z",
     "comment": ""
 };
 
@@ -35,7 +35,7 @@ var migrationCommands = function(transaction) {
                     "allowNull": false
                 },
                 "token": {
-                    "type": Sequelize.INTEGER,
+                    "type": Sequelize.STRING,
                     "field": "token",
                     "allowNull": false
                 },
