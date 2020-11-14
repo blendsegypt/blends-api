@@ -13,7 +13,6 @@ router.use("/:user_id/addresses", addresses);
 router.post("/", async (req, res) => {
   try {
     const user = Object.assign({}, req.body);
-    user.phone_number = Number(user.phone_number);
     const isValidated = await checkIfExists(user);
     user.email = user.email === "" ? null : user.email; //Convert "" to strict null
     // Check pre-db validation
@@ -102,9 +101,6 @@ router.delete("/:id", async (req, res) => {
 router.put("/:id", async (req, res) => {
   try {
     const user = Object.assign({}, req.body);
-    if (user.phone_number) {
-      user.phone_number = Number(user.phone_number);
-    }
     const isValidated = await checkIfExists(user);
     user.email = user.email === "" ? null : user.email; //Convert "" to strict null
     if (isValidated.flag) {
