@@ -1,10 +1,15 @@
 import DB from "../models";
 import Express from "express";
 import validatePhoneNumber from "../helpers/validatePhoneNumber";
-import { comparePassword, generateToken } from "../helpers/auth";
+import {
+  comparePassword,
+  generateAccessToken,
+  generateRefreshToken,
+  bcryptHash,
+} from "../helpers/auth";
 const router = Express.Router();
 
-router.post("/login", async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const { phone_number, password } = req.body;
     // Validate phone number
@@ -35,8 +40,26 @@ router.post("/login", async (req, res) => {
     }
 
     // Once reached here then phone_number/password combination is valid
-    const accessToken = generateToken(user);
+    // Generate access/refresh tokens
+    const accessToken = generateAccessToken(user);
+    const refreshToken = generateRefreshToken();
+
+    // Delete any previous refresh tokens associated with that user
+    await DB.RefreshToken.destroy({
+      where: {
+        user_id: user.id,
+      },
+    });
+
+    // Save refresh token in the DB
+    await DB.RefreshToken.create({
+      user_id: user.id,
+      token: bcryptHash(refreshToken),
+    });
+
+    // Attach access/refresh tokens to response headers
     res.setHeader("access-token", accessToken);
+    res.setHeader("refresh-token", refreshToken);
     res.status(200).json({
       message: "User Logged In succesfully",
     });
