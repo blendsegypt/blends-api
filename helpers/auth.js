@@ -8,11 +8,41 @@ const comparePassword = (password, dbHash) => {
   return false;
 };
 
-const generateToken = (user) => {
+const generateAccessToken = (user) => {
   const payload = {
     id: user.id,
   };
-  return jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: "10s" });
+  return jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: "20s" });
 };
 
-export { comparePassword, generateToken };
+const generateRefreshToken = () => {
+  return jwt.sign({}, process.env.TOKEN_SECRET, { expiresIn: "30d" });
+};
+
+const verifyAccessToken = (accessToken) => {
+  return new Promise((resolve, reject) => {
+    jwt.verify(
+      accessToken,
+      process.env.TOKEN_SECRET,
+      {
+        ignoreExpiration: true,
+      },
+      (error, payload) => {
+        if (error) reject(["INVALID_ACCESS_TOKEN"]);
+        resolve(payload.id);
+      }
+    );
+  });
+};
+
+const bcryptHash = (text) => {
+  return bcrypt.hashSync(text);
+};
+
+export {
+  comparePassword,
+  generateAccessToken,
+  generateRefreshToken,
+  bcryptHash,
+  verifyAccessToken,
+};
