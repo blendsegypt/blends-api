@@ -86,8 +86,8 @@ router.post("/verify/OTP", async (req, res) => {
   }
 });
 
-//register a new user
-router.post("/register", async (req, res) => {
+//finish registeration
+router.post("/finish", async (req, res) => {
   try {
     let referralValid = false;
     const user = req.body;
