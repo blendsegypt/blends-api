@@ -4,6 +4,7 @@ const router = Express.Router();
 import generateOTP from "../helpers/generateOTP";
 import validatePhoneNumber from "../helpers/validatePhoneNumber";
 import { validateUserFields } from "../helpers/users";
+import { generateReferralCode, validateReferral, applyReferral } from "../helpers/referrals";
 
 //verify phone number and send OTP
 router.post("/verify/phone", async (req, res) => {
@@ -88,6 +89,7 @@ router.post("/verify/OTP", async (req, res) => {
 //finish registeration
 router.post("/finish", async (req, res) => {
   try {
+    let referralValid = false;
     const user = req.body;
     // Validate fields
     const userFieldsErrors = validateUserFields(user);
@@ -107,6 +109,20 @@ router.post("/finish", async (req, res) => {
         errors: "PHONE_NOT_VERIFIED",
       });
     }
+    // apply referal to users
+    if (user.hasOwnProperty("referring_user_code") && user.referring_user_code !== "") {
+      const [referralErrors, referringUser] = await validateReferral(user.referring_user_code);
+      if (referralErrors.length > 0) {
+        return res.status(400).json({
+          errors: referralErrors,
+        });
+      }
+      user.referred_by_id = referringUser.id;
+      referralValid = true;
+    }
+    else {
+      user.referred_by_id = null;
+    }
     const newUser = await DB.User.create({
       first_name: user.first_name,
       last_name: user.last_name,
@@ -114,8 +130,13 @@ router.post("/finish", async (req, res) => {
       platform: user.platform,
       password_hash: user.password_hash,
       password_salt: user.password_salt,
+      referral_code: generateReferralCode(user.first_name),
+      referred_by_id: user.referred_by_id,
     });
-
+    // apply referral reward to both users
+    if (referralValid) {
+      await applyReferral(newUser.id, newUser.referred_by_id);
+    }
     return res.status(201).json({
       message: "User was created",
       user: {

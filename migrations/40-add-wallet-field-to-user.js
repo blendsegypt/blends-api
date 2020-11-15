@@ -5,27 +5,27 @@ var Sequelize = require('sequelize');
 /**
  * Actions summary:
  *
- * changeColumn "phone_number" on table "Users"
+ * addColumn "wallet" to table "Users"
  *
  **/
 
 var info = {
-    "revision": 38,
-    "name": "change-phone_number-from-Integer-to-String",
-    "created": "2020-11-12T16:59:19.733Z",
+    "revision": 40,
+    "name": "add-wallet-field-to-user",
+    "created": "2020-11-15T21:06:36.690Z",
     "comment": ""
 };
 
-var migrationCommands = function(transaction) {
+var migrationCommands = function (transaction) {
     return [{
-        fn: "changeColumn",
+        fn: "addColumn",
         params: [
             "Users",
-            "phone_number",
+            "wallet",
             {
-                "type": Sequelize.STRING,
-                "field": "phone_number",
-                "unique": true,
+                "type": Sequelize.DOUBLE,
+                "field": "wallet",
+                "defaultValue": 0,
                 "allowNull": false
             },
             {
@@ -34,18 +34,12 @@ var migrationCommands = function(transaction) {
         ]
     }];
 };
-var rollbackCommands = function(transaction) {
+var rollbackCommands = function (transaction) {
     return [{
-        fn: "changeColumn",
+        fn: "removeColumn",
         params: [
             "Users",
-            "phone_number",
-            {
-                "type": Sequelize.INTEGER,
-                "field": "phone_number",
-                "unique": true,
-                "allowNull": false
-            },
+            "wallet",
             {
                 transaction: transaction
             }
@@ -56,17 +50,15 @@ var rollbackCommands = function(transaction) {
 module.exports = {
     pos: 0,
     useTransaction: true,
-    execute: function(queryInterface, Sequelize, _commands)
-    {
+    execute: function (queryInterface, Sequelize, _commands) {
         var index = this.pos;
         function run(transaction) {
             const commands = _commands(transaction);
-            return new Promise(function(resolve, reject) {
+            return new Promise(function (resolve, reject) {
                 function next() {
-                    if (index < commands.length)
-                    {
+                    if (index < commands.length) {
                         let command = commands[index];
-                        console.log("[#"+index+"] execute: " + command.fn);
+                        console.log("[#" + index + "] execute: " + command.fn);
                         index++;
                         queryInterface[command.fn].apply(queryInterface, command.params).then(next, reject);
                     }
@@ -82,12 +74,10 @@ module.exports = {
             return run(null);
         }
     },
-    up: function(queryInterface, Sequelize)
-    {
+    up: function (queryInterface, Sequelize) {
         return this.execute(queryInterface, Sequelize, migrationCommands);
     },
-    down: function(queryInterface, Sequelize)
-    {
+    down: function (queryInterface, Sequelize) {
         return this.execute(queryInterface, Sequelize, rollbackCommands);
     },
     info: info

@@ -52,6 +52,16 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.ENUM("ios", "android", "other"),
         allowNull: false,
       },
+      referral_code: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      wallet: {
+        type: DataTypes.DOUBLE,
+        allowNull: false,
+        defaultValue: 0.0,
+      }
     },
     {
       // Other model options go here
@@ -68,6 +78,12 @@ module.exports = function (sequelize, DataTypes) {
       onDelete: "cascade",
     });
     models.Address.belongsTo(User, { foreignKey: "user_id" });
+    User.belongsTo(User, {
+      foreignKey: {
+        name: "referred_by_id",
+        allowNull: true,
+      }
+    });
   };
 
   return User;
