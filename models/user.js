@@ -73,6 +73,12 @@ module.exports = function (sequelize, DataTypes) {
       onDelete: "cascade",
     });
     models.Address.belongsTo(User, { foreignKey: "user_id" });
+    User.belongsTo(User, {
+      foreignKey: {
+        name: "referred_by_id",
+        allowNull: true,
+      }
+    });
   };
 
   return User;
