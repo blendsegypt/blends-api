@@ -12,20 +12,20 @@ const generateAccessToken = (user) => {
   const payload = {
     id: user.id,
   };
-  return jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: "20s" });
+  return jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: "1d" });
 };
 
 const generateRefreshToken = () => {
   return jwt.sign({}, process.env.TOKEN_SECRET, { expiresIn: "30d" });
 };
 
-const verifyAccessToken = (accessToken) => {
+const verifyAccessToken = (accessToken, ignoreExpiration) => {
   return new Promise((resolve, reject) => {
     jwt.verify(
       accessToken,
       process.env.TOKEN_SECRET,
       {
-        ignoreExpiration: true,
+        ignoreExpiration,
       },
       (error, payload) => {
         if (error) reject(["INVALID_ACCESS_TOKEN"]);

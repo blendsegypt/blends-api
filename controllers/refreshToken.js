@@ -15,7 +15,7 @@ router.post("/", async (req, res) => {
     const refreshToken = req.body.refreshToken;
     const accessToken = req.headers.authorization.split(" ")[1];
     // Validate access token (ignore expiry date since its probably expired) (decode and find user_id)
-    const user_id = await verifyAccessToken(accessToken);
+    const user_id = await verifyAccessToken(accessToken, true);
     // If access token is invalid
     if (!user_id) {
       return res.status(401).json({
