@@ -4,14 +4,14 @@
  *
  */
 
-import jwt from "jsonwebtoken";
+import { verifyAccessToken } from "../helpers/auth";
 
-export default (req, res, next) => {
+export default async (req, res, next) => {
   try {
     const accessToken = req.headers.authorization.split(" ")[1];
-    if (jwt.verify(accessToken, process.env.TOKEN_SECRET)) {
-      return next();
-    }
+    const user_id = await verifyAccessToken(accessToken, false);
+    res.locals.user_id = user_id;
+    next();
   } catch (error) {
     res.status(401).json({ errors: [error.name] });
   }
