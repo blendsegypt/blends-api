@@ -57,6 +57,11 @@ module.exports = function (sequelize, DataTypes) {
         allowNull: false,
         unique: true,
       },
+      wallet: {
+        type: DataTypes.DOUBLE,
+        allowNull: false,
+        defaultValue: 0.0,
+      }
     },
     {
       // Other model options go here
