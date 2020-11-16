@@ -89,7 +89,7 @@ const applyPromoCode = (promoCode, order) => {
       if (promoCode.free_product != null) {
         order.orderItems.push({
           product_id: promoCode.free_product,
-          quantity: 1,
+          quantity: promoCode.free_product_quantity,
           options: [],
           price: 0,
         });
