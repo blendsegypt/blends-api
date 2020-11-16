@@ -1,12 +1,12 @@
-import DB from "../models";
+import DB from "../../models";
 import Express from "express";
-import validatePhoneNumber from "../helpers/validatePhoneNumber";
+import validatePhoneNumber from "../../helpers/validatePhoneNumber";
 import {
   comparePassword,
   generateAccessToken,
   generateRefreshToken,
   bcryptHash,
-} from "../helpers/auth";
+} from "../../helpers/auth";
 const router = Express.Router();
 
 router.post("/", async (req, res) => {

@@ -13,11 +13,11 @@ import RefreshToken from "../controllers/app/RefreshToken";
 import Orders from "../controllers/app/Orders";
 
 // route controllers
-router.use("/products", authenticate, Products);
+router.use("/products", authenticateUser, Products);
 router.use("/apply-promo-code", ApplyPromoCodes);
 router.use("/register", Register);
 router.use("/auth/login", Login);
 router.use("/auth/refresh", RefreshToken);
-router.use("/orders", authenticate, Orders);
+router.use("/orders", authenticateUser, Orders);
 
 export default router;

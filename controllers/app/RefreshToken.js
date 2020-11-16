@@ -1,4 +1,4 @@
-import DB from "../models";
+import DB from "../../models";
 import Express from "express";
 const router = Express.Router();
 import {
@@ -6,7 +6,7 @@ import {
   generateRefreshToken,
   generateAccessToken,
   bcryptHash,
-} from "../helpers/auth";
+} from "../../helpers/auth";
 import bcrypt from "bcryptjs";
 
 //refresh access token using refresh token

@@ -1,10 +1,14 @@
-import DB from "../models";
+import DB from "../../models";
 import Express from "express";
 const router = Express.Router();
-import generateOTP from "../helpers/generateOTP";
-import validatePhoneNumber from "../helpers/validatePhoneNumber";
-import { validateUserFields } from "../helpers/users";
-import { generateReferralCode, validateReferral, applyReferral } from "../helpers/referrals";
+import generateOTP from "../../helpers/generateOTP";
+import validatePhoneNumber from "../../helpers/validatePhoneNumber";
+import { validateUserFields } from "../../helpers/users";
+import {
+  generateReferralCode,
+  validateReferral,
+  applyReferral,
+} from "../../helpers/referrals";
 
 //verify phone number and send OTP
 router.post("/verify/phone", async (req, res) => {
@@ -110,8 +114,13 @@ router.post("/finish", async (req, res) => {
       });
     }
     // apply referal to users
-    if (user.hasOwnProperty("referring_user_code") && user.referring_user_code !== "") {
-      const [referralErrors, referringUser] = await validateReferral(user.referring_user_code);
+    if (
+      user.hasOwnProperty("referring_user_code") &&
+      user.referring_user_code !== ""
+    ) {
+      const [referralErrors, referringUser] = await validateReferral(
+        user.referring_user_code
+      );
       if (referralErrors.length > 0) {
         return res.status(400).json({
           errors: referralErrors,
@@ -119,8 +128,7 @@ router.post("/finish", async (req, res) => {
       }
       user.referred_by_id = referringUser.id;
       referralValid = true;
-    }
-    else {
+    } else {
       user.referred_by_id = null;
     }
     const newUser = await DB.User.create({

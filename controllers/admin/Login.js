@@ -1,7 +1,7 @@
-import DB from "../models";
+import DB from "../../models";
 import Express from "express";
-import { comparePassword } from "../helpers/auth";
-import { validateEmail, generateAccessToken } from "../helpers/adminAuth";
+import { comparePassword } from "../../helpers/auth";
+import { validateEmail, generateAccessToken } from "../../helpers/adminAuth";
 const router = Express.Router();
 
 const accessDenied = (res) => {
