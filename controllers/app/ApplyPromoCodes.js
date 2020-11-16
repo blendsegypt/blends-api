@@ -6,7 +6,7 @@ import {
   getPromoCode,
   checkUsage,
   applyPromoCode,
-} from "../helpers/applyPromoCodes";
+} from "../../helpers/applyPromoCodes";
 
 // apply promo code
 router.post("/", async (req, res) => {

@@ -1,6 +1,6 @@
-import DB from "../models";
+import DB from "../../models";
 import Express from "express";
-import { validateOrder } from "../helpers/orderValidation";
+import { validateOrder } from "../../helpers/orderValidation";
 const router = Express.Router();
 import {
   isPromoCodeExpired,
@@ -8,7 +8,7 @@ import {
   getPromoCode,
   checkUsage,
   applyPromoCode,
-} from "../helpers/applyPromoCodes";
+} from "../../helpers/applyPromoCodes";
 
 // make a new order
 router.post("/", async (req, res) => {

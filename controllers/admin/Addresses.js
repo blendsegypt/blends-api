@@ -1,4 +1,4 @@
-import DB from "../models";
+import DB from "../../models";
 import Express from "express";
 import { Op } from "Sequelize";
 

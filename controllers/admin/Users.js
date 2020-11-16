@@ -1,7 +1,11 @@
-import DB from "../models";
+import DB from "../../models";
 import Express from "express";
-import { checkIfExists } from "../helpers/users";
-import { generateReferralCode, validateReferral, applyReferral } from "../helpers/referrals";
+import { checkIfExists } from "../../helpers/users";
+import {
+  generateReferralCode,
+  validateReferral,
+  applyReferral,
+} from "../../helpers/referrals";
 const router = Express.Router();
 
 // router imports
@@ -18,8 +22,13 @@ router.post("/", async (req, res) => {
     user.phone_number = Number(user.phone_number);
     user.referral_code = generateReferralCode(user.first_name);
     // apply referal to users
-    if (user.hasOwnProperty("referring_user_code") && user.referring_user_code !== "") {
-      const [referralErrors, referringUser] = await validateReferral(user.referring_user_code);
+    if (
+      user.hasOwnProperty("referring_user_code") &&
+      user.referring_user_code !== ""
+    ) {
+      const [referralErrors, referringUser] = await validateReferral(
+        user.referring_user_code
+      );
       if (referralErrors.length > 0) {
         return res.status(400).json({
           errors: referralErrors,
