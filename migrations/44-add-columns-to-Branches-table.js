@@ -5,60 +5,43 @@ var Sequelize = require("sequelize");
 /**
  * Actions summary:
  *
- * createTable "Branches", deps: []
+ * addColumn "active" to table "Branches"
+ * addColumn "busy_threshold" to table "Branches"
+ * changeColumn "status" on table "Branches"
  *
  **/
 
 var info = {
-  revision: 18,
-  name: "create-Branches-table",
-  created: "2020-11-02T23:42:09.949Z",
+  revision: 44,
+  name: "add-columns-to-Branches-table",
+  created: "2020-11-16T17:26:07.946Z",
   comment: "",
 };
 
 var migrationCommands = function (transaction) {
   return [
     {
-      fn: "createTable",
+      fn: "addColumn",
       params: [
         "Branches",
+        "active",
         {
-          id: {
-            type: Sequelize.INTEGER,
-            field: "id",
-            autoIncrement: true,
-            primaryKey: true,
-            allowNull: false,
-          },
-          name: {
-            type: Sequelize.STRING,
-            field: "name",
-            allowNull: false,
-          },
-          type: {
-            type: Sequelize.ENUM("type1", "type2", "type3"),
-            field: "type",
-            allowNull: false,
-          },
-          status: {
-            type: Sequelize.ENUM("open", "closed", "busy", "under_maintenance"),
-            field: "status",
-            allowNull: false,
-          },
-          max_parallel_orders: {
-            type: Sequelize.INTEGER,
-            field: "max_parallel_orders",
-          },
-          createdAt: {
-            type: Sequelize.DATE,
-            field: "createdAt",
-            allowNull: false,
-          },
-          updatedAt: {
-            type: Sequelize.DATE,
-            field: "updatedAt",
-            allowNull: false,
-          },
+          type: Sequelize.BOOLEAN,
+          field: "active",
+        },
+        {
+          transaction: transaction,
+        },
+      ],
+    },
+    {
+      fn: "addColumn",
+      params: [
+        "Branches",
+        "busy_threshold",
+        {
+          type: Sequelize.INTEGER,
+          field: "busy_threshold",
         },
         {
           transaction: transaction,
@@ -70,9 +53,20 @@ var migrationCommands = function (transaction) {
 var rollbackCommands = function (transaction) {
   return [
     {
-      fn: "dropTable",
+      fn: "removeColumn",
       params: [
         "Branches",
+        "active",
+        {
+          transaction: transaction,
+        },
+      ],
+    },
+    {
+      fn: "removeColumn",
+      params: [
+        "Branches",
+        "busy_threshold",
         {
           transaction: transaction,
         },

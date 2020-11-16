@@ -7,15 +7,21 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      active: {
+        type: DataTypes.BOOLEAN,
+      },
       type: {
         type: DataTypes.ENUM("type1", "type2", "type3"),
         allowNull: false,
       },
       status: {
-        type: DataTypes.ENUM("open", "closed", "busy", "other"),
+        type: DataTypes.ENUM("open", "closed", "busy", "under_maintenance"),
         allowNull: false,
       },
       max_parallel_orders: {
+        type: DataTypes.INTEGER,
+      },
+      busy_threshold: {
         type: DataTypes.INTEGER,
       },
     },
