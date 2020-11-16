@@ -2,21 +2,21 @@ import Express from "express";
 const router = Express.Router();
 
 //Auth Middleware
-import authenticate from "../middleware/authenticate";
+import authenticateUser from "../middleware/authenticateUser";
 
 // import app controllers
-import ProductAsUser from "../controllers/productAsUser"; // app
-import ApplyPromoCodes from "../controllers/applyPromoCodes"; // app
-import Register from "../controllers/register";
-import UserLogin from "../controllers/userLogin";
-import RefreshToken from "../controllers/refreshToken";
-import Orders from "../controllers/ordersAsUser";
+import Products from "../controllers/app/Products"; // app
+import ApplyPromoCodes from "../controllers/app/ApplyPromoCodes"; // app
+import Register from "../controllers/app/Register";
+import Login from "../controllers/app/Login";
+import RefreshToken from "../controllers/app/RefreshToken";
+import Orders from "../controllers/app/Orders";
 
 // route controllers
-router.use("/products", authenticate, ProductAsUser);
+router.use("/products", authenticate, Products);
 router.use("/apply-promo-code", ApplyPromoCodes);
 router.use("/register", Register);
-router.use("/auth/login", UserLogin);
+router.use("/auth/login", Login);
 router.use("/auth/refresh", RefreshToken);
 router.use("/orders", authenticate, Orders);
 

@@ -2,34 +2,34 @@ import Express from "express";
 const router = Express.Router();
 
 // import admin controllers
-import UserController from "../controllers/users"; // admin
-import Branches from "../controllers/branches"; // admin
-import InternalCategoriesController from "../controllers/internalCategories"; // admin
-import ProductCategoriesController from "../controllers/productCategories"; // admin
-import ProductsAsAdmin from "../controllers/productsAsAdmin"; // admin
-import ProductCustomOptions from "../controllers/productCustomOptions"; // admin
-import ProductTags from "../controllers/productTags"; // admin
-import PromoCodes from "../controllers/promoCodes"; // admin
-import Inventory from "../controllers/inventory";
-import Shipments from "../controllers/shipments";
-import OrdersAsAdmin from "../controllers/ordersAsAdmin";
-import Areas from "../controllers/areas";
-import AdminLogin from "../controllers/adminLogin";
+import Users from "../controllers/admin/Users"; // admin
+import Branches from "../controllers/admin/Branches"; // admin
+import InternalCategories from "../controllers/admin/InternalCategories"; // admin
+import ProductCategories from "../controllers/admin/ProductCategories"; // admin
+import Products from "../controllers/admin/Products"; // admin
+import ProductCustomOptions from "../controllers/admin/ProductCustomOptions"; // admin
+import ProductTags from "../controllers/admin/ProductTags"; // admin
+import PromoCodes from "../controllers/admin/PromoCodes"; // admin
+import Inventory from "../controllers/admin/Inventory";
+import Shipments from "../controllers/admin/Shipments";
+import Orders from "../controllers/admin/Orders";
+import Areas from "../controllers/admin/Areas";
+import Login from "../controllers/admin/Login";
 import authenticateAdmin from "../middleware/authenticateAdmin";
 
 // route admin controllers
-router.use("/users", UserController);
+router.use("/users", Users);
 router.use("/branches", Branches);
-router.use("/internal-categories", InternalCategoriesController);
-router.use("/product-categories", ProductCategoriesController);
-router.use("/products", ProductsAsAdmin);
+router.use("/internal-categories", InternalCategories);
+router.use("/product-categories", ProductCategories);
+router.use("/products", Products);
 router.use("/products-custom-options", ProductCustomOptions);
 router.use("/products-tags", ProductTags);
 router.use("/promo-codes", PromoCodes);
 router.use("/inventory", Inventory);
 router.use("/shipments", Shipments);
-router.use("/orders", OrdersAsAdmin);
+router.use("/orders", Orders);
 router.use("/areas", Areas);
-router.use("/auth/login", AdminLogin);
+router.use("/auth/login", Login);
 
 export default router;
