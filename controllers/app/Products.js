@@ -7,7 +7,7 @@ router.get("/categories", async (req, res) => {
   try {
     //Get categories list
     const categories = await DB.ProductCategory.findAll({
-      attributes: ["id", "name"],
+      attributes: ["id", "name", "active"],
     });
     res.status(200).json({
       message: "Categories succesfully retreived",
