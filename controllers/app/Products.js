@@ -24,9 +24,9 @@ router.get("/categories/:category_id", async (req, res) => {
     const category_id = req.params.category_id;
     const productsFromCategory = await DB.Product.findAll({
       where: {
-        product_category: category_id,
+        product_category_id: category_id,
       },
-      attributes: ["id", "name", "price", "sale_price"],
+      attributes: ["id", "name", "price", "sale_price", "retail"],
     });
     res.status(200).json({
       message: "Products succesfully retreived",
@@ -43,9 +43,10 @@ router.get("/:product_id", async (req, res) => {
     const product_id = req.params.product_id;
     // Retrieve product attributes, tags (exclude junction table) & custom options
     const product = await DB.Product.findByPk(product_id, {
-      attributes: ["id", "name", "description"],
+      attributes: ["id", "name", "description", "price", "sale_price"],
       include: [
         {
+          as: "product_tags",
           model: DB.ProductTag,
           attributes: ["label", "color"],
           through: {
@@ -53,10 +54,12 @@ router.get("/:product_id", async (req, res) => {
           },
         },
         {
+          as: "product_custom_options",
           model: DB.ProductCustomOption,
           attributes: ["label", "icon", "mandatory", "active"],
           include: [
             {
+              as: "custom_options",
               model: DB.CustomOption,
               attributes: ["label", "price", "value", "active"],
             },
