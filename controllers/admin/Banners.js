@@ -37,7 +37,7 @@ router.get("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
   try {
     const updatedBanner = req.body;
-    const [numberOfAffectedRows] = await DB.Banners.update(updatedBanner, {
+    const [numberOfAffectedRows] = await DB.Banner.update(updatedBanner, {
       where: {
         id: req.params.id,
       },
