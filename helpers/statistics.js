@@ -13,10 +13,15 @@ const convertToDatesArray = (arrayOfObjects) => {
 // TODO: fix bad practice "total"
 const convertToValueArray = (arrayOfObjects) => {
     let valueArray = [];
+    let sum = 0.0;
     arrayOfObjects.forEach(object => {
         valueArray.push(object.total);
+        sum += object.total;
     });
-    return valueArray;
+    return [
+        valueArray,
+        sum,
+    ]
 }
 
 const isToday = (date) => {
@@ -163,7 +168,7 @@ export const calculateOrders = (ordersDates) => {
 
 export const calculateRevenue = (orders) => {
     const dateArray = convertToDatesArray(orders);
-    const revenueArray = convertToValueArray(orders);
+    const [revenueArray, total] = convertToValueArray(orders);
 
     const [
         todayCount,
@@ -171,12 +176,12 @@ export const calculateRevenue = (orders) => {
         thisMonthCount,
         previousMonthCount,
     ] = countTotalByDate(dateArray, revenueArray);
-    // const sinceLaunchCount = ordersDates.length;
+
 
     return {
         today: todayCount,
         yesterday: yesterdayCount,
-        // since_launch: sinceLaunchCount,
+        since_launch: total,
         this_month: thisMonthCount,
         previous_month: previousMonthCount,
     }
