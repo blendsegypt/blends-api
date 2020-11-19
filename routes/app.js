@@ -12,6 +12,7 @@ import Login from "../controllers/app/Login";
 import RefreshToken from "../controllers/app/RefreshToken";
 import Orders from "../controllers/app/Orders";
 import Areas from "../controllers/app/Areas";
+import Banners from "../controllers/app/Banners";
 
 // route controllers
 router.use("/products", Products);
@@ -21,5 +22,6 @@ router.use("/auth/login", Login);
 router.use("/auth/refresh", RefreshToken);
 router.use("/orders", Orders);
 router.use("/areas", Areas);
+router.use("/banners", Banners);
 
 export default router;
