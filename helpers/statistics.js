@@ -1,6 +1,7 @@
+// approach in sending as objects and destructuring using "As"
 
 
-
+// TODO: fix bad practice "UpdatedAt"
 const convertToDatesArray = (arrayOfObjects) => {
     let datesArray = [];
     arrayOfObjects.forEach(object => {
@@ -9,6 +10,14 @@ const convertToDatesArray = (arrayOfObjects) => {
     return datesArray;
 }
 
+// TODO: fix bad practice "total"
+const convertToValueArray = (arrayOfObjects) => {
+    let valueArray = [];
+    arrayOfObjects.forEach(object => {
+        valueArray.push(object.total);
+    });
+    return valueArray;
+}
 
 const isToday = (date) => {
     const today = new Date();
@@ -69,7 +78,7 @@ const countAppearance = (dateArray) => {
         if (thisMonthWeekNumber >= 0) {
             thisMonthCount.weeks[thisMonthWeekNumber]++;
             thisMonthCount.total++;
-        } w
+        }
         const previousMonthWeekNumber = isDateInMonth(date, thisYear, thisMonth - 1);
         if (previousMonthWeekNumber >= 0) {
             previousMonthCount.weeks[previousMonthWeekNumber]++;
@@ -81,6 +90,52 @@ const countAppearance = (dateArray) => {
         yesterdayCount,
         thisMonthCount,
         previousMonthCount,
+    ];
+}
+
+
+// takes array of dates and returns total count in today, yesterday, thisMonth and previousMonth
+const countTotalByDate = (dateArray, total) => {
+    let todayTotal = 0.0;
+    let yesterdayTotal = 0.0;
+
+    const today = new Date();
+    const thisYear = today.getFullYear();
+    const thisMonth = today.getMonth();
+
+    let thisMonthTotal = {
+        weeks: [0.0, 0.0, 0.0, 0.0],
+        total: 0.0,
+    }
+
+    let previousMonthTotal = {
+        weeks: [0.0, 0.0, 0.0, 0.0],
+        total: 0.0,
+    }
+
+    dateArray.forEach((date, i) => {
+        if (isToday(date)) {
+            todayTotal += total[i];
+        }
+        if (isYesterday(date)) {
+            yesterdayTotal += total[i];
+        }
+        const thisMonthWeekNumber = isDateInMonth(date, thisYear, thisMonth);
+        if (thisMonthWeekNumber >= 0) {
+            thisMonthTotal.weeks[thisMonthWeekNumber] += total[i];
+            thisMonthTotal.total += total[i];
+        }
+        const previousMonthWeekNumber = isDateInMonth(date, thisYear, thisMonth - 1);
+        if (previousMonthWeekNumber >= 0) {
+            previousMonthTotal.weeks[previousMonthWeekNumber] += total[i];
+            previousMonthTotal.total += total[i];
+        }
+    });
+    return [
+        todayTotal,
+        yesterdayTotal,
+        thisMonthTotal,
+        previousMonthTotal,
     ];
 }
 
@@ -101,6 +156,27 @@ export const calculateOrders = (ordersDates) => {
         today: todayCount,
         yesterday: yesterdayCount,
         since_launch: sinceLaunchCount,
+        this_month: thisMonthCount,
+        previous_month: previousMonthCount,
+    }
+}
+
+export const calculateRevenue = (orders) => {
+    const dateArray = convertToDatesArray(orders);
+    const revenueArray = convertToValueArray(orders);
+
+    const [
+        todayCount,
+        yesterdayCount,
+        thisMonthCount,
+        previousMonthCount,
+    ] = countTotalByDate(dateArray, revenueArray);
+    // const sinceLaunchCount = ordersDates.length;
+
+    return {
+        today: todayCount,
+        yesterday: yesterdayCount,
+        // since_launch: sinceLaunchCount,
         this_month: thisMonthCount,
         previous_month: previousMonthCount,
     }
