@@ -6,6 +6,9 @@ module.exports = function (sequelize, DataTypes) {
       order: {
         type: DataTypes.INTEGER,
       },
+      product_image_url: {
+        type: DataTypes.STRING,
+      },
       name: {
         type: DataTypes.STRING,
         allowNull: false,

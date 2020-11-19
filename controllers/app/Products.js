@@ -26,7 +26,14 @@ router.get("/categories/:category_id", async (req, res) => {
       where: {
         product_category_id: category_id,
       },
-      attributes: ["id", "name", "price", "sale_price", "retail"],
+      attributes: [
+        "id",
+        "name",
+        "price",
+        "sale_price",
+        "retail",
+        "product_image_url",
+      ],
     });
     res.status(200).json({
       message: "Products succesfully retreived",
@@ -43,7 +50,14 @@ router.get("/:product_id", async (req, res) => {
     const product_id = req.params.product_id;
     // Retrieve product attributes, tags (exclude junction table) & custom options
     const product = await DB.Product.findByPk(product_id, {
-      attributes: ["id", "name", "description", "price", "sale_price"],
+      attributes: [
+        "id",
+        "name",
+        "description",
+        "price",
+        "sale_price",
+        "product_image_url",
+      ],
       include: [
         {
           as: "product_tags",

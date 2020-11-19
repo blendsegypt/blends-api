@@ -16,6 +16,8 @@ import Orders from "../controllers/admin/Orders";
 import Areas from "../controllers/admin/Areas";
 import Login from "../controllers/admin/Login";
 import authenticateAdmin from "../middleware/authenticateAdmin";
+// utilities
+import ImagesUpload from "../controllers/admin/ImagesUpload";
 
 // route admin controllers
 router.use("/users", Users);
@@ -31,5 +33,6 @@ router.use("/shipments", Shipments);
 router.use("/orders", Orders);
 router.use("/areas", Areas);
 router.use("/auth/login", Login);
+router.use("/images", ImagesUpload);
 
 export default router;
