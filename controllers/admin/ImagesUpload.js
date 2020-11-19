@@ -26,8 +26,13 @@ const uploadS3 = Multer({
 
 //Upload image to S3
 router.post("/upload", uploadS3.single("file"), async (req, res) => {
-  const file = req.file;
-  console.log(file);
+  const URL = req.file.location;
+  res.status(200).json({
+    message: "Image uploaded succesfully",
+    data: {
+      URL,
+    },
+  });
 });
 
 export default router;
