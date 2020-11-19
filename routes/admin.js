@@ -16,6 +16,7 @@ import Orders from "../controllers/admin/Orders";
 import Areas from "../controllers/admin/Areas";
 import Login from "../controllers/admin/Login";
 import authenticateAdmin from "../middleware/authenticateAdmin";
+import adminStatisics from "../controllers/admin/Statistics";
 
 // route admin controllers
 router.use("/users", Users);
@@ -31,5 +32,6 @@ router.use("/shipments", Shipments);
 router.use("/orders", Orders);
 router.use("/areas", Areas);
 router.use("/auth/login", Login);
+router.use("/statistics", adminStatisics);
 
 export default router;
