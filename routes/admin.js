@@ -14,6 +14,7 @@ import Inventory from "../controllers/admin/Inventory";
 import Shipments from "../controllers/admin/Shipments";
 import Orders from "../controllers/admin/Orders";
 import Areas from "../controllers/admin/Areas";
+import Banners from "../controllers/admin/Banners";
 import Login from "../controllers/admin/Login";
 import authenticateAdmin from "../middleware/authenticateAdmin";
 // utilities
@@ -34,5 +35,6 @@ router.use("/orders", Orders);
 router.use("/areas", Areas);
 router.use("/auth/login", Login);
 router.use("/images", ImagesUpload);
+router.use("/banners", Banners);
 
 export default router;

@@ -11,8 +11,8 @@ var Sequelize = require('sequelize');
 
 var info = {
     "revision": 49,
-    "name": "create-Banners_table",
-    "created": "2020-11-19T12:35:47.841Z",
+    "name": "create-Banners-table",
+    "created": "2020-11-19T12:48:11.878Z",
     "comment": ""
 };
 
@@ -34,7 +34,7 @@ var migrationCommands = function(transaction) {
                     "field": "description"
                 },
                 "product_id": {
-                    "type": Sequelize.ARRAY(Sequelize.STRING),
+                    "type": Sequelize.INTEGER,
                     "field": "product_id"
                 },
                 "banner_image_url": {

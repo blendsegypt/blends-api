@@ -7,7 +7,7 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.STRING,
       },
       product_id: {
-        type: DataTypes.ARRAY(DataTypes.STRING),
+        type: DataTypes.INTEGER,
       },
       banner_image_url: {
         type: DataTypes.STRING,
