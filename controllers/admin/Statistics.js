@@ -1,12 +1,12 @@
 import DB from "../../models";
 import Express from "express";
-import { calculateOrders, calculateRevenue } from "../../helpers/statistics"
+import { calculateOrders, calculateRevenue, calculateUsers } from "../../helpers/statistics"
 
 
 const router = Express.Router();
 
 
-router.get("/delivered-orders-count", async (req, res) => {
+router.get("/delivered-orders", async (req, res) => {
     try {
         const deliveredOrderDates = await DB.Order.findAll({
             attributes: ["updatedAt"],
@@ -44,8 +44,19 @@ router.get("/revenue", async (req, res) => {
 });
 
 
-router.get("/new-users", async (req, res) => {
-
+router.get("/created-users", async (req, res) => {
+    try {
+        const usersCreationDates = await DB.User.findAll({
+            attributes: ["createdAt"],
+            raw: true,
+        });
+        res.status(200).json({
+            message: "Users creation count retrieved successful",
+            data: calculateUsers(usersCreationDates),
+        });
+    } catch (error) {
+        res.status(500).json({ error_message: error.message });
+    }
 });
 
 
