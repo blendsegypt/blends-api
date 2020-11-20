@@ -11,13 +11,17 @@ import Register from "../controllers/app/Register";
 import Login from "../controllers/app/Login";
 import RefreshToken from "../controllers/app/RefreshToken";
 import Orders from "../controllers/app/Orders";
+import Areas from "../controllers/app/Areas";
+import Banners from "../controllers/app/Banners";
 
 // route controllers
-router.use("/products", authenticateUser, Products);
+router.use("/products", Products);
 router.use("/apply-promo-code", ApplyPromoCodes);
 router.use("/register", Register);
 router.use("/auth/login", Login);
 router.use("/auth/refresh", RefreshToken);
-router.use("/orders", authenticateUser, Orders);
+router.use("/orders", Orders);
+router.use("/areas", Areas);
+router.use("/banners", Banners);
 
 export default router;

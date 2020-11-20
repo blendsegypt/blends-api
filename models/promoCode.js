@@ -8,6 +8,12 @@ module.exports = function (sequelize, DataTypes) {
         allowNull: false,
         unique: true,
       },
+      active: {
+        type: DataTypes.BOOLEAN,
+      },
+      free_product_quantity: {
+        type: DataTypes.INTEGER,
+      },
       type: {
         type: DataTypes.ENUM(
           "percentage",
