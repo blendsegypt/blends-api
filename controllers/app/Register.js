@@ -113,6 +113,8 @@ router.post("/finish", async (req, res) => {
         errors: "PHONE_NOT_VERIFIED",
       });
     }
+    // Remove OTP record
+    await OTPrecord.destroy();
     // apply referal to users
     if (
       user.hasOwnProperty("referring_user_code") &&
