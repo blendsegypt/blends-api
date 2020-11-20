@@ -3,7 +3,7 @@ import Express from "express";
 const router = Express.Router();
 import generateOTP from "../../helpers/generateOTP";
 import validatePhoneNumber from "../../helpers/validatePhoneNumber";
-import { validateUserFields } from "../../helpers/users";
+import { validateUserFields, hashPassword } from "../../helpers/users";
 import {
   generateReferralCode,
   validateReferral,
@@ -133,13 +133,14 @@ router.post("/finish", async (req, res) => {
     } else {
       user.referred_by_id = null;
     }
+    const hashedPassword = hashPassword(user.password);
     const newUser = await DB.User.create({
       first_name: user.first_name,
       last_name: user.last_name,
       phone_number: user.phone_number,
       platform: user.platform,
-      password_hash: user.password_hash,
-      password_salt: user.password_salt,
+      password_hash: hashedPassword.hash,
+      password_salt: hashedPassword.salt,
       referral_code: generateReferralCode(user.first_name),
       referred_by_id: user.referred_by_id,
     });

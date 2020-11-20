@@ -1,7 +1,7 @@
 import DB from "../models";
 import { Op } from "Sequelize";
-import vaalidatePhoneNumber from "./validatePhoneNumber";
 import validatePhoneNumber from "./validatePhoneNumber";
+import bcrypt from "bcryptjs";
 
 // Define unique validation errors and return a string of errors
 const generateErrors = function (
@@ -101,4 +101,14 @@ const validateUserFields = (user) => {
   return errors;
 };
 
-export { checkIfExists, validateUserFields };
+const hashPassword = (password) => {
+  const salt = bcrypt.genSaltSync(10);
+  const hash = bcrypt.hashSync(password, salt);
+
+  return {
+    salt,
+    hash,
+  };
+};
+
+export { checkIfExists, validateUserFields, hashPassword };
