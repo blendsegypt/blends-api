@@ -9,19 +9,20 @@ export const isYesterday = (date) => {
     return (date.toDateString() === yesterday.toDateString());
 }
 
-// returns number of week in month starting from 0 to 3
-export const isDateInMonth = (date, year, month) => {
+// returns week nuber in month in year starting from 0 to 3
+export const isDateInYearInMonth = (date, year, month) => {
     const weeks = [
         new Date(year, month), // last day of previous month
         new Date(year, month, 8),
         new Date(year, month, 15),
+        new Date(year, month, 22),
         new Date(year, month + 1), // last day of this month
     ]
 
-    for (let i = 0; i < 4; i++) {
-        if (date > weeks[i] && date <= weeks[i + 1]) {
-            return i;
+    for (let weekNumber = 0; weekNumber < 4; weekNumber++) {
+        if (date >= weeks[weekNumber] && date < weeks[weekNumber + 1]) {
+            return weekNumber;
         }
     }
-    return -2500;
+    return -2500; // not a week number
 }
