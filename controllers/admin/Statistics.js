@@ -1,6 +1,6 @@
 import DB from "../../models";
 import Express from "express";
-import { calculateOrders, calculateRevenue, calculateUsers } from "../../helpers/statistics"
+import { countUsers, calculateRevenue, countOrders } from "../../helpers/statistics"
 
 
 const router = Express.Router();
@@ -15,9 +15,10 @@ router.get("/delivered-orders", async (req, res) => {
             },
             raw: true,
         });
+        const ordersStatistics = countOrders(deliveredOrderDates);
         res.status(200).json({
             message: "Delivered orders count retrieved successful",
-            data: calculateOrders(deliveredOrderDates),
+            data: ordersStatistics,
         });
     } catch (error) {
         res.status(500).json({ error_message: error.message });
@@ -34,9 +35,10 @@ router.get("/revenue", async (req, res) => {
             },
             raw: true,
         });
+        const revenueStatistics = calculateRevenue(deliveredOrders);
         res.status(200).json({
             message: "Revenue retrieved successful",
-            data: calculateRevenue(deliveredOrders),
+            data: revenueStatistics,
         });
     } catch (error) {
         res.status(500).json({ error_message: error.message });
@@ -50,9 +52,10 @@ router.get("/created-users", async (req, res) => {
             attributes: ["createdAt"],
             raw: true,
         });
+        const usersStatistics = countUsers(usersCreationDates);
         res.status(200).json({
             message: "Users creation count retrieved successful",
-            data: calculateUsers(usersCreationDates),
+            data: usersStatistics,
         });
     } catch (error) {
         res.status(500).json({ error_message: error.message });
