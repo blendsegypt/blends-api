@@ -17,6 +17,7 @@ import Areas from "../controllers/admin/Areas";
 import Banners from "../controllers/admin/Banners";
 import Login from "../controllers/admin/Login";
 import authenticateAdmin from "../middleware/authenticateAdmin";
+import adminStatisics from "../controllers/admin/Statistics";
 // utilities
 import ImagesUpload from "../controllers/admin/ImagesUpload";
 
@@ -34,6 +35,7 @@ router.use("/shipments", Shipments);
 router.use("/orders", Orders);
 router.use("/areas", Areas);
 router.use("/auth/login", Login);
+router.use("/statistics", adminStatisics);
 router.use("/images", ImagesUpload);
 router.use("/banners", Banners);
 
