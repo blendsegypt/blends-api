@@ -1,7 +1,7 @@
-import { isToday, isYesterday, isDateInMonth } from "./dateChecks";
+import { isToday, isYesterday, isDateInYearInMonth } from "./dateChecks";
 
 // takes array of dates and returns appearance count in today, yesterday, thisMonth and previousMonth
-const countAppearance = (dateArray) => {
+const countByDate = (dateArray) => {
     const today = new Date();
     const thisYear = today.getFullYear();
     const thisMonth = today.getMonth();
@@ -24,28 +24,28 @@ const countAppearance = (dateArray) => {
         if (isYesterday(date)) {
             yesterdayCount++;
         }
-        const thisMonthWeekNumber = isDateInMonth(date, thisYear, thisMonth);
+        const thisMonthWeekNumber = isDateInYearInMonth(date, thisYear, thisMonth);
         if (thisMonthWeekNumber >= 0) {
             thisMonthCount.weeks[thisMonthWeekNumber]++;
             thisMonthCount.total++;
         }
-        const previousMonthWeekNumber = isDateInMonth(date, thisYear, thisMonth - 1);
+        const previousMonthWeekNumber = isDateInYearInMonth(date, thisYear, thisMonth - 1);
         if (previousMonthWeekNumber >= 0) {
             previousMonthCount.weeks[previousMonthWeekNumber]++;
             previousMonthCount.total++;
         }
     });
-    return [
+    return {
         todayCount,
         yesterdayCount,
         thisMonthCount,
         previousMonthCount,
-    ];
+    };
 }
 
 
-// takes array of dates and returns total count in today, yesterday, thisMonth and previousMonth
-const countTotalByDate = (dateArray, total) => {
+// takes array of dates and amounts and returns total amounts in today, yesterday, thisMonth and previousMonth
+const calculateTotalByDate = (dateArray, amounts) => {
     const today = new Date();
     const thisYear = today.getFullYear();
     const thisMonth = today.getMonth();
@@ -63,101 +63,79 @@ const countTotalByDate = (dateArray, total) => {
 
     dateArray.forEach((date, i) => {
         if (isToday(date)) {
-            todayTotal += total[i];
+            todayTotal += amounts[i];
         }
         if (isYesterday(date)) {
-            yesterdayTotal += total[i];
+            yesterdayTotal += amounts[i];
         }
-        const thisMonthWeekNumber = isDateInMonth(date, thisYear, thisMonth);
+        const thisMonthWeekNumber = isDateInYearInMonth(date, thisYear, thisMonth);
         if (thisMonthWeekNumber >= 0) {
-            thisMonthTotal.weeks[thisMonthWeekNumber] += total[i];
-            thisMonthTotal.total += total[i];
+            thisMonthTotal.weeks[thisMonthWeekNumber] += amounts[i];
+            thisMonthTotal.total += amounts[i];
         }
-        const previousMonthWeekNumber = isDateInMonth(date, thisYear, thisMonth - 1);
+        const previousMonthWeekNumber = isDateInYearInMonth(date, thisYear, thisMonth - 1);
         if (previousMonthWeekNumber >= 0) {
-            previousMonthTotal.weeks[previousMonthWeekNumber] += total[i];
-            previousMonthTotal.total += total[i];
+            previousMonthTotal.weeks[previousMonthWeekNumber] += amounts[i];
+            previousMonthTotal.total += amounts[i];
         }
     });
-    return [
+    return {
         todayTotal,
         yesterdayTotal,
         thisMonthTotal,
         previousMonthTotal,
-    ];
+    };
 }
 
 
-export const calculateOrders = (ordersDates) => {
+export const countOrders = (ordersDates) => {
     const dateArray = [];
+    const sinceLaunchCount = ordersDates.length;
     ordersDates.forEach(object => {
         dateArray.push(new Date(object.updatedAt));
     });
-
-    const [
-        todayCount,
-        yesterdayCount,
-        thisMonthCount,
-        previousMonthCount,
-    ] = countAppearance(dateArray);
-    const sinceLaunchCount = ordersDates.length;
-
+    const countedOrdersData = countByDate(dateArray);
     return {
-        today: todayCount,
-        yesterday: yesterdayCount,
+        today: countedOrdersData.todayCount,
+        yesterday: countedOrdersData.yesterdayCount,
         since_launch: sinceLaunchCount,
-        this_month: thisMonthCount,
-        previous_month: previousMonthCount,
+        this_month: countedOrdersData.thisMonthCount,
+        previous_month: countedOrdersData.previousMonthCount,
     }
 }
 
 export const calculateRevenue = (orders) => {
     const [dateArray, revenueArray] = [[], []];
-    let totalRevenue;
-
+    let totalRevenue = 0;
     orders.forEach(object => {
         dateArray.push(new Date(object.updatedAt));
         revenueArray.push(object.total);
         totalRevenue += object.total;
     });
-
-    const [
-        todayCount,
-        yesterdayCount,
-        thisMonthCount,
-        previousMonthCount,
-    ] = countTotalByDate(dateArray, revenueArray);
-
-
+    const calculatedRevenueData = calculateTotalByDate(dateArray, revenueArray);
+    console.log(calculatedRevenueData);
     return {
-        today: todayCount,
-        yesterday: yesterdayCount,
+        today: calculatedRevenueData.todayTotal,
+        yesterday: calculatedRevenueData.yesterdayTotal,
         since_launch: totalRevenue,
-        this_month: thisMonthCount,
-        previous_month: previousMonthCount,
+        this_month: calculatedRevenueData.thisMonthTotal,
+        previous_month: calculatedRevenueData.previousMonthTotal,
     }
 }
 
-export const calculateUsers = (userCreationDates) => {
+export const countUsers = (userCreationDates) => {
 
     const dateArray = [];
+    const sinceLaunchCount = userCreationDates.length;
     userCreationDates.forEach(object => {
         dateArray.push(new Date(object.createdAt));
     });
-
-    const [
-        todayCount,
-        yesterdayCount,
-        thisMonthCount,
-        previousMonthCount,
-    ] = countAppearance(dateArray);
-    const sinceLaunchCount = userCreationDates.length;
-
+    const countedUsersData = countByDate(dateArray);
     return {
-        today: todayCount,
-        yesterday: yesterdayCount,
+        today: countedUsersData.todayCount,
+        yesterday: countedUsersData.yesterdayCount,
         since_launch: sinceLaunchCount,
-        this_month: thisMonthCount,
-        previous_month: previousMonthCount,
+        this_month: countedUsersData.thisMonthCount,
+        previous_month: countedUsersData.previousMonthCount,
     }
 }
