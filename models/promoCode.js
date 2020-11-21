@@ -50,6 +50,17 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.DOUBLE,
         defaultValue: 0.0,
       },
+      limited: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
+      max_usage_per_code: {
+        type: DataTypes.INTEGER,
+      },
+      usage_count: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+      }
     },
     {
       // Other model options go here
