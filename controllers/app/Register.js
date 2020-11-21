@@ -9,6 +9,7 @@ import {
   validateReferral,
   applyReferral,
 } from "../../helpers/referrals";
+import { generateAccessToken, generateRefreshToken } from "../../helpers/auth";
 
 //verify phone number and send OTP
 router.post("/verify/phone", async (req, res) => {
@@ -148,6 +149,12 @@ router.post("/finish", async (req, res) => {
     if (referralValid) {
       await applyReferral(newUser.id, newUser.referred_by_id);
     }
+    // Attach access/refresh tokens to response headers
+    // Generate access/refresh tokens
+    const accessToken = generateAccessToken(newUser);
+    const refreshToken = generateRefreshToken();
+    res.setHeader("access-token", accessToken);
+    res.setHeader("refresh-token", refreshToken);
     return res.status(201).json({
       message: "User was created",
       data: {
