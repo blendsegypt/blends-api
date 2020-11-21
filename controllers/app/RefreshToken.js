@@ -13,7 +13,7 @@ import bcrypt from "bcryptjs";
 router.post("/", async (req, res) => {
   try {
     const refreshToken = req.body.refreshToken;
-    const accessToken = req.headers.authorization.split(" ")[1];
+    const accessToken = req.body.accessToken;
     // Validate access token (ignore expiry date since its probably expired) (decode and find user_id)
     const user_id = await verifyAccessToken(accessToken, true);
     // If access token is invalid
