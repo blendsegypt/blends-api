@@ -17,12 +17,16 @@ const isMinAmountReached = (subTotal, minAmount) => {
 
 // returns promo code
 const getPromoCode = async (order) => {
-  const promoCode = await DB.PromoCode.findOne({
-    where: {
-      code: order.promo_code,
-    },
-  });
-  return promoCode;
+  try {
+    const promoCode = await DB.PromoCode.findOne({
+      where: {
+        code: order.promo_code,
+      },
+    });
+    return promoCode;
+  } catch (error) {
+    throw error;
+  }
 };
 
 // checks and update user usage for promoCode
