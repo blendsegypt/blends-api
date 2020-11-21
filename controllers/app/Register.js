@@ -150,11 +150,12 @@ router.post("/finish", async (req, res) => {
     }
     return res.status(201).json({
       message: "User was created",
-      user: {
+      data: {
         first_name: newUser.first_name,
         last_name: newUser.last_name,
         phone_numer: newUser.phone_number,
-        platform: newUser.platform,
+        referral_code: newUser.referral_code,
+        wallet: newUser.wallet,
       },
     });
   } catch (error) {
