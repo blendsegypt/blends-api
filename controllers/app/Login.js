@@ -23,19 +23,34 @@ router.post("/", async (req, res) => {
       where: {
         phone_number,
       },
+      attributes: [
+        "id",
+        "first_name",
+        "last_name",
+        "password_hash",
+        "phone_number",
+        "referral_code",
+        "wallet",
+      ],
+      include: [
+        {
+          as: "addresses",
+          model: DB.Address,
+        },
+      ],
     });
 
     // If there's no records for that user then return 404
     if (!user) {
       return res.status(404).json({
-        errors: ["INVALID_CREDENTIALS"],
+        error: "INVALID_CREDENTIALS",
       });
     }
 
     // If wrong password (invalid phone_number/password to avoid guessing passwords)
     if (!comparePassword(password, user.password_hash)) {
       return res.status(400).json({
-        errors: ["INVALID_PHONE_NUMBER/PASSWORD"],
+        error: "INVALID_CREDENTIALS",
       });
     }
 
@@ -62,6 +77,15 @@ router.post("/", async (req, res) => {
     res.setHeader("refresh-token", refreshToken);
     res.status(200).json({
       message: "User Logged In succesfully",
+      data: {
+        id: user.id,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        phone_number: user.phone_number,
+        referral_code: user.referral_code,
+        wallet: user.wallet,
+        addresses: user.addresses,
+      },
     });
   } catch (errors) {
     res.status(500).json({ error_message: errors.message });
