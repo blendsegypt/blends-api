@@ -20,7 +20,7 @@ router.use("/apply-promo-code", ApplyPromoCodes);
 router.use("/register", Register);
 router.use("/auth/login", Login);
 router.use("/auth/refresh", RefreshToken);
-router.use("/orders", Orders);
+router.use("/orders", authenticateUser, Orders);
 router.use("/areas", Areas);
 router.use("/banners", Banners);
 
