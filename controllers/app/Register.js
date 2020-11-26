@@ -52,6 +52,47 @@ router.post("/verify/phone", async (req, res) => {
   }
 });
 
+//resend OTP
+router.post("/resend/otp", async (req, res) => {
+  try {
+    //Check if phone number is valid
+    const phone_number = req.body.phone_number;
+    if (!validatePhoneNumber(phone_number)) {
+      return res.status(400).json({
+        errors: ["INVALID_PHONE_NUMBER"],
+      });
+    }
+    //Check if phone number already has an OTP and delete the record
+    const previousOTP = await DB.OTP.destroy({
+      where: {
+        phone_number,
+      },
+    });
+    if (!previousOTP) {
+      return res.status(400).json({
+        errors: ["NO_PREVIOUS_ATTEMPTS"],
+      });
+    }
+    // Generate OTP
+    const OTP = generateOTP();
+    // Create a record in OTP table
+    await DB.OTP.create({
+      phone_number,
+      OTP,
+    });
+    /*
+
+      To be coded: BulkSMS api request to send OTP
+
+    */
+    res.status(200).json({
+      message: "OTP Sent",
+    });
+  } catch (error) {
+    res.status(500).json({ error_message: error.message });
+  }
+});
+
 //verify OTP
 router.post("/verify/OTP", async (req, res) => {
   try {
@@ -114,7 +155,6 @@ router.post("/finish", async (req, res) => {
         errors: "PHONE_NOT_VERIFIED",
       });
     }
-    console.log("TEST");
     // Remove OTP record
     await OTPrecord.destroy();
     // apply referal to users
