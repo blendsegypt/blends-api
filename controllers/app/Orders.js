@@ -57,4 +57,98 @@ router.post("/", async (req, res) => {
   }
 });
 
+//Retrieve user orders
+router.get("/", async (req, res) => {
+  try {
+    const user_id = res.locals.user_id;
+    const orders = await DB.Order.findAll({
+      where: {
+        user_id,
+      },
+      attributes: ["id", "order_status", "createdAt"],
+    });
+    res.status(200).json({
+      message: "Orders retrieved succesfully",
+      data: orders,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error_message: error.message,
+    });
+  }
+});
+
+//Retrieve order by ID
+router.get("/order/:id", async (req, res) => {
+  try {
+    const order_id = req.params.id;
+    const order = await DB.Order.findOne({
+      where: {
+        id: order_id,
+      },
+      attributes: ["id", "order_status", "createdAt", "delivered_at"],
+      include: [
+        {
+          model: DB.Address,
+          attributes: ["nickname"],
+        },
+        {
+          as: "OrderItems",
+          model: DB.OrderItem,
+          include: [
+            {
+              model: DB.Product,
+              attributes: ["name", "product_image_url"],
+            },
+          ],
+        },
+      ],
+    });
+    res.status(200).json({
+      message: "Order retrieved succesfully",
+      data: order,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error_message: error.message,
+    });
+  }
+});
+
+//Get recent ordered items
+router.get("/recent", async (req, res) => {
+  try {
+    const user_id = res.locals.user_id;
+    const recentOrders = await DB.Order.findAll({
+      where: {
+        user_id,
+      },
+      limit: 5,
+      order: [["createdAt", "DESC"]],
+      attributes: ["createdAt"],
+      include: [
+        {
+          as: "OrderItems",
+          model: DB.OrderItem,
+          attributes: ["id"],
+          include: [
+            {
+              model: DB.Product,
+              attributes: ["id", "name", "product_image_url"],
+            },
+          ],
+        },
+      ],
+    });
+    res.status(200).json({
+      message: "Recent Orders succesfully retrieved",
+      data: recentOrders,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error_message: error.message,
+    });
+  }
+});
+
 export default router;
