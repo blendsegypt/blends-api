@@ -25,6 +25,7 @@ router.get("/categories/:category_id", async (req, res) => {
     const productsFromCategory = await DB.Product.findAll({
       where: {
         product_category_id: category_id,
+        listed: true,
       },
       attributes: [
         "id",

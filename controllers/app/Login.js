@@ -36,6 +36,21 @@ router.post("/", async (req, res) => {
         {
           as: "addresses",
           model: DB.Address,
+          include: [
+            {
+              model: DB.Area,
+              attributes: ["id", "name"],
+              include: [
+                {
+                  model: DB.Branch,
+                  attributes: ["id"],
+                  through: {
+                    attributes: [],
+                  },
+                },
+              ],
+            },
+          ],
         },
       ],
     });

@@ -114,6 +114,7 @@ router.post("/finish", async (req, res) => {
         errors: "PHONE_NOT_VERIFIED",
       });
     }
+    console.log("TEST");
     // Remove OTP record
     await OTPrecord.destroy();
     // apply referal to users
@@ -148,6 +149,7 @@ router.post("/finish", async (req, res) => {
     // apply referral reward to both users
     if (referralValid) {
       await applyReferral(newUser.id, newUser.referred_by_id);
+      newUser.wallet = 20;
     }
     // Attach access/refresh tokens to response headers
     // Generate access/refresh tokens

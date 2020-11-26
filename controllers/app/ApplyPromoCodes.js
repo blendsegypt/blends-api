@@ -17,24 +17,24 @@ router.post("/", async (req, res) => {
     if (promoCode != null) {
       // promo code exists
       if (isPromoCodeExpired(promoCode)) {
-        return res.status(201).json({
-          message: "Promo code is expired",
+        return res.status(400).json({
+          message: "This Promocode is expired",
         });
       }
       if (!isMinAmountReached(order.sub_total, promoCode.min_order_value)) {
-        return res.status(201).json({
-          message: `Order value must be at least: ${promoCode.min_order_value}EGP`,
+        return res.status(400).json({
+          message: `Order value must be at least: ${promoCode.min_order_value} EGP`,
         });
       }
       // Check usage (preview=true)
       if ((await checkUsage(promoCode, order.user_id, true)) === false) {
-        return res.status(201).json({
+        return res.status(400).json({
           message:
             "Promo code can't be used, reached maximum number of attempts",
         });
       }
       const newOrder = applyPromoCode(promoCode, order);
-      return res.status(201).json({
+      return res.status(200).json({
         message: "Promo code applied succesfully",
         order: newOrder,
       });
