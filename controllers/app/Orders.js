@@ -66,6 +66,7 @@ router.get("/", async (req, res) => {
         user_id,
       },
       attributes: ["id", "order_status", "createdAt"],
+      order: [["createdAt", "DESC"]],
     });
     res.status(200).json({
       message: "Orders retrieved succesfully",
@@ -134,7 +135,14 @@ router.get("/recent", async (req, res) => {
           include: [
             {
               model: DB.Product,
-              attributes: ["id", "name", "product_image_url"],
+              attributes: [
+                "id",
+                "name",
+                "product_image_url",
+                "retail",
+                "price",
+                "sale_price",
+              ],
             },
           ],
         },
