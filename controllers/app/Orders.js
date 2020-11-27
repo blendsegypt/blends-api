@@ -65,7 +65,7 @@ router.get("/", async (req, res) => {
       where: {
         user_id,
       },
-      attributes: ["id", "order_status", "createdAt"],
+      attributes: ["id", "order_status", "createdAt", "delivered_at"],
       order: [["createdAt", "DESC"]],
     });
     res.status(200).json({
@@ -87,7 +87,14 @@ router.get("/order/:id", async (req, res) => {
       where: {
         id: order_id,
       },
-      attributes: ["id", "order_status", "createdAt", "delivered_at"],
+      attributes: [
+        "id",
+        "order_status",
+        "createdAt",
+        "delivered_at",
+        "total",
+        "sub_total",
+      ],
       include: [
         {
           model: DB.Address,
