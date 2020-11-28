@@ -116,6 +116,7 @@ const calculateSubTotal = (orderItems, productsList) => {
       // Add options price on itemTotal
       itemTotal += optionPrice * item.quantity;
     });
+    item.price = itemTotal / item.quantity;
     return total + itemTotal;
   }, 0);
   return subTotal;

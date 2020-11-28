@@ -94,6 +94,7 @@ router.get("/order/:id", async (req, res) => {
         "delivered_at",
         "total",
         "sub_total",
+        "delivery_charges",
       ],
       include: [
         {
@@ -109,6 +110,10 @@ router.get("/order/:id", async (req, res) => {
               attributes: ["name", "product_image_url"],
             },
           ],
+        },
+        {
+          model: DB.PromoCode,
+          attributes: ["code"],
         },
       ],
     });
