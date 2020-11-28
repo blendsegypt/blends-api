@@ -34,5 +34,25 @@ module.exports = function (sequelize, DataTypes) {
     }
   );
 
+  Inventory.associate = (models) => {
+    Inventory.belongsTo(models.Product, {
+      foreignKey: {
+        name: "product_id",
+        allowNull: false,
+      },
+      onDelete: "cascade",
+    });
+    models.Product.hasMany(Inventory, { foreignKey: "product_id" });
+
+    Inventory.belongsTo(models.Branch, {
+      foreignKey: {
+        name: "branch_id",
+        allowNull: false,
+      },
+      onDelete: "cascade",
+    });
+    models.Branch.hasMany(Inventory, { foreignKey: "branch_id" });
+  };
+
   return Inventory;
 };
