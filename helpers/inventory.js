@@ -4,7 +4,6 @@
 
 */
 import DB from "../models";
-import { Op } from "sequelize";
 
 export const decrementRetailProductsInventory = async (
   OrderItems,

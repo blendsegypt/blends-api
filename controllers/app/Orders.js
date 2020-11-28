@@ -9,6 +9,7 @@ import {
   checkUsage,
   applyPromoCode,
 } from "../../helpers/applyPromoCodes";
+import { decrementRetailProductsInventory } from "../../helpers/inventory";
 
 // make a new order
 router.post("/", async (req, res) => {
@@ -47,6 +48,11 @@ router.post("/", async (req, res) => {
         },
       ],
     });
+    // Modify inventory records for retail products
+    await decrementRetailProductsInventory(
+      newOrder.OrderItems,
+      newOrder.branch_id
+    );
     res.status(200).json({
       message: "Order Created succesfully",
     });
