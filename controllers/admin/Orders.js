@@ -1,6 +1,7 @@
 import DB from "../../models";
 import Express from "express";
 const router = Express.Router();
+import { decrementRetailProductsInventory } from "../../helpers/inventory";
 
 //create new order
 router.post("/", async (req, res) => {
@@ -30,6 +31,11 @@ router.post("/", async (req, res) => {
         },
       ],
     });
+    // Modify inventory records for retail products
+    await decrementRetailProductsInventory(
+      order.OrderItems,
+      newOrder.branch_id
+    );
     res.status(201).json({
       message: "Order Created!",
       data: order,
