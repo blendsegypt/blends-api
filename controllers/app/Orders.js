@@ -71,7 +71,7 @@ router.get("/", async (req, res) => {
       where: {
         user_id,
       },
-      attributes: ["id", "order_status", "createdAt", "delivered_at"],
+      attributes: ["id", "order_status", "createdAt", "delivered_at", "rating"],
       order: [["createdAt", "DESC"]],
     });
     res.status(200).json({
