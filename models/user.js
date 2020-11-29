@@ -61,7 +61,7 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.DOUBLE,
         allowNull: false,
         defaultValue: 0.0,
-      }
+      },
     },
     {
       // Other model options go here
@@ -70,7 +70,7 @@ module.exports = function (sequelize, DataTypes) {
 
   User.associate = (models) => {
     User.hasMany(models.Address, {
-      as: "user_id",
+      as: "addresses",
       foreignKey: {
         name: "user_id",
         allowNull: false,
@@ -82,7 +82,7 @@ module.exports = function (sequelize, DataTypes) {
       foreignKey: {
         name: "referred_by_id",
         allowNull: true,
-      }
+      },
     });
   };
 

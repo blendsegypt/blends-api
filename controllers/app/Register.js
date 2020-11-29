@@ -9,6 +9,7 @@ import {
   validateReferral,
   applyReferral,
 } from "../../helpers/referrals";
+import { generateAccessToken, generateRefreshToken } from "../../helpers/auth";
 
 //verify phone number and send OTP
 router.post("/verify/phone", async (req, res) => {
@@ -29,6 +30,47 @@ router.post("/verify/phone", async (req, res) => {
     if (phoneNumbers.length > 0) {
       return res.status(400).json({
         errors: ["PHONE_NUMBER_EXISTS"],
+      });
+    }
+    // Generate OTP
+    const OTP = generateOTP();
+    // Create a record in OTP table
+    await DB.OTP.create({
+      phone_number,
+      OTP,
+    });
+    /*
+
+      To be coded: BulkSMS api request to send OTP
+
+    */
+    res.status(200).json({
+      message: "OTP Sent",
+    });
+  } catch (error) {
+    res.status(500).json({ error_message: error.message });
+  }
+});
+
+//resend OTP
+router.post("/resend/otp", async (req, res) => {
+  try {
+    //Check if phone number is valid
+    const phone_number = req.body.phone_number;
+    if (!validatePhoneNumber(phone_number)) {
+      return res.status(400).json({
+        errors: ["INVALID_PHONE_NUMBER"],
+      });
+    }
+    //Check if phone number already has an OTP and delete the record
+    const previousOTP = await DB.OTP.destroy({
+      where: {
+        phone_number,
+      },
+    });
+    if (!previousOTP) {
+      return res.status(400).json({
+        errors: ["NO_PREVIOUS_ATTEMPTS"],
       });
     }
     // Generate OTP
@@ -147,14 +189,22 @@ router.post("/finish", async (req, res) => {
     // apply referral reward to both users
     if (referralValid) {
       await applyReferral(newUser.id, newUser.referred_by_id);
+      newUser.wallet = 20;
     }
+    // Attach access/refresh tokens to response headers
+    // Generate access/refresh tokens
+    const accessToken = generateAccessToken(newUser);
+    const refreshToken = generateRefreshToken();
+    res.setHeader("access-token", accessToken);
+    res.setHeader("refresh-token", refreshToken);
     return res.status(201).json({
       message: "User was created",
-      user: {
+      data: {
         first_name: newUser.first_name,
         last_name: newUser.last_name,
         phone_numer: newUser.phone_number,
-        platform: newUser.platform,
+        referral_code: newUser.referral_code,
+        wallet: newUser.wallet,
       },
     });
   } catch (error) {

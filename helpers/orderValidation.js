@@ -90,12 +90,17 @@ const calculateSubTotal = (orderItems, productsList) => {
   const subTotal = orderItems.reduce((total, item) => {
     let itemTotal = 0;
     // find product and destruct it
-    const { price, sale_price, product_custom_options } = productsList.find(
-      (product) => product.id === item.product_id
-    );
+    const {
+      retail,
+      price,
+      sale_price,
+      product_custom_options,
+    } = productsList.find((product) => product.id === item.product_id);
     // Add price or sale_price if there's a sale & Quantity
     itemTotal +=
       sale_price === 0 ? price * item.quantity : sale_price * item.quantity;
+    // If retail item then stop and return here.
+    if (retail) return total + itemTotal;
     // Parse options JSON string
     const selectedOptions = JSON.parse(item.options);
     // Calculate the price of additional options
@@ -109,11 +114,11 @@ const calculateSubTotal = (orderItems, productsList) => {
         (custom_option) => custom_option.label === option.value
       ).price;
       // Add options price on itemTotal
-      itemTotal += optionPrice;
+      itemTotal += optionPrice * item.quantity;
     });
+    item.price = itemTotal / item.quantity;
     return total + itemTotal;
   }, 0);
-
   return subTotal;
 };
 

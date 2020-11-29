@@ -8,6 +8,7 @@ import {
   applyPromoCodeOnTable,
   applyPromoCodeOnOrder,
 } from "../../helpers/applyPromoCodes";
+import { decrementRetailProductsInventory } from "../../helpers/inventory";
 
 // make a new order
 router.post("/", async (req, res) => {
@@ -46,8 +47,167 @@ router.post("/", async (req, res) => {
         },
       ],
     });
+    // Modify inventory records for retail products
+    await decrementRetailProductsInventory(
+      newOrder.OrderItems,
+      newOrder.branch_id
+    );
     res.status(200).json({
       message: "Order Created succesfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      error_message: error.message,
+    });
+  }
+});
+
+//Retrieve user orders
+router.get("/", async (req, res) => {
+  try {
+    const user_id = res.locals.user_id;
+    const orders = await DB.Order.findAll({
+      where: {
+        user_id,
+      },
+      attributes: ["id", "order_status", "createdAt", "delivered_at", "rating"],
+      order: [["createdAt", "DESC"]],
+    });
+    res.status(200).json({
+      message: "Orders retrieved succesfully",
+      data: orders,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error_message: error.message,
+    });
+  }
+});
+
+//Retrieve order by ID
+router.get("/order/:id", async (req, res) => {
+  try {
+    const order_id = req.params.id;
+    const order = await DB.Order.findOne({
+      where: {
+        id: order_id,
+      },
+      attributes: [
+        "id",
+        "order_status",
+        "createdAt",
+        "delivered_at",
+        "total",
+        "sub_total",
+        "delivery_charges",
+      ],
+      include: [
+        {
+          model: DB.Address,
+          attributes: ["nickname"],
+        },
+        {
+          as: "OrderItems",
+          model: DB.OrderItem,
+          include: [
+            {
+              model: DB.Product,
+              attributes: ["name", "product_image_url"],
+            },
+          ],
+        },
+        {
+          model: DB.PromoCode,
+          attributes: ["code"],
+        },
+      ],
+    });
+    res.status(200).json({
+      message: "Order retrieved succesfully",
+      data: order,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error_message: error.message,
+    });
+  }
+});
+
+//Get recent ordered items
+router.get("/recent", async (req, res) => {
+  try {
+    const user_id = res.locals.user_id;
+    const recentOrders = await DB.Order.findAll({
+      where: {
+        user_id,
+      },
+      limit: 5,
+      order: [["createdAt", "DESC"]],
+      attributes: ["createdAt"],
+      include: [
+        {
+          as: "OrderItems",
+          model: DB.OrderItem,
+          attributes: ["id"],
+          include: [
+            {
+              model: DB.Product,
+              attributes: [
+                "id",
+                "name",
+                "product_image_url",
+                "retail",
+                "price",
+                "sale_price",
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    res.status(200).json({
+      message: "Recent Orders succesfully retrieved",
+      data: recentOrders,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error_message: error.message,
+    });
+  }
+});
+
+//rate an order
+router.post("/rate/:order_id", async (req, res) => {
+  try {
+    const user_id = res.locals.user_id;
+    const order_id = req.params.order_id;
+    const rating = req.body.rating;
+    // Check if order belongs to user
+    const order = await DB.Order.findOne({
+      where: {
+        user_id,
+        id: order_id,
+      },
+    });
+    // No orders matched
+    if (!order) {
+      res.status(404).json({
+        message: "No order found",
+      });
+    }
+    // Check if rating is valid
+    if (isNaN(rating) || rating > 5) {
+      res.status(400).json({
+        message: "Unsupported rating",
+      });
+    }
+    // Order/rating are valid
+    await order.update({
+      rating,
+    });
+
+    res.status(200).json({
+      message: "Order succesfully rated",
     });
   } catch (error) {
     res.status(500).json({

@@ -18,13 +18,14 @@ router.get("/categories", async (req, res) => {
   }
 });
 
-//get products by category (Homescreen in mobile application)
-router.get("/categories/:category_id", async (req, res) => {
+//get products by category & branch (Homescreen in mobile application)
+router.get("/category/:category_id/branch/:branch_id", async (req, res) => {
   try {
     const category_id = req.params.category_id;
     const productsFromCategory = await DB.Product.findAll({
       where: {
         product_category_id: category_id,
+        listed: true,
       },
       attributes: [
         "id",
@@ -33,6 +34,18 @@ router.get("/categories/:category_id", async (req, res) => {
         "sale_price",
         "retail",
         "product_image_url",
+        "createdAt",
+      ],
+      order: [["createdAt", "ASC"]],
+      include: [
+        {
+          required: false,
+          model: DB.Inventory,
+          attributes: ["actual_stock", "branch_id"],
+          where: {
+            branch_id: req.params.branch_id,
+          },
+        },
       ],
     });
     res.status(200).json({
