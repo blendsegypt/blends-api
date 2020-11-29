@@ -1,11 +1,10 @@
 import Express from "express";
 const router = Express.Router();
 import {
-  isPromoCodeExpired,
-  isMinAmountReached,
   getPromoCode,
-  checkUsage,
-  applyPromoCode,
+  checkCodeUsage,
+  checkUserUsage,
+  applyPromoCodeOnOrder,
 } from "../../helpers/applyPromoCodes";
 
 // apply promo code
@@ -15,26 +14,21 @@ router.post("/", async (req, res) => {
     const promoCode = await getPromoCode(order);
 
     if (promoCode != null) {
-      // promo code exists
-      if (isPromoCodeExpired(promoCode)) {
+      const codeUsage = checkCodeUsage(promoCode, order);
+      if (!codeUsage.isUsable) {
         return res.status(400).json({
-          message: "This Promocode is expired",
+          message: codeUsage.message,
         });
       }
-      if (!isMinAmountReached(order.sub_total, promoCode.min_order_value)) {
-        return res.status(400).json({
-          message: `Order value must be at least: ${promoCode.min_order_value} EGP`,
-        });
-      }
-      // Check usage (preview=true)
-      if ((await checkUsage(promoCode, order.user_id, true)) === false) {
+      // Check user usage of promocode
+      if ((await checkUserUsage(promoCode, order.user_id)) === false) {
         return res.status(400).json({
           message:
             "Promo code can't be used, reached maximum number of attempts",
         });
       }
-      const newOrder = applyPromoCode(promoCode, order);
-      return res.status(200).json({
+      const newOrder = applyPromoCodeOnOrder(promoCode, order);
+      return res.status(400).json({
         message: "Promo code applied succesfully",
         order: newOrder,
       });

@@ -17,17 +17,72 @@ const isMinAmountReached = (subTotal, minAmount) => {
 
 // returns promo code
 const getPromoCode = async (order) => {
-  const promoCode = await DB.PromoCode.findOne({
-    where: {
-      code: order.promo_code,
-    },
-  });
-  return promoCode;
+  try {
+    const promoCode = await DB.PromoCode.findOne({
+      where: {
+        code: order.promo_code,
+      },
+    });
+    return promoCode;
+  } catch (error) {
+    throw error;
+  }
 };
 
-// checks and update user usage for promoCode
-const checkUsage = async (promoCode, userId, preview) => {
+const isMaxUsageCountReached = (promoCode) => {
+  return (promoCode.limited && promoCode.usage_count >= promoCode.max_usage_per_code) ? true : false;
+}
+
+const checkCodeUsage = (promoCode, order) => {
+  if (!promoCode.active || promoCode.active === null) {
+    return {
+      isUsable: false,
+      message: "Promo code not active",
+    }
+  }
+  if (isMaxUsageCountReached(promoCode)) {
+    return {
+      isUsable: false,
+      message: "Promocode is expired",
+    }
+  }
+  if (isPromoCodeExpired(promoCode)) {
+    return {
+      isUsable: false,
+      message: "Promo code is expired",
+    }
+  }
+  if (!isMinAmountReached(order.sub_total, promoCode.min_order_value)) {
+    return {
+      isUsable: false,
+      message: `Order value must be at least: ${promoCode.min_order_value}EGP`,
+    }
+  }
+  return {
+    isUsable: true,
+    message: "PromoCode can be used",
+  };
+}
+
+const checkUserUsage = async (promoCode, userId) => {
   try {
+    const userPromoCode = await DB.UserPromoCode.findOne({
+      where: {
+        [Op.and]: [{ user_id: userId }, { promo_code_id: promoCode.id }],
+      },
+    });
+    // promcode user usage reached maximum
+    return (userPromoCode !== null && userPromoCode.usage >= promoCode.max_usage_per_user) ? false : true;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// apply promoCode on UserPromoCode and PromoCode tables in data base
+// return boolean
+const applyPromoCodeOnTable = async (promoCode, userId) => {
+  try {
+    let usageUpdated = false;
     const userPromoCode = await DB.UserPromoCode.findOne({
       where: {
         [Op.and]: [{ user_id: userId }, { promo_code_id: promoCode.id }],
@@ -35,28 +90,35 @@ const checkUsage = async (promoCode, userId, preview) => {
     });
     // promoCode not used by user
     if (userPromoCode === null) {
-      if (preview) return true;
       const newUserPromoCode = {
         usage: 1,
         user_id: userId,
         promo_code_id: promoCode.id,
       };
       await DB.UserPromoCode.create(newUserPromoCode);
-      return true;
+      usageUpdated = true;
     }
     // promoCode used by user
     //  - promoCode can be re-used
-    if (userPromoCode.usage < promoCode.max_usage_per_user) {
-      if (preview) return true;
-      const newUsage = userPromoCode.usage + 1;
-      await DB.UserPromoCode.update(
-        { usage: newUsage },
+    else if (userPromoCode.usage < promoCode.max_usage_per_user) {
+      await DB.UserPromoCode.increment(
+        'usage',
         {
           where: {
-            [Op.and]: [{ user_id: userId }, { promo_code_id: promoCode.id }],
+            [Op.and]: [
+              { user_id: userId },
+              { promo_code_id: promoCode.id },
+            ],
           },
-        }
-      );
+        });
+      usageUpdated = true;
+    }
+    if (usageUpdated) {
+      await DB.PromoCode.increment(
+        'usage_count',
+        {
+          where: { id: promoCode.id },
+        });
       return true;
     }
     // promoCode can't be used (reached maximum)
@@ -66,8 +128,8 @@ const checkUsage = async (promoCode, userId, preview) => {
   }
 };
 
-// apply promo code accordind to type
-const applyPromoCode = (promoCode, order) => {
+// apply promo code on given order accordind to type
+const applyPromoCodeOnOrder = (promoCode, order) => {
   switch (promoCode.type) {
     case "free_delivery":
       order.delivery_charges = 0;
@@ -101,7 +163,10 @@ const applyPromoCode = (promoCode, order) => {
 export {
   isPromoCodeExpired,
   isMinAmountReached,
+  isMaxUsageCountReached,
   getPromoCode,
-  checkUsage,
-  applyPromoCode,
+  checkCodeUsage,
+  checkUserUsage,
+  applyPromoCodeOnTable,
+  applyPromoCodeOnOrder,
 };
