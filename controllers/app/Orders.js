@@ -3,11 +3,10 @@ import Express from "express";
 import { validateOrder } from "../../helpers/orderValidation";
 const router = Express.Router();
 import {
-  isPromoCodeExpired,
-  isMinAmountReached,
+  checkCodeUsage,
   getPromoCode,
-  checkUsage,
-  applyPromoCode,
+  applyPromoCodeOnTable,
+  applyPromoCodeOnOrder,
 } from "../../helpers/applyPromoCodes";
 
 // make a new order
@@ -27,17 +26,17 @@ router.post("/", async (req, res) => {
       // Get promocode from DB
       const promoCode = await getPromoCode(newOrder);
       // Check if promocode is valid or not
-      if (
-        isPromoCodeExpired(promoCode) ||
-        !isMinAmountReached(newOrder.sub_total, promoCode.min_order_value) ||
-        (await checkUsage(promoCode, newOrder.user_id, false)) === false
-      ) {
-        return res.status(400).json({
-          error: "INVALID_ORDER",
-        });
+      if (promoCode !== null) {
+        const codeUsage = checkCodeUsage(promoCode, order);
+        if (!codeUsage.isUsable) {
+          return res.status(400).json({
+            error: "INVALID_ORDER",
+          });
+        }
       }
       newOrder.promocode_id = promoCode.id;
-      newOrder = applyPromoCode(promoCode, newOrder);
+      newOrder = applyPromoCodeOnOrder(promoCode, newOrder);
+      await applyPromoCodeOnTable(promoCode, newOrder.user_id);
     }
     await DB.Order.create(newOrder, {
       include: [
