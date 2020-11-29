@@ -177,4 +177,44 @@ router.get("/recent", async (req, res) => {
   }
 });
 
+//rate an order
+router.post("/rate/:order_id", async (req, res) => {
+  try {
+    const user_id = res.locals.user_id;
+    const order_id = req.params.order_id;
+    const rating = req.body.rating;
+    // Check if order belongs to user
+    const order = await DB.Order.findOne({
+      where: {
+        user_id,
+        id: order_id,
+      },
+    });
+    // No orders matched
+    if (!order) {
+      res.status(404).json({
+        message: "No order found",
+      });
+    }
+    // Check if rating is valid
+    if (isNaN(rating) || rating > 5) {
+      res.status(400).json({
+        message: "Unsupported rating",
+      });
+    }
+    // Order/rating are valid
+    await order.update({
+      rating,
+    });
+
+    res.status(200).json({
+      message: "Order succesfully rated",
+    });
+  } catch (error) {
+    res.status(500).json({
+      error_message: error.message,
+    });
+  }
+});
+
 export default router;
