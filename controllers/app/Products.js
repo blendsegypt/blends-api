@@ -34,7 +34,9 @@ router.get("/category/:category_id/branch/:branch_id", async (req, res) => {
         "sale_price",
         "retail",
         "product_image_url",
+        "createdAt",
       ],
+      order: [["createdAt", "ASC"]],
       include: [
         {
           required: false,
