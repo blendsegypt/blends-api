@@ -39,6 +39,9 @@ module.exports = function (sequelize, DataTypes) {
       assigned_driver: {
         type: DataTypes.STRING,
       },
+      rating: {
+        type: DataTypes.INTEGER,
+      },
     },
     {
       // Other model options go here
