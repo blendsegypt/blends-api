@@ -69,7 +69,6 @@ router.put("/:id", async (req, res) => {
 // delete address by address_id and user_id
 router.delete("/:id", async (req, res) => {
     try {
-        console.log("user_id: " + res.locals.user_id);
         const addressDeleted = await DB.Address.destroy({
             where: {
                 [Op.and]: [{ id: req.params.id }, { user_id: res.locals.user_id }],
