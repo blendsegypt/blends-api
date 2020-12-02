@@ -15,6 +15,7 @@ import Orders from "../controllers/app/Orders";
 import Areas from "../controllers/app/Areas";
 import Banners from "../controllers/app/Banners";
 import Branch from "../controllers/app/Branch";
+import User from "../controllers/app/User";
 
 // route controllers
 router.use("/products", Products);
@@ -27,5 +28,6 @@ router.use("/orders", authenticateUser, Orders);
 router.use("/areas", Areas);
 router.use("/banners", Banners);
 router.use("/branch", Branch);
+router.use("/user", User);
 
 export default router;
