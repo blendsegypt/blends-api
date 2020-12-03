@@ -28,7 +28,7 @@ router.post("/", async (req, res) => {
         });
       }
       const newOrder = applyPromoCodeOnOrder(promoCode, order);
-      return res.status(400).json({
+      return res.status(200).json({
         message: "Promo code applied succesfully",
         order: newOrder,
       });
