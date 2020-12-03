@@ -35,9 +35,12 @@ router.post("/", async (req, res) => {
           });
         }
       }
-      newOrder.promocode_id = promoCode.id;
-      newOrder = applyPromoCodeOnOrder(promoCode, newOrder);
-      await applyPromoCodeOnTable(promoCode, newOrder.user_id);
+      // apply promoCode changes on DB
+      // - apply on reciept
+      if (await applyPromoCodeOnTable(promoCode, newOrder.user_id)) {
+        newOrder.promocode_id = promoCode.id;
+        newOrder = applyPromoCodeOnOrder(promoCode, newOrder);
+      }
     }
     await DB.Order.create(newOrder, {
       include: [

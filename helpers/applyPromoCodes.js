@@ -89,6 +89,7 @@ const applyPromoCodeOnTable = async (promoCode, userId) => {
       },
     });
     // promoCode not used by user
+    // - create new user usage
     if (userPromoCode === null) {
       const newUserPromoCode = {
         usage: 1,
@@ -99,7 +100,7 @@ const applyPromoCodeOnTable = async (promoCode, userId) => {
       usageUpdated = true;
     }
     // promoCode used by user
-    //  - promoCode can be re-used
+    //  - check that promoCode can be re-used
     else if (userPromoCode.usage < promoCode.max_usage_per_user) {
       await DB.UserPromoCode.increment(
         'usage',
@@ -115,10 +116,17 @@ const applyPromoCodeOnTable = async (promoCode, userId) => {
     }
     if (usageUpdated) {
       await DB.PromoCode.increment(
-        'usage_count',
-        {
-          where: { id: promoCode.id },
+        'usage_count', {
+        where: { id: promoCode.id },
+      });
+      // increment wallet with cashback amount
+      if (promoCode.type === 'cashback') {
+        await DB.User.increment({
+          wallet: promoCode.cashback_amount,
+        }, {
+          where: { id: userId },
         });
+      }
       return true;
     }
     // promoCode can't be used (reached maximum)

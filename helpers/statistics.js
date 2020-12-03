@@ -113,7 +113,6 @@ export const calculateRevenue = (orders) => {
         totalRevenue += object.total;
     });
     const calculatedRevenueData = calculateTotalByDate(dateArray, revenueArray);
-    console.log(calculatedRevenueData);
     return {
         today: calculatedRevenueData.todayTotal,
         yesterday: calculatedRevenueData.yesterdayTotal,
