@@ -3,6 +3,30 @@ import { Op } from "Sequelize";
 import validatePhoneNumber from "./validatePhoneNumber";
 import bcrypt from "bcryptjs";
 
+// check if input is valid first/last name
+const isName = (name) => {
+  if (!/^[a-zA-Z]+$/.test(name)) return false;
+  return true;
+};
+
+// check if input is valid date string
+const isDate = (dateString) => {
+  const date = new Date(dateString);
+  return !isNaN(date.valueOf());
+};
+
+// check if input is valid gender
+const isGender = (gender) => {
+  if (!["male", "female", "other"].includes(gender)) return false;
+  return true;
+};
+
+// check if platform is valid
+const isPlatform = (platform) => {
+  if (!["ios", "android", "other"].includes(platform)) return false;
+  return true;
+};
+
 // Define unique validation errors and return a string of errors
 const generateErrors = function (
   { phone_number, email, password_salt },
@@ -87,14 +111,11 @@ const validateUserFields = (user) => {
     errors.push("INVALID_PHONE_NUMBER");
   }
   // Validated first/last name
-  if (
-    !/^[a-zA-Z]+$/.test(user.first_name) ||
-    !/^[a-zA-Z]+$/.test(user.last_name)
-  ) {
+  if (!isName(user.first_name) || !isName(user.last_name)) {
     errors.push("INVALID_FIRST/LAST_NAME");
   }
   // Validate platform
-  if (!["ios", "android"].includes(user.platform)) {
+  if (!isPlatform(user.platform)) {
     errors.push("INVALID_PLATFORM");
   }
 
@@ -111,4 +132,26 @@ const hashPassword = (password) => {
   };
 };
 
-export { checkIfExists, validateUserFields, hashPassword };
+const validateFieldsOnUpdate = (
+  firstName = "",
+  lastName = "",
+  dob = "",
+  gender = "male"
+) => {
+  if (
+    (!isName(firstName) && firstName !== "") ||
+    (!isName(lastName) && lastName !== "") ||
+    (!isDate(dob) && dob !== "") ||
+    (!isGender(gender) && gender !== "")
+  ) {
+    return false;
+  }
+  return true;
+};
+
+export {
+  checkIfExists,
+  validateUserFields,
+  hashPassword,
+  validateFieldsOnUpdate,
+};
