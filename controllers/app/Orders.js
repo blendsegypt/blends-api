@@ -136,8 +136,8 @@ router.get("/order/:id", async (req, res) => {
   }
 });
 
-//Get recent ordered items
-router.get("/recent", async (req, res) => {
+//Get recent ordered items (branch_id is supplied to include products stock)
+router.get("/recent/branch/:branch_id", async (req, res) => {
   try {
     const user_id = res.locals.user_id;
     const recentOrders = await DB.Order.findAll({
@@ -162,6 +162,16 @@ router.get("/recent", async (req, res) => {
                 "retail",
                 "price",
                 "sale_price",
+              ],
+              include: [
+                {
+                  required: false,
+                  model: DB.Inventory,
+                  attributes: ["actual_stock", "branch_id"],
+                  where: {
+                    branch_id: req.params.branch_id,
+                  },
+                },
               ],
             },
           ],
