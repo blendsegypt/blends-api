@@ -6,6 +6,9 @@ const router = Express.Router();
 router.post("/", async (req, res) => {
   try {
     const promoCode = req.body;
+    if (promoCode.hasOwnProperty('code')) {
+      promoCode.code = promoCode.code.toUpperCase();
+    }
     const newPromoCode = await DB.PromoCode.create(promoCode);
     return res.status(201).json({
       message: "Promo code was succesfully created",
@@ -40,6 +43,9 @@ router.get("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
   try {
     const newPromoCode = req.body;
+    if (newPromoCode.hasOwnProperty('code')) {
+      newPromoCode.code = newPromoCode.code.toUpperCase();
+    }
     const [numberOfAffectedRows] = await DB.PromoCode.update(newPromoCode, {
       where: {
         id: req.params.id,
