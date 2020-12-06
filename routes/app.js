@@ -28,6 +28,6 @@ router.use("/orders", authenticateUser, Orders);
 router.use("/areas", Areas);
 router.use("/banners", Banners);
 router.use("/branch", Branch);
-router.use("/user", User);
+router.use("/user", authenticateUser, User);
 
 export default router;
