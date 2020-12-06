@@ -41,8 +41,8 @@ router.put("/", async (req, res) => {
   try {
     const user_id = res.locals.user_id;
     const newUser = req.body;
-    const { first_name, last_name, dob, gender } = newUser;
-    if (!validateFieldsOnUpdate(first_name, last_name, dob, gender)) {
+    const { first_name, last_name, dob, gender, email } = newUser;
+    if (!validateFieldsOnUpdate(first_name, last_name, dob, gender, email)) {
       return res.status(400).json({
         message: "Invalid user data",
       });
