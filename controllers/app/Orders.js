@@ -42,6 +42,26 @@ router.post("/", async (req, res) => {
         newOrder = applyPromoCodeOnOrder(promoCode, newOrder);
       }
     }
+    // Check if wallet is used
+    if (newOrder.walletUsed) {
+      const user = await DB.User.findOne({
+        where: {
+          id: res.locals.user_id,
+        },
+        attributes: ["id", "wallet"],
+      });
+      const totalAfterWallet = newOrder.total - user.wallet;
+      if (totalAfterWallet <= 0) {
+        // Not all money in wallet was used
+        newOrder.total = 0;
+        user.wallet = Math.abs(totalAfterWallet);
+      } else {
+        // Wallet is empty
+        newOrder.total = totalAfterWallet;
+        user.wallet = 0;
+      }
+      await user.save();
+    }
     await DB.Order.create(newOrder, {
       include: [
         {
