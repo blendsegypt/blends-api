@@ -24,7 +24,6 @@ module.exports = function (sequelize, DataTypes) {
       },
       building: {
         type: DataTypes.STRING,
-        allowNull: null,
       },
       floor: {
         type: DataTypes.STRING,
