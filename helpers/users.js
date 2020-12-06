@@ -2,6 +2,7 @@ import DB from "../models";
 import { Op } from "Sequelize";
 import validatePhoneNumber from "./validatePhoneNumber";
 import bcrypt from "bcryptjs";
+const EMAIL_REGEX = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
 // check if input is valid first/last name
 const isName = (name) => {
@@ -19,6 +20,10 @@ const isDate = (dateString) => {
 const isGender = (gender) => {
   if (!["male", "female", "other"].includes(gender)) return false;
   return true;
+};
+
+const isEmail = (email) => {
+  return String(email).match(EMAIL_REGEX);
 };
 
 // check if platform is valid
@@ -136,13 +141,15 @@ const validateFieldsOnUpdate = (
   firstName = "",
   lastName = "",
   dob = "",
-  gender = "male"
+  gender = "male",
+  email = ""
 ) => {
   if (
     (!isName(firstName) && firstName !== "") ||
     (!isName(lastName) && lastName !== "") ||
     (!isDate(dob) && dob !== "") ||
-    (!isGender(gender) && gender !== "")
+    (!isGender(gender) && gender !== "") ||
+    (!isEmail(email) && email !== "")
   ) {
     return false;
   }
