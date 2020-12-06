@@ -20,7 +20,7 @@ const getPromoCode = async (order) => {
   try {
     const promoCode = await DB.PromoCode.findOne({
       where: {
-        code: order.promo_code,
+        code: order.promo_code.toUpperCase(),
       },
     });
     return promoCode;
@@ -165,6 +165,7 @@ const applyPromoCodeOnOrder = (promoCode, order) => {
         });
       }
   }
+  order.promo_code = promoCode.code;
   return order;
 };
 
