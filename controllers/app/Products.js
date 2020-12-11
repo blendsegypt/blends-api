@@ -22,6 +22,11 @@ router.get("/categories", async (req, res) => {
 router.get("/category/:category_id/branch/:branch_id", async (req, res) => {
   try {
     const category_id = req.params.category_id;
+    let branch_id = req.params.branch_id;
+    if (branch_id === "any") {
+      const branches = await DB.Branch.findAll();
+      branch_id = branches[0].id;
+    }
     const productsFromCategory = await DB.Product.findAll({
       where: {
         product_category_id: category_id,
@@ -43,7 +48,7 @@ router.get("/category/:category_id/branch/:branch_id", async (req, res) => {
           model: DB.Inventory,
           attributes: ["actual_stock", "branch_id"],
           where: {
-            branch_id: req.params.branch_id,
+            branch_id: branch_id,
           },
         },
       ],
