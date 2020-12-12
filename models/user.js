@@ -41,12 +41,15 @@ module.exports = function (sequelize, DataTypes) {
       },
       password_hash: {
         type: DataTypes.STRING,
-        allowNull: false,
       },
       password_salt: {
         type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
+      },
+      uid_provider: {
+        type: DataTypes.ENUM("facebook"),
+      },
+      uid: {
+        type: DataTypes.STRING,
       },
       platform: {
         type: DataTypes.ENUM("ios", "android", "other"),

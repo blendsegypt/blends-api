@@ -202,7 +202,7 @@ router.post("/finish", async (req, res) => {
       data: {
         first_name: newUser.first_name,
         last_name: newUser.last_name,
-        phone_numer: newUser.phone_number,
+        phone_number: newUser.phone_number,
         referral_code: newUser.referral_code,
         wallet: newUser.wallet,
       },
