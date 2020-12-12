@@ -41,7 +41,7 @@ var migrationCommands = function (transaction) {
             allowNull: false,
           },
           phone_number: {
-            type: Sequelize.INTEGER,
+            type: Sequelize.STRING,
             field: "phone_number",
             unique: true,
             allowNull: false,
