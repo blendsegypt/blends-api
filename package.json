@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node -r esm ./bin/www",
     "mkmigrate": "node -r esm ./node_modules/sequelize-auto-migrations/bin/makemigration.js",
-    "dbmigrate": "sequelize-cli db:migrate"
+    "dbmigrate": "sequelize-cli db:migrate",
+    "updatemigrate": "rm -f ./migrations/_current.json && rm -f ./migrations/_current_bak.json && node -r esm ./node_modules/sequelize-auto-migrations/bin/makemigration.js && cd ./migrations && rm -f **-noname.js"
   },
   "dependencies": {
     "aws-sdk": "^2.794.0",
