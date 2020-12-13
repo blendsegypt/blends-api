@@ -7,6 +7,10 @@
 import App from "../app";
 import Debug from "debug";
 import HTTP from "http";
+import dotenv from "dotenv";
+
+//Environmental variables handling
+dotenv.config();
 
 const debug = Debug("blends-api:server");
 
