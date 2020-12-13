@@ -1,13 +1,15 @@
 import Sequelize from "Sequelize";
 import config from "./config/config.json";
 
+const environment = process.env.NODE_ENV;
+
 const sequelize = new Sequelize(
-  config.development.database,
-  config.development.username,
-  config.development.password,
+  config[environment].database,
+  config[environment].username,
+  config[environment].password,
   {
-    host: config.development.host,
-    dialect: config.development.dialect,
+    host: config[environment].host,
+    dialect: config[environment].dialect,
   }
 );
 
