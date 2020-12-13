@@ -4,7 +4,8 @@
       "password": "",
       "database": "blends",
       "host": "localhost",
-      "dialect": "postgres"
+      "dialect": "postgres",
+      "logging": true
   },
   "test": {
       "username": "root",
@@ -18,6 +19,7 @@
       "password": "-tHs%/89QuPggn6e",
       "database": "blends",
       "host": "localhost",
-      "dialect": "postgres"
+      "dialect": "postgres",
+      "logging": false
   }
 }

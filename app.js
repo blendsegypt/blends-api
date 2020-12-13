@@ -17,7 +17,9 @@ var App = Express();
 dotenv.config();
 
 // Apply Middleware
-App.use(Logger("dev"));
+if (process.env.NODE_ENV === "development") {
+  App.use(Logger("dev"));
+}
 App.use(Express.json());
 App.use(Express.urlencoded({ extended: false }));
 App.use(CookieParser());
