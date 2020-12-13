@@ -9,7 +9,7 @@ import {
 const router = Express.Router();
 
 // router imports
-import addresses from "./addresses";
+import addresses from "./Addresses";
 
 // routing middlewares
 router.use("/:user_id/addresses", addresses);
