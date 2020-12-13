@@ -1,5 +1,5 @@
 import DB from "../models";
-import { Op } from "Sequelize";
+import { Op } from "sequelize";
 
 // checks for promo code expiry
 const isPromoCodeExpired = (promoCode) => {
@@ -30,39 +30,42 @@ const getPromoCode = async (order) => {
 };
 
 const isMaxUsageCountReached = (promoCode) => {
-  return (promoCode.limited && promoCode.usage_count >= promoCode.max_usage_per_code) ? true : false;
-}
+  return promoCode.limited &&
+    promoCode.usage_count >= promoCode.max_usage_per_code
+    ? true
+    : false;
+};
 
 const checkCodeUsage = (promoCode, order) => {
   if (!promoCode.active || promoCode.active === null) {
     return {
       isUsable: false,
       message: "Promo code not active",
-    }
+    };
   }
   if (isMaxUsageCountReached(promoCode)) {
     return {
       isUsable: false,
       message: "Promocode is expired",
-    }
+    };
   }
   if (isPromoCodeExpired(promoCode)) {
     return {
       isUsable: false,
       message: "Promo code is expired",
-    }
+    };
   }
   if (!isMinAmountReached(order.sub_total, promoCode.min_order_value)) {
     return {
       isUsable: false,
       message: `Order value must be at least: ${promoCode.min_order_value}EGP`,
-    }
+    };
   }
   return {
     isUsable: true,
     message: "PromoCode can be used",
   };
-}
+};
 
 const checkUserUsage = async (promoCode, userId) => {
   try {
@@ -72,7 +75,10 @@ const checkUserUsage = async (promoCode, userId) => {
       },
     });
     // promcode user usage reached maximum
-    return (userPromoCode !== null && userPromoCode.usage >= promoCode.max_usage_per_user) ? false : true;
+    return userPromoCode !== null &&
+      userPromoCode.usage >= promoCode.max_usage_per_user
+      ? false
+      : true;
   } catch (error) {
     throw error;
   }
@@ -102,30 +108,27 @@ const applyPromoCodeOnTable = async (promoCode, userId) => {
     // promoCode used by user
     //  - check that promoCode can be re-used
     else if (userPromoCode.usage < promoCode.max_usage_per_user) {
-      await DB.UserPromoCode.increment(
-        'usage',
-        {
-          where: {
-            [Op.and]: [
-              { user_id: userId },
-              { promo_code_id: promoCode.id },
-            ],
-          },
-        });
+      await DB.UserPromoCode.increment("usage", {
+        where: {
+          [Op.and]: [{ user_id: userId }, { promo_code_id: promoCode.id }],
+        },
+      });
       usageUpdated = true;
     }
     if (usageUpdated) {
-      await DB.PromoCode.increment(
-        'usage_count', {
+      await DB.PromoCode.increment("usage_count", {
         where: { id: promoCode.id },
       });
       // increment wallet with cashback amount
-      if (promoCode.type === 'cashback') {
-        await DB.User.increment({
-          wallet: promoCode.cashback_amount,
-        }, {
-          where: { id: userId },
-        });
+      if (promoCode.type === "cashback") {
+        await DB.User.increment(
+          {
+            wallet: promoCode.cashback_amount,
+          },
+          {
+            where: { id: userId },
+          }
+        );
       }
       return true;
     }
