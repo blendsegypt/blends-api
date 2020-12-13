@@ -1,6 +1,6 @@
 import DB from "../../models";
 import Express from "express";
-import { Op } from "Sequelize";
+import { Op } from "sequelize";
 
 const router = Express.Router({
   mergeParams: true, // retrieve params from previous middle wares

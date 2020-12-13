@@ -1,5 +1,5 @@
 import DB from "../models";
-import { Op } from "Sequelize";
+import { Op } from "sequelize";
 import validatePhoneNumber from "./validatePhoneNumber";
 import bcrypt from "bcryptjs";
 const EMAIL_REGEX = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
