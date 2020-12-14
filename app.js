@@ -8,7 +8,8 @@ import cors from "cors"; //Allow cross-origin requests
 import expiredShipmentsCronJob from "./cron/expiredShipments";
 
 // import routes
-import appRoutes from "./routes/app";
+// application (v1) routes
+import appRoutesV1 from "./routes/app.v1";
 import adminRoutes from "./routes/admin";
 
 //Initialize Express Application
@@ -25,7 +26,12 @@ App.use(Express.static(Path.join(__dirname, "public")));
 App.use(cors());
 
 // use routes
-App.use("/app", appRoutes);
+App.use("/app/v1", appRoutesV1);
 App.use("/admin", adminRoutes);
+
+// Error handling
+App.use((req, res) => {
+  res.status(403).send("Unauthorized");
+});
 
 export default App;

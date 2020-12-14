@@ -5,18 +5,18 @@ const router = Express.Router();
 import authenticateUser from "../middleware/authenticateUser";
 
 // import app controllers
-import Products from "../controllers/app/Products"; // app
-import ApplyPromoCodes from "../controllers/app/ApplyPromoCodes"; // app
-import Register from "../controllers/app/Register";
-import Login from "../controllers/app/Login";
-import LoginByFacebook from "../controllers/app/LoginByFacebook";
-import Logout from "../controllers/app/Logout";
-import RefreshToken from "../controllers/app/RefreshToken";
-import Orders from "../controllers/app/Orders";
-import Areas from "../controllers/app/Areas";
-import Banners from "../controllers/app/Banners";
-import Branch from "../controllers/app/Branch";
-import User from "../controllers/app/User";
+import Products from "../controllers/app(v1)/Products"; // app
+import ApplyPromoCodes from "../controllers/app(v1)/ApplyPromoCodes"; // app
+import Register from "../controllers/app(v1)/Register";
+import Login from "../controllers/app(v1)/Login";
+import LoginByFacebook from "../controllers/app(v1)/LoginByFacebook";
+import Logout from "../controllers/app(v1)/Logout";
+import RefreshToken from "../controllers/app(v1)/RefreshToken";
+import Orders from "../controllers/app(v1)/Orders";
+import Areas from "../controllers/app(v1)/Areas";
+import Banners from "../controllers/app(v1)/Banners";
+import Branch from "../controllers/app(v1)/Branch";
+import User from "../controllers/app(v1)/User";
 
 // route controllers
 router.use("/products", Products);
