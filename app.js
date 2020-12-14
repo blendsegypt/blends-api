@@ -3,6 +3,8 @@ import Path from "path"; // Path to enable path methods
 import CookieParser from "cookie-parser"; // Cookie Parser to parse cookies from HTTP requests
 import Logger from "morgan"; // Morgan Logger for debugging
 import cors from "cors"; //Allow cross-origin requests
+
+// cron jobs
 import expiredShipmentsCronJob from "./cron/expiredShipments";
 
 // import routes
