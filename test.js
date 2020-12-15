@@ -1,5 +1,3 @@
-import config from "./config/config.json";
+import bcrypt from "bcryptjs";
 
-const environment = "production";
-
-console.log(config[environment]);
+console.log(bcrypt.hashSync("khalid.m12"));

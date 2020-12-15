@@ -16,11 +16,11 @@ router.post("/", async (req, res) => {
     const { email, password } = req.body;
     // validate admin email
     if (!validateEmail(email)) {
-      accessDenied(res);
+      return accessDenied(res);
     }
     // validate admin password
     if (typeof password !== "string") {
-      accessDenied(res);
+      return accessDenied(res);
     }
     const admin = await DB.Admin.findOne({
       where: {
@@ -29,17 +29,17 @@ router.post("/", async (req, res) => {
     });
     // validate if email exists
     if (!admin) {
-      accessDenied(res);
+      return accessDenied(res);
     }
     // validate admin's password
     if (!comparePassword(password, admin.password_hash)) {
-      accessDenied(res);
+      return accessDenied(res);
     }
     // email and password validated
     const accessToken = generateAccessToken(admin);
-    res.setHeader("access-token", accessToken);
-    return res.status(200).json({
+    res.status(200).json({
       message: "Logged in succesfully",
+      token: accessToken,
     });
   } catch (error) {
     res.status(500).json({

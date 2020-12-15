@@ -22,21 +22,21 @@ import adminStatisics from "../controllers/admin/Statistics";
 import ImagesUpload from "../controllers/admin/ImagesUpload";
 
 // route admin controllers
-router.use("/users", Users);
-router.use("/branches", Branches);
-router.use("/internal-categories", InternalCategories);
-router.use("/product-categories", ProductCategories);
-router.use("/products", Products);
-router.use("/products-custom-options", ProductCustomOptions);
-router.use("/products-tags", ProductTags);
-router.use("/promo-codes", PromoCodes);
-router.use("/inventory", Inventory);
-router.use("/shipments", Shipments);
-router.use("/orders", Orders);
-router.use("/areas", Areas);
+router.use("/users", authenticateAdmin, Users);
+router.use("/branches", authenticateAdmin, Branches);
+router.use("/internal-categories", authenticateAdmin, InternalCategories);
+router.use("/product-categories", authenticateAdmin, ProductCategories);
+router.use("/products", authenticateAdmin, Products);
+router.use("/products-custom-options", authenticateAdmin, ProductCustomOptions);
+router.use("/products-tags", authenticateAdmin, ProductTags);
+router.use("/promo-codes", authenticateAdmin, PromoCodes);
+router.use("/inventory", authenticateAdmin, Inventory);
+router.use("/shipments", authenticateAdmin, Shipments);
+router.use("/orders", authenticateAdmin, Orders);
+router.use("/areas", authenticateAdmin, Areas);
 router.use("/auth/login", Login);
-router.use("/statistics", adminStatisics);
-router.use("/images", ImagesUpload);
-router.use("/banners", Banners);
+router.use("/statistics", authenticateAdmin, adminStatisics);
+router.use("/images", authenticateAdmin, ImagesUpload);
+router.use("/banners", authenticateAdmin, Banners);
 
 export default router;
