@@ -1,3 +1,3 @@
 import bcrypt from "bcryptjs";
 
-console.log(bcrypt.hashSync("khalid.m12"));
+console.log(bcrypt.hashSync("15915911Ab*"));
