@@ -17,6 +17,7 @@ import Areas from "../controllers/app(v1)/Areas";
 import Banners from "../controllers/app(v1)/Banners";
 import Branch from "../controllers/app(v1)/Branch";
 import User from "../controllers/app(v1)/User";
+import FBDataDeletion from "../controllers/app(v1)/FBDataDeletion";
 
 // route controllers
 router.use("/products", Products);
@@ -31,5 +32,7 @@ router.use("/areas", Areas);
 router.use("/banners", Banners);
 router.use("/branch", Branch);
 router.use("/user", authenticateUser, User);
+// Facebook data deletion endpoint
+router.use("/user/facebook/delete", FBDataDeletion);
 
 export default router;
