@@ -33,6 +33,6 @@ router.use("/banners", Banners);
 router.use("/branch", Branch);
 router.use("/user", authenticateUser, User);
 // Facebook data deletion endpoint
-router.use("/user/facebook/delete", FBDataDeletion);
+router.use("/facebook/delete", FBDataDeletion);
 
 export default router;
