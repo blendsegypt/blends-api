@@ -42,8 +42,6 @@ router.post("/", async (req, res) => {
       req.body.signed_request,
       process.env.FB_APP_SECRET
     );
-    console.log(req.body);
-    console.log(fbData);
     const { user_id } = fbData;
     if (!user_id) {
       return res.status(400).json({
