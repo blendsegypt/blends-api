@@ -50,7 +50,7 @@ router.post("/", async (req, res) => {
         message: "User ID not supplied",
       });
     }
-    const user = await DB.User.delete({
+    const user = await DB.User.destroy({
       where: {
         uid: user_id,
       },
