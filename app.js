@@ -1,7 +1,8 @@
 import Express from "express"; // Express
 import Path from "path"; // Path to enable path methods
 import CookieParser from "cookie-parser"; // Cookie Parser to parse cookies from HTTP requests
-import Logger from "morgan"; // Morgan Logger for debugging
+// ES6 modules causes deprecated warning from Morgan, so here we use CommonJS imports instead
+const Logger = require("morgan"); // Morgan Logger for debugging
 import cors from "cors"; //Allow cross-origin requests
 
 // cron jobs
