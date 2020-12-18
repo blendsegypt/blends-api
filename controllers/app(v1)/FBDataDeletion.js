@@ -37,28 +37,34 @@ function parseSignedRequest(signedRequest, secret) {
 
 // Facebook user data deletion endpoint (Required to provide login by Facebook)
 router.post("/", async (req, res) => {
-  const fbData = parseSignedRequest(req.body);
-  const { user_id } = fbData;
-  if (!user_id) {
-    return res.status(400).json({
-      message: "User ID not supplied",
+  try {
+    const fbData = parseSignedRequest(req.body);
+    const { user_id } = fbData;
+    if (!user_id) {
+      return res.status(400).json({
+        message: "User ID not supplied",
+      });
+    }
+    const user = await DB.User.delete({
+      where: {
+        uid: user_id,
+      },
+    });
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found.",
+      });
+    }
+    return res.status(200).json({
+      message: "User data has been succesfully deleted",
+      url: "",
+      confirmation_code: user_id,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error_message: error.message,
     });
   }
-  const user = await DB.User.delete({
-    where: {
-      uid: user_id,
-    },
-  });
-  if (!user) {
-    return res.status(404).json({
-      message: "User not found.",
-    });
-  }
-  return res.status(200).json({
-    message: "User data has been succesfully deleted",
-    url: "",
-    confirmation_code: user_id,
-  });
 });
 
 export default router;
