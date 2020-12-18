@@ -38,7 +38,7 @@ function parseSignedRequest(signedRequest, secret) {
 // Facebook user data deletion endpoint (Required to provide login by Facebook)
 router.post("/", async (req, res) => {
   try {
-    const fbData = parseSignedRequest(req.body);
+    const fbData = parseSignedRequest(req.body.signed_request);
     const { user_id } = fbData;
     if (!user_id) {
       return res.status(400).json({
