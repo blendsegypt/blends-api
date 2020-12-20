@@ -201,17 +201,6 @@ const validateOrder = async (order) => {
     if (order.sub_total + order.delivery_charges !== order.total) {
       return false;
     }
-    // Validate that promo_code exists (if supplied)
-    if (order.promo_code) {
-      const promo_code = await DB.PromoCode.findOne({
-        where: {
-          code: order.promo_code,
-        },
-      });
-      if (!promo_code) {
-        return false;
-      }
-    }
     // Everything is validated
     return true;
   } catch (errors) {
