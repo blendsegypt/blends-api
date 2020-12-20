@@ -30,7 +30,7 @@ router.post("/", async (req, res) => {
       const promoCode = await getPromoCode(newOrder);
       // Check if promocode is valid or not
       if (promoCode !== null) {
-        const codeUsage = checkCodeUsage(promoCode, order);
+        const codeUsage = checkCodeUsage(promoCode, newOrder);
         if (!codeUsage.isUsable) {
           console.log("Order promocode checks failed");
           return res.status(400).json({
