@@ -82,6 +82,8 @@ router.post("/", async (req, res) => {
       message: "Order Created succesfully",
     });
   } catch (error) {
+    console.log(error);
+    console.log(error.message);
     res.status(500).json({
       error_message: error.message,
     });
