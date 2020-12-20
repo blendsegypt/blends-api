@@ -28,6 +28,37 @@ router.post("/", async (req, res) => {
         uid_provider: "facebook",
         uid: fbInfo.id,
       },
+      attributes: [
+        "id",
+        "uid",
+        "uid_provider",
+        "first_name",
+        "last_name",
+        "phone_number",
+        "referral_code",
+        "wallet",
+      ],
+      include: [
+        {
+          as: "addresses",
+          model: DB.Address,
+          include: [
+            {
+              model: DB.Area,
+              attributes: ["id", "name"],
+              include: [
+                {
+                  model: DB.Branch,
+                  attributes: ["id"],
+                  through: {
+                    attributes: [],
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      ],
     });
 
     // If user doesnt exist, return 404 to continue user registeration flow
