@@ -17,6 +17,7 @@ router.post("/", async (req, res) => {
     newOrder.user_id = res.locals.user_id;
     const orderValid = await validateOrder(newOrder);
     if (!orderValid) {
+      console.log("Order calculations failed");
       return res.status(400).json({
         error: "INVALID_ORDER",
       });
@@ -30,6 +31,7 @@ router.post("/", async (req, res) => {
       if (promoCode !== null) {
         const codeUsage = checkCodeUsage(promoCode, order);
         if (!codeUsage.isUsable) {
+          console.log("Order promocode checks failed");
           return res.status(400).json({
             error: "INVALID_ORDER",
           });
