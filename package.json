@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node -r esm -r dotenv/config ./bin/www",
-    "mkmigrate": "node -r esm ./node_modules/sequelize-auto-migrations/bin/makemigration.js",
+    "mkmigrate": "node -r esm -r dotenv/config ./node_modules/sequelize-auto-migrations/bin/makemigration.js",
     "dbmigrate": "sequelize-cli db:migrate",
     "updatemigrate": "rm -f ./migrations/_current.json && rm -f ./migrations/_current_bak.json && node -r esm ./node_modules/sequelize-auto-migrations/bin/makemigration.js && cd ./migrations && rm -f **-noname.js"
   },
