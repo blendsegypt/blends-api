@@ -10,6 +10,7 @@ import ApplyPromoCodes from "../controllers/app(v1)/ApplyPromoCodes"; // app
 import Register from "../controllers/app(v1)/Register";
 import Login from "../controllers/app(v1)/Login";
 import LoginByFacebook from "../controllers/app(v1)/LoginByFacebook";
+import LoginByApple from "../controllers/app(v1)/LoginByApple";
 import Logout from "../controllers/app(v1)/Logout";
 import RefreshToken from "../controllers/app(v1)/RefreshToken";
 import Orders from "../controllers/app(v1)/Orders";
@@ -25,6 +26,7 @@ router.use("/apply-promo-code", ApplyPromoCodes);
 router.use("/register", Register);
 router.use("/auth/login", Login);
 router.use("/auth/facebook", LoginByFacebook);
+router.use("/auth/apple", LoginByApple);
 router.use("/auth/logout", authenticateUser, Logout);
 router.use("/auth/refresh", RefreshToken);
 router.use("/orders", authenticateUser, Orders);
