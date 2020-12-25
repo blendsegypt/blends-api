@@ -164,13 +164,13 @@ router.post("/finish", async (req, res) => {
       first_name: firstName,
       last_name: lastName,
       phone_number: phoneNumber,
-      platform: "apple",
+      platform: "ios",
       email: email,
       email_verified: true,
       referral_code: generateReferralCode(user.first_name),
       referred_by_id: user.referred_by_id,
       uid: uid,
-      uid_provider: "ios",
+      uid_provider: "apple",
     });
     // apply referral reward to both users
     if (referralValid) {
