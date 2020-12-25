@@ -120,12 +120,15 @@ router.post("/finish", async (req, res) => {
       identityToken,
     } = user;
     // Validate the nonce provided by Apple
-    appleIdTokenClaims = await appleSigninAuth.verifyIdToken(identityToken, {
-      /** sha256 hex hash of raw nonce */
-      nonce: nonce
-        ? crypto.createHash("sha256").update(nonce).digest("hex")
-        : undefined,
-    });
+    const appleIdTokenClaims = await appleSigninAuth.verifyIdToken(
+      identityToken,
+      {
+        /** sha256 hex hash of raw nonce */
+        nonce: nonce
+          ? crypto.createHash("sha256").update(nonce).digest("hex")
+          : undefined,
+      }
+    );
     // Check if user has verified his phone number using OTP
     const OTPrecord = await DB.OTP.findOne({
       where: {
