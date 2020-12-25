@@ -11,6 +11,7 @@ import {
   applyReferral,
 } from "../../helpers/referrals";
 import appleSigninAuth from "apple-signin-auth";
+import crypto from "crypto";
 const router = Express.Router();
 
 // Login by Apple (check if user exists or not then return appropriate response)
