@@ -170,7 +170,7 @@ router.post("/finish", async (req, res) => {
       referral_code: generateReferralCode(user.first_name),
       referred_by_id: user.referred_by_id,
       uid: uid,
-      uid_provider: "apple",
+      uid_provider: "ios",
     });
     // apply referral reward to both users
     if (referralValid) {
