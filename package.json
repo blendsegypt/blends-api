@@ -9,6 +9,7 @@
     "updatemigrate": "rm -f ./migrations/_current.json && rm -f ./migrations/_current_bak.json && node -r esm ./node_modules/sequelize-auto-migrations/bin/makemigration.js && cd ./migrations && rm -f **-noname.js"
   },
   "dependencies": {
+    "apple-signin-auth": "^1.4.1",
     "aws-sdk": "^2.794.0",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "~1.4.4",
