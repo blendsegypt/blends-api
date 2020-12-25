@@ -46,7 +46,7 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.STRING,
       },
       uid_provider: {
-        type: DataTypes.ENUM("facebook"),
+        type: DataTypes.ENUM("facebook", "apple"),
       },
       uid: {
         type: DataTypes.STRING,
