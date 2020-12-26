@@ -38,7 +38,9 @@ router.post("/", async (req, res) => {
             min_stock: 0,
           });
         });
-        await DB.Inventory.bulkCreate(inventories);
+	console.log(createdProduct);
+	console.log(inventories)
+        await DB.Inventory.bulkCreate(inventories, { transaction: t  });
       }
       return true;
     });
