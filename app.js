@@ -17,10 +17,9 @@ import adminRoutes from "./routes/admin";
 var App = Express();
 
 // Apply Middleware
-// TEMPORARLY DISABLED
-//if (process.env.NODE_ENV === "development") {
+if (process.env.NODE_ENV === "development") {
 App.use(Logger("dev"));
-//}
+}
 App.use(Express.json());
 App.use(Express.urlencoded({ extended: false }));
 App.use(CookieParser());
